@@ -32,18 +32,24 @@
             this.radioButton2 = new RadioButton();
             this.radioButton1 = new RadioButton();
             this.checkBox1 = new CheckBox();
+            this.linkLabel1 = new LinkLabel();
+            this.listBox1 = new ListBox();
             this.groupBox1.SuspendLayout();
             SuspendLayout();
             // 
             // button1
             // 
+            this.button1.BackColor = Color.Turquoise;
+            this.button1.FlatAppearance.BorderColor = Color.Turquoise;
+            this.button1.FlatStyle = FlatStyle.Flat;
             this.button1.Font = new Font("SDK_SC_Web", 10.4999981F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.button1.Location = new Point(181, 126);
+            this.button1.Location = new Point(182, 330);
             this.button1.Name = "button1";
             this.button1.Size = new Size(96, 39);
             this.button1.TabIndex = 0;
             this.button1.Text = "启动#注入";
-            this.button1.UseVisualStyleBackColor = true;
+            this.button1.UseVisualStyleBackColor = false;
+            this.button1.Click += button1_Click;
             // 
             // textBox1
             // 
@@ -65,13 +71,17 @@
             // 
             // button2
             // 
+            this.button2.BackColor = Color.Turquoise;
+            this.button2.FlatAppearance.BorderColor = Color.Turquoise;
+            this.button2.FlatStyle = FlatStyle.Flat;
             this.button2.Font = new Font("SDK_SC_Web", 8.999999F, FontStyle.Regular, GraphicsUnit.Point, 0);
             this.button2.Location = new Point(228, 31);
             this.button2.Name = "button2";
             this.button2.Size = new Size(50, 24);
             this.button2.TabIndex = 3;
             this.button2.Text = "选择";
-            this.button2.UseVisualStyleBackColor = true;
+            this.button2.UseVisualStyleBackColor = false;
+            this.button2.Click += button2_Click;
             // 
             // groupBox1
             // 
@@ -93,14 +103,13 @@
             this.radioButton2.Name = "radioButton2";
             this.radioButton2.Size = new Size(110, 21);
             this.radioButton2.TabIndex = 1;
-            this.radioButton2.TabStop = true;
             this.radioButton2.Text = "本地启动方式";
             this.radioButton2.UseVisualStyleBackColor = true;
-
             // 
             // radioButton1
             // 
             this.radioButton1.AutoSize = true;
+            this.radioButton1.Checked = true;
             this.radioButton1.Font = new Font("SDK_SC_Web", 10.4999981F, FontStyle.Regular, GraphicsUnit.Point, 0);
             this.radioButton1.Location = new Point(6, 26);
             this.radioButton1.Name = "radioButton1";
@@ -121,11 +130,33 @@
             this.checkBox1.Text = "剔除进程检测";
             this.checkBox1.UseVisualStyleBackColor = true;
             // 
+            // linkLabel1
+            // 
+            this.linkLabel1.AutoSize = true;
+            this.linkLabel1.Font = new Font("SDK_SC_Web", 10.4999981F);
+            this.linkLabel1.Location = new Point(12, 352);
+            this.linkLabel1.Name = "linkLabel1";
+            this.linkLabel1.Size = new Size(57, 17);
+            this.linkLabel1.TabIndex = 6;
+            this.linkLabel1.TabStop = true;
+            this.linkLabel1.Text = "Github";
+            // 
+            // listBox1
+            // 
+            this.listBox1.FormattingEnabled = true;
+            this.listBox1.ItemHeight = 17;
+            this.listBox1.Location = new Point(12, 153);
+            this.listBox1.Name = "listBox1";
+            this.listBox1.Size = new Size(266, 174);
+            this.listBox1.TabIndex = 7;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 17F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(289, 381);
+            Controls.Add(this.listBox1);
+            Controls.Add(this.linkLabel1);
             Controls.Add(this.checkBox1);
             Controls.Add(this.groupBox1);
             Controls.Add(this.button2);
@@ -140,6 +171,7 @@
             Opacity = 0.8D;
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Inject & launcher";
+            Load += Form1_Load;
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ResumeLayout(false);
@@ -156,5 +188,7 @@
         private RadioButton radioButton2;
         private RadioButton radioButton1;
         private CheckBox checkBox1;
+        private LinkLabel linkLabel1;
+        private ListBox listBox1;
     }
 }
