@@ -49,11 +49,12 @@ namespace Inject___launcher {
                                    this.listBox1.Items.Add(Log.FormatLog("正在剔除检测..."));
                                    if (this.textBox1.Text == "") {
                                        this.listBox1.Items.Add(Log.FormatLog("未选择游戏目录!"));
+                                       this.button1.Enabled = true;
                                        return;
                                    }
 
                                    this.listBox1.Items.Add(Log.FormatLog("正在替换文件..."));
-                                   try { File.Copy("KS_Diagnostics_Process.dll", this.textBox1.Text + "\\Phasmophobia_Data\\Plugins\\x86_64\\KS_Diagnostics_Process.dll"); } catch (UnauthorizedAccessException ex) {
+                                   try { File.Copy("KS_Diagnostics_Process.dll", this.textBox1.Text + "\\Phasmophobia_Data\\Plugins\\x86_64\\KS_Diagnostics_Process.dll", true); } catch (UnauthorizedAccessException ex) {
                                        // TODO: Handle the System.UnauthorizedAccessException
                                        MessageBox.Show("复制文件出错\n" + ex.ToString(), "错误", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
                                        this.listBox1.Items.Add(Log.FormatLog("复制文件出错!"));
@@ -65,29 +66,44 @@ namespace Inject___launcher {
 
                                    this.listBox1.Items.Add(Log.FormatLog("正在启动游戏..."));
                                    if (this.radioButton1.Checked) {
-                                       Process.Start("steam://rungameid/739630");
+                                       string  url = "steam://rungameid/739630";
+                                       Process p   = new Process();
+                                       p.StartInfo.FileName               = "cmd.exe";
+                                       p.StartInfo.UseShellExecute        = false; //不使用shell启动
+                                       p.StartInfo.RedirectStandardInput  = true;  //喊cmd接受标准输入
+                                       p.StartInfo.RedirectStandardOutput = false; //不想听cmd讲话所以不要他输出
+                                       p.StartInfo.RedirectStandardError  = true;  //重定向标准错误输出
+                                       p.StartInfo.CreateNoWindow         = true;  //不显示窗口
+                                       p.Start();
+
+                                       //向cmd窗口发送输入信息 后面的&exit告诉cmd运行好之后就退出
+                                       p.StandardInput.WriteLine("start " + url + "&exit");
+                                       p.StandardInput.AutoFlush = true;
+                                       p.WaitForExit(); //等待程序执行完退出进程
+                                       p.Close();
                                    } else {
-                                       Process.Start(this.textBox1.Text + "Phasmophobia.exe");
+                                       Process.Start(this.textBox1.Text + "\\Phasmophobia.exe");
                                    }
 
                                findProcess:
-                                   Thread.Sleep(1000);
-                                   var process = Process.GetProcessesByName("Phasmophobia.exe");
-                                   if (process != null && (process.Length == 0 || process[0].Handle == 0)) {
+                                   Thread.Sleep(5000);
+                                   var process = Process.GetProcessesByName("Phasmophobia");
+                                   if (process == null || process.Length == 0) {
                                        goto findProcess;
                                    }
 
+                                   const string dllname = "Phasmophobia.dll";
+                                   nint         handle  = process[0].Handle;
                                    this.listBox1.Items.Add(Log.FormatLog("正在注入..."));
-                                   Int32 AllocBaseAddress = VirtualAllocEx(process[0].Handle, 0, "Phasmophobia.dll".Length + 1, 4096, 4);
+                                   Int32 AllocBaseAddress = VirtualAllocEx(handle, 0, dllname.Length, 4096, 4);
                                    if (AllocBaseAddress == 0) {
                                        MessageBox.Show("内存分配失败", "错误");
                                        this.listBox1.Items.Add(Log.FormatLog("内存分配失败!"));
                                        this.button1.Enabled = true;
                                        return;
                                    }
-
-                                   //写入dll路径到微信进程
-                                   if (WriteProcessMemory(process[0].Handle, AllocBaseAddress, "Phasmophobia.dll", "Phasmophobia.dll".Length + 1, 0) == 0) {
+                                   
+                                   if (WriteProcessMemory(handle, AllocBaseAddress, dllname, dllname.Length, 0) == 0) {
                                        MessageBox.Show("DLL写入失败", "错误", 0);
                                        this.listBox1.Items.Add(Log.FormatLog("DLL写入失败!"));
                                        this.button1.Enabled = true;
@@ -102,7 +118,7 @@ namespace Inject___launcher {
                                        return;
                                    }
 
-                                   IntPtr ThreadHwnd = CreateRemoteThread(process[0].Handle, 0, 0, loadaddr, AllocBaseAddress, 0, 0);
+                                   IntPtr ThreadHwnd = CreateRemoteThread(handle, 0, 0, loadaddr, AllocBaseAddress, 0, 0);
                                    if (ThreadHwnd == IntPtr.Zero) {
                                        MessageBox.Show("创建远程线程失败");
                                        this.listBox1.Items.Add(Log.FormatLog("创建远程线程失败!"));

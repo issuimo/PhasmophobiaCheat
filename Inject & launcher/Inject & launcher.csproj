@@ -12,6 +12,7 @@
     <BaseIntermediateOutputPath>..\Build\Temp\obj</BaseIntermediateOutputPath>
     <PackageIcon>syringe_96px.png</PackageIcon>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
