@@ -26,7 +26,7 @@ namespace Inject___launcher {
         public static extern IntPtr GetModuleHandleA(string name);
 
         [DllImport("kernel32.dll")]
-        public static extern int CreateRemoteThread(IntPtr hwnd, int attrib, int size, IntPtr address, IntPtr par, int flags, int threadid);
+        public static extern IntPtr CreateRemoteThread(IntPtr hwnd, IntPtr attrib, int size, IntPtr address, IntPtr par, int flags, IntPtr threadid);
 
 
         [DllImport("KERNEL32.DLL ")]
@@ -134,6 +134,8 @@ namespace Inject___launcher {
                                    this.button1.Enabled = true;
                                    return;
                                }
+
+                               CloseHandle(ThreadHwnd);
 
                                this.listBox1.Items.Add(Log.FormatLog("注入成功!"));
                                this.button1.Enabled = true;
