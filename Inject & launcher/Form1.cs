@@ -8,8 +8,8 @@ namespace Inject___launcher {
         public Form1() {
             this.InitializeComponent();
             Control.CheckForIllegalCrossThreadCalls = false;
-            if (File.Exists("path")) {
-                this.textBox1.Text = File.ReadAllText("path");
+            if (File.Exists("path.dat")) {
+                this.textBox1.Text = File.ReadAllText("path.dat");
             }
         }
 
@@ -145,12 +145,12 @@ namespace Inject___launcher {
             dialog.ShowNewFolderButton = true;
             dialog.RootFolder          = Environment.SpecialFolder.ApplicationData;
             System.Windows.Forms.DialogResult result = dialog.ShowDialog();
-            this.textBox1.Text = result.ToString();
+            this.textBox1.Text = dialog.SelectedPath;
             try {
-                if (!File.Exists("path")) {
-                    File.Create("path");
+                if (!File.Exists("path.dat")) {
+                    File.Create("path.dat").Close();
                 }
-                File.WriteAllText("path", this.textBox1.Text);
+                File.WriteAllText("path.dat", this.textBox1.Text);
             } catch (DirectoryNotFoundException ex) {
                 // TODO: Handle the System.IO.DirectoryNotFoundException
                 MessageBox.Show("写出目录失败\n" + ex.ToString(), "错误", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
