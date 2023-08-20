@@ -123,8 +123,6 @@ namespace Inject___launcher {
                                    return;
                                }
 
-                               MessageBox.Show("DLL写入失败 error:" + GetLastError(), "错误", 0);
-
                                IntPtr loadaddr = GetProcAddress(GetModuleHandleA("kernel32.dll"), "LoadLibraryA");
                                if (loadaddr == 0) {
                                    MessageBox.Show("取得LoadLibraryA的地址失败");
@@ -142,8 +140,6 @@ namespace Inject___launcher {
                                    this.button1.Enabled = true;
                                    return;
                                }
-
-                               MessageBox.Show("DLL写入失败 error:" + GetLastError(), "错误", 0);
 
                                this.listBox1.Items.Add(Log.FormatLog("远程线程句柄: " + ThreadHwnd));
 
