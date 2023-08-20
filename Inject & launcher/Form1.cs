@@ -53,7 +53,7 @@ namespace Inject___launcher {
                                    }
 
                                    this.listBox1.Items.Add(Log.FormatLog("正在替换文件..."));
-                                   try { File.Copy("KS_Diagnostics_Process.dll", this.textBox1.Text + "\\Phasmophobia_Data\\Plugins\\x86_64"); } catch (UnauthorizedAccessException ex) {
+                                   try { File.Copy("KS_Diagnostics_Process.dll", this.textBox1.Text + "\\Phasmophobia_Data\\Plugins\\x86_64\\KS_Diagnostics_Process.dll"); } catch (UnauthorizedAccessException ex) {
                                        // TODO: Handle the System.UnauthorizedAccessException
                                        MessageBox.Show("复制文件出错\n" + ex.ToString(), "错误", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
                                        this.listBox1.Items.Add(Log.FormatLog("复制文件出错!"));
