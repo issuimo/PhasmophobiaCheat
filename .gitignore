@@ -1,0 +1,5 @@
+
+*.ipch
+.vs
+.sarif
+Build

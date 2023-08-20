@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>17.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{919c691a-3793-4f75-842f-dbb0e98be6dc}</ProjectGuid>
+    <RootNamespace>ravenfield</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>Intel C++ Compiler 2023</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+    <BasePlatformToolset>v143</BasePlatformToolset>
+    <UseIntelIPP1A>false</UseIntelIPP1A>
+    <UseInteloneMKL>Parallel</UseInteloneMKL>
+    <UseILP64Interfaces1A>false</UseILP64Interfaces1A>
+    <EnableMKLOpenMPOffloadToGPU>false</EnableMKLOpenMPOffloadToGPU>
+    <UseInteloneDAL>false</UseInteloneDAL>
+    <UseIntelMPI>false</UseIntelMPI>
+    <UseInteloneTBB>false</UseInteloneTBB>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>..\Build\</OutDir>
+    <IntDir>..\Build\Temp\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>false</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;RAVENFIELD_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <DiagnosticsFormat>Caret</DiagnosticsFormat>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <OmitFramePointers>false</OmitFramePointers>
+      <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
+      <StringPooling>true</StringPooling>
+      <ExceptionHandling>Async</ExceptionHandling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <ControlFlowGuard>Guard</ControlFlowGuard>
+      <EnableParallelCodeGeneration>true</EnableParallelCodeGeneration>
+      <EnableEnhancedInstructionSet>StreamingSIMDExtensions3</EnableEnhancedInstructionSet>
+      <FloatingPointModel>Precise</FloatingPointModel>
+      <FloatingPointExceptions>false</FloatingPointExceptions>
+      <CreateHotpatchableImage>true</CreateHotpatchableImage>
+      <EnableModules>true</EnableModules>
+      <BuildStlModules>true</BuildStlModules>
+      <ExpandAttributedSource>true</ExpandAttributedSource>
+      <AssemblerOutput>All</AssemblerOutput>
+      <UseUnicodeForAssemblerListing>true</UseUnicodeForAssemblerListing>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <UseMSVC>false</UseMSVC>
+      <GuardEHContMetadata>false</GuardEHContMetadata>
+      <UseProcessorExtensions>HOST</UseProcessorExtensions>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <CCppSupport>Cpp20Support</CCppSupport>
+      <OpenMP>None</OpenMP>
+      <OpenMPOffloading>None</OpenMPOffloading>
+      <Optimization>MaxSpeedHighLevel</Optimization>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableUAC>false</EnableUAC>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="dllmain.cpp" />
+    <ClCompile Include="features\Ghost.cpp" />
+    <ClCompile Include="features\GhostList.cpp" />
+    <ClCompile Include="features\HighSpeed.cpp" />
+    <ClCompile Include="features\NoDead.cpp" />
+    <ClCompile Include="features\PlayerList.cpp" />
+    <ClCompile Include="Init.cpp" />
+    <ClCompile Include="library\imgui\imgui.cpp" />
+    <ClCompile Include="library\imgui\imgui_demo.cpp" />
+    <ClCompile Include="library\imgui\imgui_draw.cpp" />
+    <ClCompile Include="library\imgui\imgui_impl_dx11.cpp" />
+    <ClCompile Include="library\imgui\imgui_impl_win32.cpp" />
+    <ClCompile Include="library\imgui\imgui_tables.cpp" />
+    <ClCompile Include="library\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="library\imgui\implot.cpp" />
+    <ClCompile Include="library\imgui\implot_demo.cpp" />
+    <ClCompile Include="library\imgui\implot_items.cpp" />
+    <ClCompile Include="library\stb\stb_vorbis.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="features\Ghost.h" />
+    <ClInclude Include="features\GhostList.h" />
+    <ClInclude Include="features\HighSpeed.h" />
+    <ClInclude Include="features\NoDead.h" />
+    <ClInclude Include="features\PlayerList.h" />
+    <ClInclude Include="GenshinImpactFont.h" />
+    <ClInclude Include="Init.h" />
+    <ClInclude Include="library\detours\detours.h" />
+    <ClInclude Include="library\detours\HookManager.h" />
+    <ClInclude Include="library\d3d11hook.h" />
+    <ClInclude Include="library\fmt\args.h" />
+    <ClInclude Include="library\fmt\chrono.h" />
+    <ClInclude Include="library\fmt\color.h" />
+    <ClInclude Include="library\fmt\compile.h" />
+    <ClInclude Include="library\fmt\core.h" />
+    <ClInclude Include="library\fmt\format-inl.h" />
+    <ClInclude Include="library\fmt\format.h" />
+    <ClInclude Include="library\fmt\os.h" />
+    <ClInclude Include="library\fmt\ostream.h" />
+    <ClInclude Include="library\fmt\printf.h" />
+    <ClInclude Include="library\fmt\ranges.h" />
+    <ClInclude Include="library\fmt\std.h" />
+    <ClInclude Include="library\fmt\xchar.h" />
+    <ClInclude Include="library\Font.hpp" />
+    <ClInclude Include="library\imgui\imconfig.h" />
+    <ClInclude Include="library\imgui\imgui.h" />
+    <ClInclude Include="library\imgui\imgui_impl_dx11.h" />
+    <ClInclude Include="library\imgui\imgui_impl_win32.h" />
+    <ClInclude Include="library\imgui\imgui_internal.h" />
+    <ClInclude Include="library\imgui\implot.h" />
+    <ClInclude Include="library\imgui\implot_internal.h" />
+    <ClInclude Include="library\imgui\imstb_rectpack.h" />
+    <ClInclude Include="library\imgui\imstb_textedit.h" />
+    <ClInclude Include="library\imgui\imstb_truetype.h" />
+    <ClInclude Include="library\json.hpp" />
+    <ClInclude Include="library\log.h" />
+    <ClInclude Include="library\magic_enum\magic_enum.hpp" />
+    <ClInclude Include="library\magic_enum\magic_enum_all.hpp" />
+    <ClInclude Include="library\magic_enum\magic_enum_containers.hpp" />
+    <ClInclude Include="library\magic_enum\magic_enum_flags.hpp" />
+    <ClInclude Include="library\magic_enum\magic_enum_format.hpp" />
+    <ClInclude Include="library\magic_enum\magic_enum_fuse.hpp" />
+    <ClInclude Include="library\magic_enum\magic_enum_iostream.hpp" />
+    <ClInclude Include="library\magic_enum\magic_enum_switch.hpp" />
+    <ClInclude Include="library\magic_enum\magic_enum_utility.hpp" />
+    <ClInclude Include="library\stb\stb_connected_components.h" />
+    <ClInclude Include="library\stb\stb_c_lexer.h" />
+    <ClInclude Include="library\stb\stb_divide.h" />
+    <ClInclude Include="library\stb\stb_ds.h" />
+    <ClInclude Include="library\stb\stb_dxt.h" />
+    <ClInclude Include="library\stb\stb_easy_font.h" />
+    <ClInclude Include="library\stb\stb_herringbone_wang_tile.h" />
+    <ClInclude Include="library\stb\stb_hexwave.h" />
+    <ClInclude Include="library\stb\stb_image.h" />
+    <ClInclude Include="library\stb\stb_image_resize.h" />
+    <ClInclude Include="library\stb\stb_image_write.h" />
+    <ClInclude Include="library\stb\stb_include.h" />
+    <ClInclude Include="library\stb\stb_leakcheck.h" />
+    <ClInclude Include="library\stb\stb_perlin.h" />
+    <ClInclude Include="library\stb\stb_rect_pack.h" />
+    <ClInclude Include="library\stb\stb_sprintf.h" />
+    <ClInclude Include="library\stb\stb_textedit.h" />
+    <ClInclude Include="library\stb\stb_tilemap_editor.h" />
+    <ClInclude Include="library\stb\stb_truetype.h" />
+    <ClInclude Include="library\stb\stb_voxel_render.h" />
+    <ClInclude Include="library\UnityHack.h" />
+    <ClInclude Include="StarRailFont.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="library\detours\[x64]detours.lib" />
+    <Library Include="library\detours\[x86]detours.lib" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
