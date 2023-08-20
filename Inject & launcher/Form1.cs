@@ -50,7 +50,6 @@ namespace Inject___launcher {
                 new Thread(
                            () => {
                                this.listBox1.Items.Add(Log.FormatLog("准备启动游戏..."));
-                               this.listBox1.Items.Add(Log.FormatLog("启动模式: " + (this.radioButton1.Checked ? "Steam启动" : "本地启动")));
                                this.listBox1.Items.Add(Log.FormatLog("剔除检测: " + (this.checkBox1.Checked ? "已启用" : "未启用")));
                                if (this.checkBox1.Checked) {
                                    this.listBox1.Items.Add(Log.FormatLog("正在剔除检测..."));
@@ -72,7 +71,7 @@ namespace Inject___launcher {
                                    this.listBox1.Items.Add(Log.FormatLog("剔除检测成功!"));
                                }
                                this.listBox1.Items.Add(Log.FormatLog("正在启动游戏..."));
-                               if (this.radioButton1.Checked) {
+
                                    string  url = "steam://rungameid/739630";
                                    Process p   = new Process();
                                    p.StartInfo.FileName               = "cmd.exe";
@@ -88,9 +87,6 @@ namespace Inject___launcher {
                                    p.StandardInput.AutoFlush = true;
                                    p.WaitForExit(); //等待程序执行完退出进程
                                    p.Close();
-                               } else {
-                                   Process.Start(this.textBox1.Text + "\\Phasmophobia.exe");
-                               }
 
                            findProcess:
                                Thread.Sleep(5000);
@@ -99,9 +95,15 @@ namespace Inject___launcher {
                                    goto findProcess;
                                }
 
-                               const string dllname = "Phasmophobia.dll";
+                               Int32 SYNCHRONIZE= 0x00100000;
+
+                               Int32 STANDARD_RIGHTS_REQUIRED = 0x000F0000;
+
+                               Int32 PROCESS_ALL_ACCESS = (STANDARD_RIGHTS_REQUIRED | SYNCHRONIZE | 0xFFF);
+
+                                string dllname = System.AppDomain.CurrentDomain.BaseDirectory + "Phasmophobia.dll";
                                this.listBox1.Items.Add(Log.FormatLog("游戏ID: " + process[0].Id));
-                               nint handle = OpenProcess(0x1F0FFF, false, process[0].Id);
+                               nint handle = OpenProcess(PROCESS_ALL_ACCESS, false, process[0].Id);
                                this.listBox1.Items.Add(Log.FormatLog("游戏句柄: " + handle));
                                this.listBox1.Items.Add(Log.FormatLog("正在注入..."));
                                IntPtr allocBaseAddress = VirtualAllocEx(handle, 0, dllname.Length, 4096, 4);
@@ -112,12 +114,16 @@ namespace Inject___launcher {
                                    return;
                                }
 
+                               this.listBox1.Items.Add(Log.FormatLog("已分配内存地址: " + allocBaseAddress));
+
                                if (WriteProcessMemory(handle, allocBaseAddress, dllname, dllname.Length, 0) == 0) {
                                    MessageBox.Show("DLL写入失败 error:" + GetLastError(), "错误", 0);
                                    this.listBox1.Items.Add(Log.FormatLog("DLL写入失败!"));
                                    this.button1.Enabled = true;
                                    return;
                                }
+
+                               MessageBox.Show("DLL写入失败 error:" + GetLastError(), "错误", 0);
 
                                IntPtr loadaddr = GetProcAddress(GetModuleHandleA("kernel32.dll"), "LoadLibraryA");
                                if (loadaddr == 0) {
@@ -127,6 +133,8 @@ namespace Inject___launcher {
                                    return;
                                }
 
+                               this.listBox1.Items.Add(Log.FormatLog("LoadLibraryA内存地址: " + loadaddr));
+
                                IntPtr ThreadHwnd = CreateRemoteThread(handle, 0, 0, loadaddr, allocBaseAddress, 0, 0);
                                if (ThreadHwnd == IntPtr.Zero) {
                                    MessageBox.Show("创建远程线程失败");
@@ -135,7 +143,9 @@ namespace Inject___launcher {
                                    return;
                                }
 
-                               CloseHandle(ThreadHwnd);
+                               MessageBox.Show("DLL写入失败 error:" + GetLastError(), "错误", 0);
+
+                               this.listBox1.Items.Add(Log.FormatLog("远程线程句柄: " + ThreadHwnd));
 
                                this.listBox1.Items.Add(Log.FormatLog("注入成功!"));
                                this.button1.Enabled = true;

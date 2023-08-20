@@ -28,13 +28,9 @@
             this.textBox1 = new TextBox();
             this.label1 = new Label();
             this.button2 = new Button();
-            this.groupBox1 = new GroupBox();
-            this.radioButton2 = new RadioButton();
-            this.radioButton1 = new RadioButton();
             this.checkBox1 = new CheckBox();
             this.linkLabel1 = new LinkLabel();
             this.listBox1 = new ListBox();
-            this.groupBox1.SuspendLayout();
             SuspendLayout();
             // 
             // button1
@@ -83,47 +79,11 @@
             this.button2.UseVisualStyleBackColor = false;
             this.button2.Click += button2_Click;
             // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.radioButton2);
-            this.groupBox1.Controls.Add(this.radioButton1);
-            this.groupBox1.Font = new Font("SDK_SC_Web", 11.9999981F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.groupBox1.Location = new Point(12, 60);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new Size(266, 60);
-            this.groupBox1.TabIndex = 4;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "启动方式";
-            // 
-            // radioButton2
-            // 
-            this.radioButton2.AutoSize = true;
-            this.radioButton2.Font = new Font("SDK_SC_Web", 10.4999981F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.radioButton2.Location = new Point(142, 26);
-            this.radioButton2.Name = "radioButton2";
-            this.radioButton2.Size = new Size(110, 21);
-            this.radioButton2.TabIndex = 1;
-            this.radioButton2.Text = "本地启动方式";
-            this.radioButton2.UseVisualStyleBackColor = true;
-            // 
-            // radioButton1
-            // 
-            this.radioButton1.AutoSize = true;
-            this.radioButton1.Checked = true;
-            this.radioButton1.Font = new Font("SDK_SC_Web", 10.4999981F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.radioButton1.Location = new Point(6, 26);
-            this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new Size(130, 21);
-            this.radioButton1.TabIndex = 0;
-            this.radioButton1.TabStop = true;
-            this.radioButton1.Text = "Steam 启动方式";
-            this.radioButton1.UseVisualStyleBackColor = true;
-            // 
             // checkBox1
             // 
             this.checkBox1.AutoSize = true;
             this.checkBox1.Font = new Font("SDK_SC_Web", 10.4999981F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.checkBox1.Location = new Point(12, 126);
+            this.checkBox1.Location = new Point(12, 60);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new Size(111, 21);
             this.checkBox1.TabIndex = 5;
@@ -146,9 +106,9 @@
             // 
             this.listBox1.FormattingEnabled = true;
             this.listBox1.ItemHeight = 17;
-            this.listBox1.Location = new Point(12, 153);
+            this.listBox1.Location = new Point(12, 85);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new Size(266, 174);
+            this.listBox1.Size = new Size(266, 242);
             this.listBox1.TabIndex = 7;
             // 
             // Form1
@@ -159,7 +119,6 @@
             Controls.Add(this.listBox1);
             Controls.Add(this.linkLabel1);
             Controls.Add(this.checkBox1);
-            Controls.Add(this.groupBox1);
             Controls.Add(this.button2);
             Controls.Add(this.label1);
             Controls.Add(this.textBox1);
@@ -173,8 +132,6 @@
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Inject & launcher";
             Load += Form1_Load;
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -185,9 +142,6 @@
         private TextBox textBox1;
         private Label label1;
         private Button button2;
-        private GroupBox groupBox1;
-        private RadioButton radioButton2;
-        private RadioButton radioButton1;
         private CheckBox checkBox1;
         private LinkLabel linkLabel1;
         private ListBox listBox1;
