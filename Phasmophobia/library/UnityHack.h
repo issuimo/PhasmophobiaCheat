@@ -9,7 +9,6 @@
 #include <unordered_map>
 #include <fstream>
 #include <sstream>
-#include <codecvt>
 
 // 请使用OneApi Base包内Intel C++ 编译器打开MKL选项后编
 #include <mkl.h>
@@ -310,7 +309,16 @@ namespace unity {
 
         public:
             auto ToString() const -> std::string {
-                return std::wstring_convert< std::codecvt_utf8<wchar_t>, wchar_t >{}.to_bytes(&m_firstChar);
+                std::string sRet(static_cast<size_t>(m_stringLength) * 3 + 1, '\0');
+                WideCharToMultiByte(CP_UTF8,
+                                    0,
+                                    &m_firstChar,
+                                    m_stringLength,
+                                    &sRet[0],
+                                    static_cast<int>(sRet.size()),
+                                    nullptr,
+                                    nullptr);
+                return sRet;
             }
         };
 

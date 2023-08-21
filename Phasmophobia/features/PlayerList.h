@@ -21,6 +21,7 @@ protected:
     static auto Player_Awake_NEW(unity::Il2cpp::Class* player) -> void;
     static auto Player_OnDestroy_NEW(unity::Il2cpp::Class* player) -> void;
 
+    void(*StartKillingPlayer)(void*);
 private:
     inline static std::mutex         mutex;
     inline static std::vector<void*> players;

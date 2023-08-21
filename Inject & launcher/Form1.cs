@@ -123,7 +123,7 @@ namespace Inject___launcher {
                                    return;
                                }
 
-                               IntPtr loadaddr = GetProcAddress(GetModuleHandleA("kernel32.dll"), "LoadLibraryA");
+                               IntPtr loadaddr = GetProcAddress(GetModuleHandleA("kernel32.dll"), "LoadLibraryW");
                                if (loadaddr == 0) {
                                    MessageBox.Show("取得LoadLibraryA的地址失败");
                                    this.listBox1.Items.Add(Log.FormatLog("取得LoadLibraryA的地址失败!"));

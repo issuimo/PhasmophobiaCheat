@@ -37,6 +37,33 @@ public:
         salt
     };
 
+    enum GhostType {
+        Spirit,
+        Wraith,
+        Phantom,
+        Poltergeist,
+        Banshee,
+        Jinn,
+        Mare,
+        Revenant,
+        Shade,
+        Demon,
+        Yurei,
+        Oni,
+        Yokai,
+        Hantu,
+        Goryo,
+        Myling,
+        Onryo,
+        TheTwins,
+        Raiju,
+        Obake,
+        Mimic,
+        Moroi,
+        Deogen,
+        Thaye
+    };
+
     static auto GetGhosts() {
         return ghosts;
     }
