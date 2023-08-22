@@ -24,18 +24,57 @@ auto DoorList::GetInfo() const -> const GuiInfo& {
 }
 
 auto DoorList::Render() -> void {
+    std::lock_guard lock(mutex);
+    
+    if (ImGui::Button(reinterpret_cast<const char*>(u8"全上锁"))) {
+        for (const auto& actor : doors) {
+            actor->Lock(true);
+        }
+    }
+
+    ImGui::SameLine();
+
+    if (ImGui::Button(reinterpret_cast<const char*>(u8"全解锁"))) {
+        for (const auto& actor : doors) {
+            actor->UnLock();
+        }
+    }
+
+    ImGui::SameLine();
+
+    if (ImGui::Button(reinterpret_cast<const char*>(u8"全开门"))) {
+        for (const auto& actor : doors) {
+            actor->Open(45.0F, true, true);
+        }
+    }
+
+    ImGui::SameLine();
+
+    if (ImGui::Button(reinterpret_cast<const char*>(u8"全关门"))) {
+        for (const auto& actor : doors) {
+            actor->Open(0.0F, true, true);
+        }
+    }
+
+    ImGui::SameLine();
+
+    if (ImGui::Button(reinterpret_cast<const char*>(u8"删除门"))) {
+        for (const auto& actor : doors) {
+            unity::CSharper::IL2cpp::Object::DestroyImmediate(actor);
+        }
+        doors.clear();
+    }
     if (ImGui::BeginTable("DoorList",
         2,
         ImGuiTableFlags_ScrollX | ImGuiTableFlags_SizingFixedFit | ImGuiTableFlags_ScrollY |
         ImGuiTableFlags_RowBg | ImGuiTableFlags_BordersOuter | ImGuiTableFlags_BordersV |
         ImGuiTableFlags_Resizable | ImGuiTableFlags_Reorderable | ImGuiTableFlags_Hideable,
-        ImVec2(0.0F, ImGui::GetTextLineHeightWithSpacing() * 8))) {
+        ImVec2(0.0F, ImGui::GetTextLineHeightWithSpacing() * 16))) {
         ImGui::TableSetupScrollFreeze(0, 1);
         ImGui::TableSetupColumn(reinterpret_cast<const char*>(u8"地址"), ImGuiTableColumnFlags_None);
         ImGui::TableSetupColumn(reinterpret_cast<const char*>(u8"操作"), ImGuiTableColumnFlags_None);
         ImGui::TableHeadersRow();
-
-        std::lock_guard lock(mutex);
+ 
         for (const auto& actor : doors) {
             ImGui::TableNextRow();
 
@@ -53,7 +92,7 @@ auto DoorList::Render() -> void {
 
                 ImGui::SameLine();
 
-                if (ImGui::SmallButton(reinterpret_cast<const char*>(u8"上锁"))) {
+                if (ImGui::SmallButton(reinterpret_cast<const char*>(u8"解锁"))) {
                     try {
                         actor->UnLock();
                     }
@@ -64,7 +103,7 @@ auto DoorList::Render() -> void {
 
                 if (ImGui::SmallButton(reinterpret_cast<const char*>(u8"开门"))) {
                     try {
-                        actor->Open(180.0F, true, true);
+                        actor->Open(45.0F, true, true);
                     }
                     catch (...) {}
                 }
@@ -73,7 +112,7 @@ auto DoorList::Render() -> void {
 
                 if (ImGui::SmallButton(reinterpret_cast<const char*>(u8"关门"))) {
                     try {
-                        actor->Open(0.0F, false, false);
+                        actor->Open(0.0F, true, true);
                     }
                     catch (...) {}
                 }

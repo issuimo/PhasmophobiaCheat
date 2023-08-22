@@ -3,7 +3,6 @@
 #include "DoorList.h"
 #include "GhostList.h"
 
-#include "../library/d3d11hook.h"
 #include "../library/magic_enum/magic_enum.hpp"
 
 ESP::ESP() : Feature{} {
@@ -43,10 +42,10 @@ auto ESP::DrawStatus() -> void {
         if (doorEsp) {
             const auto doors = DoorList::GetDoors();
             for (auto& door : doors) {
-                auto vector3 = unity::CSharper::IL2cpp::Camera::GetMain()->WorldToScreenPoint(door->GetGameObject()->GetTransform()->GetPosition(), unity::CSharper::IL2cpp::Camera::m_eCameraEye_Center);
+                auto vector3 = unity::CSharper::IL2cpp::Camera::GetMain()->WorldToScreenPoint( reinterpret_cast<unity::CSharper::IL2cpp::Component*>(door)->GetTransform()->GetPosition(),unity::CSharper::IL2cpp::Camera::m_eCameraEye_Center);
                 vector3.y = initSpace::GuiInfo::h - vector3.y;
                 if ((vector3.x > 0 && vector3.y > 0) && (vector3.x < initSpace::GuiInfo::w && vector3.y < initSpace::GuiInfo::h) && vector3.z > 0) {
-                    ImGui::GetBackgroundDrawList()->AddText(ImVec2(vector3.x, vector3.y), 0x33FF33FF, std::format("Door\n[{}] M", vector3.z).c_str());
+                    ImGui::GetBackgroundDrawList()->AddText(ImVec2(vector3.x, vector3.y), 0x33FF33FF, std::format("Door\n[{}] M",vector3.z).c_str());
                 }
             }
         }

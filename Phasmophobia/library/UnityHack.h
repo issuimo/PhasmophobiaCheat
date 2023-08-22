@@ -353,6 +353,17 @@ namespace unity {
         };
 
         struct IL2cpp {
+            struct Object {
+            public:
+                static void Destroy(void* obj) {
+                    return reinterpret_cast<void(*)(void*)>(methodAddress_["Object.Destroy"])(obj);
+                }
+
+                static void DestroyImmediate(void* obj) {
+                    return reinterpret_cast<void(*)(void*)>(methodAddress_["Object.DestroyImmediate"])(obj);
+                }
+            };
+
             struct Camera {
             public:
                 enum CameraEye : int {
@@ -415,6 +426,16 @@ namespace unity {
 
                 String* GetTag() {
                     return reinterpret_cast<String * (*)(void*)>(methodAddress_["GameObject.get_tag"])(this);
+                }
+            };
+
+            struct Component {
+                Transform* GetTransform() {
+                    return reinterpret_cast<Transform * (*)(void*)>(methodAddress_["Component.get_transform"])(this);
+                }
+
+                String* GetTag() {
+                    return reinterpret_cast<String * (*)(void*)>(methodAddress_["Component.get_tag"])(this);
                 }
             };
         };
@@ -2014,8 +2035,12 @@ namespace unity {
             methodAddress_["Camera.set_depth"] = Il2cpp::Method::GetAddress("Camera", "set_depth", 1);
             methodAddress_["Transform.get_position"] = Il2cpp::Method::GetAddress("Transform", "get_position", 0);
             methodAddress_["Transform.set_position"] = Il2cpp::Method::GetAddress("Transform", "set_position", 1);
-            methodAddress_["GameObject.get_transform"] = Il2cpp::Method::GetAddress("GameObject", "get_transform", 0);
-            methodAddress_["GameObject.get_tag"] = Il2cpp::Method::GetAddress("GameObject", "get_tag", 0);
+            methodAddress_["GameObject.get_transform"] = Il2cpp::Method::GetAddress("GameObject", "get_transform", 0, "UnityEngine");
+            methodAddress_["GameObject.get_tag"] = Il2cpp::Method::GetAddress("GameObject", "get_tag", 0, "UnityEngine");
+            methodAddress_["Object.Destroy"] = Il2cpp::Method::GetAddress("Object", "Destroy", 1, "UnityEngine");
+            methodAddress_["Object.DestroyImmediate"] = Il2cpp::Method::GetAddress("Object", "DestroyImmediate", 1, "UnityEngine");
+            methodAddress_["Component.get_transform"] = Il2cpp::Method::GetAddress("Component", "get_transform", 0, "UnityEngine");
+            methodAddress_["Component.get_tag"] = Il2cpp::Method::GetAddress("Component", "get_tag", 0, "UnityEngine");
         }
         else {
             methodAddress_["Camera.WorldToScreenPoint"] = Mono::Method::GetAddress("Camera", "WorldToScreenPoint", 2);
@@ -2030,6 +2055,10 @@ namespace unity {
             methodAddress_["Transform.set_position"] = Mono::Method::GetAddress("Transform", "set_position", 1);
             methodAddress_["GameObject.get_transform"] = Mono::Method::GetAddress("GameObject", "get_transform", 0);
             methodAddress_["GameObject.get_tag"] = Mono::Method::GetAddress("GameObject", "get_tag", 0);
+            methodAddress_["Object.Destroy"] = Mono::Method::GetAddress("Object", "Destroy", 1, "UnityEngine");
+            methodAddress_["Object.DestroyImmediate"] = Mono::Method::GetAddress("Object", "DestroyImmediate", 1, "UnityEngine");
+            methodAddress_["Component.get_transform"] = Mono::Method::GetAddress("Component", "get_transform", 0, "UnityEngine");
+            methodAddress_["Component.get_tag"] = Mono::Method::GetAddress("Component", "get_tag", 0, "UnityEngine");
         }
     }
 }
