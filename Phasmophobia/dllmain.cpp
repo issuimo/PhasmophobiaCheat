@@ -256,12 +256,12 @@ auto APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserv
                                 std::ifstream i(".\\cfg.json");
                                 if (i) {
                                     i >> js;
-                                    i.close();
                                     for (const auto& _features :
                                         initSpace::Feature::features | std::views::values) {
                                         for (const auto func : _features)
                                             func->Load(js);
                                     }
+                                    i.close();
                                 }
                             }
                             

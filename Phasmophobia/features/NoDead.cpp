@@ -62,7 +62,7 @@ auto NoDead::Save(nlohmann::json& json) -> void {
 }
 
 auto NoDead::Load(nlohmann::json& json) -> void {
-    if (json.find("noDead") != json.end()) {
+    if (json.contains("noDead")) {
         noDead = json["noDead"];
     }
 }

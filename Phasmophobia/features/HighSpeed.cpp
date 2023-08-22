@@ -41,10 +41,10 @@ auto HighSpeed::Save(nlohmann::json& json) -> void {
 }
 
 auto HighSpeed::Load(nlohmann::json& json) -> void {
-    if (json.find("playerSpeed") != json.end()) {
+    if (json.contains("playerSpeed")) {
         on = json["playerSpeed"];
     }
-    if (json.find("playerSpeedV") != json.end()) {
+    if (json.contains("playerSpeedV")) {
         speed = json["playerSpeedV"];
     }
 }

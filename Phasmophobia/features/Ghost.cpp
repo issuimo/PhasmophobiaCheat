@@ -98,19 +98,19 @@ auto Ghost::Save(nlohmann::json& json) -> void {
 }
 
 auto Ghost::Load(nlohmann::json& json) -> void {
-    if (json.find("noHunt") != json.end()) {
+    if (json.contains("noHunt")) {
         noHunt = json["noHunt"];
     }
-    if (json.find("noNewRoom") != json.end()) {
+    if (json.contains("noNewRoom")) {
         noHunt = json["noNewRoom"];
     }
-    if (json.find("noCloseDoor") != json.end()) {
+    if (json.contains("noCloseDoor")) {
         noHunt = json["noCloseDoor"];
     }
-    if (json.find("fixSpeed") != json.end()) {
+    if (json.contains("fixSpeed")) {
         noHunt = json["fixSpeed"];
     }
-    if (json.find("speed") != json.end()) {
+    if (json.contains("speed")) {
         noHunt = json["speed"];
     }
 }

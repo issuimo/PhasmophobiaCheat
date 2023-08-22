@@ -58,7 +58,7 @@ auto ESP::Save(nlohmann::json& json) -> void {
 }
 
 auto ESP::Load(nlohmann::json& json) -> void {
-    if (json.find("ghostEsp") != json.end()) {
+    if (json.contains("ghostEsp")) {
         ghostEsp = json["ghostEsp"];
     }
 }

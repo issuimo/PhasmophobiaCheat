@@ -38,7 +38,7 @@ public:
     };
 
     enum GhostType {
-        Spirit,
+        Spirit = 1,
         Wraith,
         Phantom,
         Poltergeist,
