@@ -3,25 +3,25 @@
 auto NoDead::Player_StartKillingPlayer_NEW(void* p) -> void {
     if (noDead)
         return;
-    HookManager::call(Player_StartKillingPlayer_NEW, p);
+    return HookManager::call(Player_StartKillingPlayer_NEW, p);
 }
 
 auto NoDead::Player_KillPlayer_NEW(void* p, bool v) -> void {
     if (noDead)
         return;
-    HookManager::call(Player_KillPlayer_NEW, p, v);
+    return HookManager::call(Player_KillPlayer_NEW, p, v);
 }
 
 auto NoDead::Player_Dead_NEW(void* p, bool arg, void* po) -> void {
     if (noDead)
         return;
-    HookManager::call(Player_Dead_NEW, p, arg, po);
+    return HookManager::call(Player_Dead_NEW, p, arg, po);
 }
 
 auto NoDead::Player_DeadRoomEffects_NEW(void* p) -> void {
     if (noDead)
         return;
-    HookManager::call(Player_DeadRoomEffects_NEW, p);
+    return HookManager::call(Player_DeadRoomEffects_NEW, p);
 }
 
 NoDead::NoDead() : Feature{} {

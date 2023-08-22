@@ -13,7 +13,7 @@ namespace dxhook {
             if (!fn)
                 return false;
 
-            if (IDXGISwapChainPresent pre = findDirect11Present()) {
+            if (const IDXGISwapChainPresent pre = findDirect11Present()) {
                 present = fn;
                 return HookManager::install(pre, MyPresent);
             }

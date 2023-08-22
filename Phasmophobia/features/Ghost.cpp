@@ -5,35 +5,35 @@ auto Ghost::Ghost_StartHuntingTimer_NEW(void* p) -> void {
     if (noHunt) {
         return;
     }
-    HookManager::call(Ghost_StartHuntingTimer_NEW, p);
+    return HookManager::call(Ghost_StartHuntingTimer_NEW, p);
 }
 
 auto Ghost::Ghost_Hunting_NEW(void* p, bool arg, int i, void* p1) -> void {
     if (noHunt) {
         return;
     }
-    HookManager::call(Ghost_Hunting_NEW, p, arg, i, p1);
+    return HookManager::call(Ghost_Hunting_NEW, p, arg, i, p1);
 }
 
 auto Ghost::Ghost_ChangeFavouriteRoomTo_NEW(void* p, void* arg) -> void {
     if (noNewRoom) {
         return;
     }
-    HookManager::call(Ghost_ChangeFavouriteRoomTo_NEW, p, arg);
+    return HookManager::call(Ghost_ChangeFavouriteRoomTo_NEW, p, arg);
 }
 
 auto Ghost::Ghost_HuntingCloseDoor_NEW(void* p) -> void {
     if (noCloseDoor) {
         return;
     }
-    HookManager::call(Ghost_HuntingCloseDoor_NEW, p);
+    return HookManager::call(Ghost_HuntingCloseDoor_NEW, p);
 }
 
 auto Ghost::Ghost_HuntingCloseDoorNetworked_NEW(void* p, void* p1) -> void {
     if (noCloseDoor) {
         return;
     }
-    HookManager::call(Ghost_HuntingCloseDoorNetworked_NEW, p, p1);
+    return HookManager::call(Ghost_HuntingCloseDoorNetworked_NEW, p, p1);
 }
 
 Ghost::Ghost() : Feature{} {
@@ -81,7 +81,7 @@ auto Ghost::Update() -> void {
     const auto ghosts = GhostList::GetGhosts();
     for (const auto ghost : ghosts) {
         try {
-            *reinterpret_cast<float*>(reinterpret_cast<std::uint64_t>(ghost) + 0xB8) = fixSpeed ? speed : 1.0;
+            ghost->SetSpeed(fixSpeed ? speed : 1.0);
         }
         catch (...) {}
     }

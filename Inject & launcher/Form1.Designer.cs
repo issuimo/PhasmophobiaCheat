@@ -31,6 +31,7 @@
             this.checkBox1 = new CheckBox();
             this.linkLabel1 = new LinkLabel();
             this.listBox1 = new ListBox();
+            this.button3 = new Button();
             SuspendLayout();
             // 
             // button1
@@ -39,11 +40,11 @@
             this.button1.FlatAppearance.BorderColor = Color.Turquoise;
             this.button1.FlatStyle = FlatStyle.Flat;
             this.button1.Font = new Font("SDK_SC_Web", 10.4999981F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.button1.Location = new Point(182, 330);
+            this.button1.Location = new Point(112, 333);
             this.button1.Name = "button1";
-            this.button1.Size = new Size(96, 39);
+            this.button1.Size = new Size(80, 39);
             this.button1.TabIndex = 0;
-            this.button1.Text = "启动#注入";
+            this.button1.Text = "启动";
             this.button1.UseVisualStyleBackColor = false;
             this.button1.Click += button1_Click;
             // 
@@ -110,12 +111,28 @@
             this.listBox1.Name = "listBox1";
             this.listBox1.Size = new Size(266, 242);
             this.listBox1.TabIndex = 7;
+            this.listBox1.SelectedIndexChanged += listBox1_SelectedIndexChanged;
+            // 
+            // button3
+            // 
+            this.button3.BackColor = Color.Turquoise;
+            this.button3.FlatAppearance.BorderColor = Color.Turquoise;
+            this.button3.FlatStyle = FlatStyle.Flat;
+            this.button3.Font = new Font("SDK_SC_Web", 10.4999981F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            this.button3.Location = new Point(198, 333);
+            this.button3.Name = "button3";
+            this.button3.Size = new Size(80, 39);
+            this.button3.TabIndex = 8;
+            this.button3.Text = "注入";
+            this.button3.UseVisualStyleBackColor = false;
+            this.button3.Click += button3_Click;
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 17F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(289, 381);
+            Controls.Add(this.button3);
             Controls.Add(this.listBox1);
             Controls.Add(this.linkLabel1);
             Controls.Add(this.checkBox1);
@@ -145,5 +162,6 @@
         private CheckBox checkBox1;
         private LinkLabel linkLabel1;
         private ListBox listBox1;
+        private Button button3;
     }
 }

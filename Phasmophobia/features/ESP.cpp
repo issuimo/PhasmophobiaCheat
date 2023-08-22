@@ -1,7 +1,5 @@
 ﻿#include "ESP.h"
 #include "GhostList.h"
-
-#include "../library/d3d11hook.h"
 #include "../library/magic_enum/magic_enum.hpp"
 
 ESP::ESP() : Feature{} {
@@ -31,22 +29,10 @@ auto ESP::DrawStatus() -> void {
         if (ghostEsp) {
             const auto ghosts = GhostList::GetGhosts();
             for (auto& ghost : ghosts) {
-                const auto offset1 = *reinterpret_cast<std::uint64_t*>(reinterpret_cast<std::uint64_t>(ghost) + 0x60);
-                if (offset1 != 0) {
-                    const auto offset2 = *reinterpret_cast<unity::CSharper::IL2cpp::Transform**>(offset1 + 0x60);
-                    if (offset2 != nullptr) {
-                        auto vector3 = unity::CSharper::IL2cpp::Camera::GetMain()->WorldToScreenPoint(offset2->GetPosition(), unity::CSharper::IL2cpp::Camera::m_eCameraEye_Center);
-                        tagRECT Rect;
-                        GetClientRect(dxhook::Hk11::GetHwnd(), &Rect);
-                        float w = Rect.right - Rect.left;
-                        float h = Rect.bottom - Rect.top;
-                        vector3.y = h - vector3.y;
-                        if ((vector3.x > 0 && vector3.y > 0) && (vector3.x < w && vector3.y < h) && vector3.z > 0) {
-                            const auto offset1 = *reinterpret_cast<std::uint64_t*>(reinterpret_cast<std::uint64_t>(ghost) + 0x38);
-                            const auto type = static_cast<GhostList::GhostType>(*reinterpret_cast<GhostList::GhostType*>(offset1 + 0x28) + 1);
-                            ImGui::GetBackgroundDrawList()->AddText(ImVec2(vector3.x, vector3.y), 0xFF0000FF, std::format("{}.{}\n[{}] M", *reinterpret_cast<int*>(offset1 + 0x28) + 1, magic_enum::enum_name<GhostList::GhostType>(type), vector3.z).c_str());
-                        }
-                    }
+                auto vector3 = unity::CSharper::IL2cpp::Camera::GetMain()->WorldToScreenPoint(ghost->GetTransform()->GetPosition(), unity::CSharper::IL2cpp::Camera::m_eCameraEye_Center);
+                vector3.y = initSpace::guiInfo.h - vector3.y;
+                if ((vector3.x > 0 && vector3.y > 0) && (vector3.x < initSpace::guiInfo.w && vector3.y < initSpace::guiInfo.h) && vector3.z > 0) {
+                    ImGui::GetBackgroundDrawList()->AddText(ImVec2(vector3.x, vector3.y), 0xFF0000FF, std::format("{}.{}\n[{}] M", static_cast<int>(ghost->GetGhostType()), magic_enum::enum_name<GhostAPI::GhostType>(ghost->GetGhostType()), vector3.z).c_str());
                 }
             }
         }

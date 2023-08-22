@@ -2,25 +2,26 @@
 #include "NoDead.h"
 #include "GhostList.h"
 
-auto PlayerList::Player_Awake_NEW(unity::Il2cpp::Class* player) -> void {
+auto PlayerList::Player_Awake_NEW(PlayerAPI* player) -> void {
     std::lock_guard lock(mutex);
     players.push_back(player);
-    HookManager::call(Player_Awake_NEW, player);
+    return HookManager::call(Player_Awake_NEW, player);
 }
 
-auto PlayerList::Player_OnDestroy_NEW(unity::Il2cpp::Class* player) -> void {
+auto PlayerList::Player_OnDestroy_NEW(PlayerAPI* player) -> void {
     std::lock_guard lock(mutex);
     const auto      it = std::ranges::find(players, player);
     if (it != players.end())
         players.erase(it);
     GhostList::ClearVector();
+    return HookManager::call(Player_OnDestroy_NEW, player);
 }
 
 PlayerList::PlayerList() : Feature{} {
-    HookManager::install(reinterpret_cast<void(*)(unity::Il2cpp::Class*)>(
+    HookManager::install(reinterpret_cast<void(*)(PlayerAPI*)>(
                              unity::Il2cpp::Method::GetAddress("Player", "Awake", 0)),
                          Player_Awake_NEW);
-    HookManager::install(reinterpret_cast<void(*)(unity::Il2cpp::Class*)>(
+    HookManager::install(reinterpret_cast<void(*)(PlayerAPI*)>(
                              unity::Il2cpp::Method::GetAddress("Player", "OnDestroy", 0)),
                          Player_OnDestroy_NEW);
     StartKillingPlayer = reinterpret_cast<void(*)(void*)>(
@@ -51,7 +52,7 @@ auto PlayerList::Render() -> void {
         ImGui::TableSetupColumn(reinterpret_cast<const char*>(u8"地址"), ImGuiTableColumnFlags_None);
         ImGui::TableSetupColumn(reinterpret_cast<const char*>(u8"操作"), ImGuiTableColumnFlags_None);
         ImGui::TableHeadersRow();
-
+        
         std::lock_guard lock(mutex);
         for (const auto& actor : players) {
             ImGui::TableNextRow();
@@ -59,26 +60,19 @@ auto PlayerList::Render() -> void {
             ImGui::PushID(actor);
             try {
                 if (ImGui::TableSetColumnIndex(0)) {
-                    const auto offset1 = *reinterpret_cast<std::uint64_t*>(reinterpret_cast<std::uint64_t>(actor) + 0x20);
-                    if (offset1 != 0) {
-                        const auto offset2 = *reinterpret_cast<std::uint64_t*>(offset1 + 0x70);
-                        if (offset2 != 0) {
-                            const auto offset3 = *reinterpret_cast<std::uint64_t*>(offset2 + 0x20);
-                            if (offset3 != 0)
-                                ImGui::Text(std::format("{}", reinterpret_cast<unity::CSharper::IL2cpp::String*>(offset3)->ToString()).c_str());
-                        }
-                    }
+                    try {
+                        ImGui::Text(actor->GetName().c_str());
+                    } catch (...) { }
                 }
                 if (ImGui::TableSetColumnIndex(1)) {
-                    const auto offset1 = *reinterpret_cast<std::uint64_t*>(reinterpret_cast<std::uint64_t>(actor) + 0x60);
-                    if (offset1 != 0) {
-                        const auto offset2 = *reinterpret_cast<std::uint64_t*>(offset1 + 0x68);
-                        if (offset2 != 0)
-                            ImGui::Text(std::format("{}", reinterpret_cast<unity::CSharper::IL2cpp::String*>(offset2)->ToString()).c_str());
-                    }
+                    try {
+                        ImGui::Text(actor->GetRoom()->GetName().c_str());
+                    } catch (...) {}
                 }
                 if (ImGui::TableSetColumnIndex(2)) {
-                    ImGui::Text(std::format("{}", *reinterpret_cast<bool*>(reinterpret_cast<std::uint64_t>(actor) + 0x28)).c_str());
+                    try {
+                        ImGui::Text(std::format("{}", actor->GetDead()).c_str());
+                    } catch (...) {}
                 }
                 if (ImGui::TableSetColumnIndex(3)) {
                     ImGui::Text(std::format("{:#x}", reinterpret_cast<std::uint64_t>(actor)).c_str());

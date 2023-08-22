@@ -1,6 +1,8 @@
 ﻿#pragma once
 #include "../Init.h"
 
+#include "../gameAPI/PlayerAPI.h"
+
 class PlayerList final : public initSpace::Feature {
 public:
     static auto GetInstance() -> PlayerList&;
@@ -18,11 +20,11 @@ public:
 
 protected:
     PlayerList();
-    static auto Player_Awake_NEW(unity::Il2cpp::Class* player) -> void;
-    static auto Player_OnDestroy_NEW(unity::Il2cpp::Class* player) -> void;
+    static auto Player_Awake_NEW(PlayerAPI* player) -> void;
+    static auto Player_OnDestroy_NEW(PlayerAPI* player) -> void;
 
     void(*StartKillingPlayer)(void*);
 private:
-    inline static std::mutex         mutex;
-    inline static std::vector<void*> players;
+    inline static std::mutex              mutex;
+    inline static std::vector<PlayerAPI*> players;
 };

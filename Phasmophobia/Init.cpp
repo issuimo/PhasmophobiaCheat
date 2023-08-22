@@ -10,6 +10,7 @@
 
 #include "features/ESP.h"
 #include "features/Ghost.h"
+#include "features/MoreXP.h"
 
 auto CreateToolhelp32Snapshot_NEW(unsigned long i, unsigned long arg) -> void* {
      return nullptr;
@@ -35,5 +36,6 @@ namespace initSpace {
         ADD(GhostList);
         ADD(Ghost);
         ADD(ESP);
+        ADD(MoreXP);
     }
 }

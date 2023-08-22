@@ -1,27 +1,30 @@
 ﻿#pragma once
-#include <future>
-#include <thread>
-#include <iostream>
-#include <windows.h>
-#include <string>
-#include <list>
-#include <fstream>
-#include <sstream>
-#include <mutex>
-#include <vector>
-#include <unordered_map>
 #include "library/json.hpp"
 #include "library/detours/HookManager.h"
 #include "library/imgui/imgui.h"
 #include "library/UnityHack.h"
 #include "library/imgui/implot.h"
 
+#include <windows.h>
+#include <future>
+#include <thread>
+#include <iostream>
+#include <string>
+#include <list>
+#include <fstream>
+#include <mutex>
+#include <vector>
+#include <map>
+
+
 namespace initSpace {
     inline static struct {
         bool mainShow;
         bool imGuiInit;
         bool tipsShow;
-    } guiInfo;
+        LONG h;
+        LONG w;
+    }guiInfo;
 
     class Feature {
     public:

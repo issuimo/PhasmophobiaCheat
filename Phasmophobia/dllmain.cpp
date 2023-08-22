@@ -1,12 +1,9 @@
 ﻿#include "Init.h"
-
 #include "library/Font.hpp"
 #include "library/d3d11hook.h"
 #include "library/log.h"
 #include "library/imgui/imgui_impl_dx11.h"
 #include "library/imgui/imgui_impl_win32.h"
-
-#include "GenshinImpactFont.h"
 
 extern auto ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) -> LRESULT;
 
@@ -39,8 +36,8 @@ auto APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserv
                         io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
 
                         // 设置中文字体
-                        io.Fonts->AddFontFromMemoryTTF(reinterpret_cast<void*>(GenshinImpact),
-                                                       sizeof GenshinImpact,
+                        io.Fonts->AddFontFromMemoryTTF(fontdata,
+                                                       sizeof fontdata,
                                                        15,
                                                        nullptr,
                                                        io.Fonts->GetGlyphRangesChineseFull());
@@ -53,22 +50,14 @@ auto APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserv
                         ImGui_ImplDX11_Init(dxhook::Hk11::GetDevice(), dxhook::Hk11::GetContext());
 
                         // 接管窗口消息
-                        dxhook::Hk11::SetWndProc([](HWND   hWnd,
-                                                    UINT   msg,
-                                                    WPARAM wParam,
-                                                    LPARAM lParam) -> char {
+                        dxhook::Hk11::SetWndProc([](HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) -> char {
                             ImGuiIO& io = ImGui::GetIO();
                             POINT    mPos;
                             GetCursorPos(&mPos);
                             ScreenToClient(dxhook::Hk11::GetHwnd(), &mPos);
-                            ImGui::GetIO().MousePos.x = static_cast<float>(
-                                mPos.x);
-                            ImGui::GetIO().MousePos.y = static_cast<float>(
-                                mPos.y);
-                            ImGui_ImplWin32_WndProcHandler(hWnd,
-                                                           msg,
-                                                           wParam,
-                                                           lParam);
+                            ImGui::GetIO().MousePos.x = static_cast<float>(mPos.x);
+                            ImGui::GetIO().MousePos.y = static_cast<float>(mPos.y);
+                            ImGui_ImplWin32_WndProcHandler(hWnd,msg,wParam,lParam);
 
                             // 按键处理
                             switch (msg) {
@@ -76,30 +65,20 @@ auto APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserv
                                     // 处理界面显示/隐藏
                                     if (wParam == VK_DELETE) {
                                         if (initSpace::guiInfo.mainShow)
-                                            initSpace::guiInfo.mainShow =
-                                                false;
+                                            initSpace::guiInfo.mainShow = false;
                                         else
-                                            initSpace::guiInfo.mainShow =
-                                                true;
+                                            initSpace::guiInfo.mainShow = true;
                                     }
                                     break;
                                 case WM_KEYUP:
                                     break;
                                 case WM_CLOSE:
-                                    const int result = MessageBox(nullptr,
-                                                                  L"你确定要退出游戏吗?",
-                                                                  L"Confirmation",
-                                                                  MB_YESNO
-                                                                  | MB_ICONQUESTION);
+                                    const int result = MessageBox(nullptr,L"你确定要退出游戏吗?", L"Confirmation",MB_YESNO | MB_ICONQUESTION);
 
-                                    if (result == IDYES) {
-                                        // 执行关闭操作
+                                    if (result == IDYES)
                                         exit(0);
-                                    }
-                                    if (result == IDNO) {
-                                        // 用户选择不关闭
+                                    if (result == IDNO)
                                         return 2;
-                                    }
                                     break;
                             }
 
@@ -119,7 +98,7 @@ auto APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserv
                         auto& styles = ImGui::GetStyle();
 
                         // Colors
-                        auto colors                            = styles.Colors;
+                        auto colors                     = styles.Colors;
                         colors[ImGuiCol_Border]                = HexToRGBA("0C846ED5");
                         colors[ImGuiCol_BorderShadow]          = HexToRGBA("00000000");
                         colors[ImGuiCol_Button]                = HexToRGBA("0D9F9D9F");
@@ -219,6 +198,10 @@ auto APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserv
                         initSpace::guiInfo.imGuiInit = true;
                         initSpace::guiInfo.mainShow  = true;
                         initSpace::guiInfo.tipsShow  = true;
+                        tagRECT Rect;
+                        GetClientRect(dxhook::Hk11::GetHwnd(), &Rect);
+                        initSpace::guiInfo.w = Rect.right - Rect.left;
+                        initSpace::guiInfo.h = Rect.bottom - Rect.top;
                     }
 
                     // 创建新的画面帧
@@ -226,23 +209,17 @@ auto APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserv
                     ImGui_ImplWin32_NewFrame();
                     ImGui::NewFrame();
 
-                    tagRECT Rect;
-                    GetClientRect(dxhook::Hk11::GetHwnd(), &Rect);
-                    float w = Rect.right - Rect.left;
-                    float h = Rect.bottom - Rect.top;
-                    ImGui::GetBackgroundDrawList()->AddCircle(ImVec2(w / 2, h / 2), 3, 0xFF0000FF, 4, 2);
-                    
+                    ImGui::GetBackgroundDrawList()->AddCircle(ImVec2(initSpace::guiInfo.w / 2, initSpace::guiInfo.h / 2), 3, 0xFF0000FF, 4, 2);
+
                     // 主界面
                     if (initSpace::guiInfo.mainShow && !initSpace::guiInfo.tipsShow) {
-                        if (
-                            ImGui::Begin(reinterpret_cast<const char*>(
-                                             u8"Phasmophobia Cheat By 遂沫"))) {
+                        if (ImGui::Begin(reinterpret_cast<const char*>(u8"Phasmophobia Cheat By 遂沫"))) {
+
                             if (ImGui::Button(reinterpret_cast<const char*>(u8"保存"))) {
-                                nlohmann::json js;
                                 std::ofstream o(".\\cfg.json");
                                 if (o) {
-                                    for (const auto& _features :
-                                        initSpace::Feature::features | std::views::values) {
+                                    nlohmann::json js;
+                                    for (const auto& _features : initSpace::Feature::features | std::views::values) {
                                         for (const auto func : _features)
                                             func->Save(js);
                                     }
@@ -252,27 +229,23 @@ auto APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserv
                             }
                             ImGui::SameLine();
                             if (ImGui::Button(reinterpret_cast<const char*>(u8"读取"))) {
-                                nlohmann::json js;
                                 std::ifstream i(".\\cfg.json");
                                 if (i) {
-                                    i >> js;
-                                    for (const auto& _features :
-                                        initSpace::Feature::features | std::views::values) {
+                                    nlohmann::json js = nlohmann::json::parse(i);
+                                    for (const auto& _features : initSpace::Feature::features | std::views::values) {
                                         for (const auto func : _features)
                                             func->Load(js);
                                     }
                                     i.close();
                                 }
                             }
-                            
+
                             if (ImGui::BeginTabBar("memList")) {
                                 for (const auto& [name, _features] : initSpace::Feature::features) {
                                     if (ImGui::BeginTabItem(name.c_str())) {
                                         for (const auto func : _features) {
                                             if (func->GetInfo().needGroup) {
-                                                if (ImGui::CollapsingHeader(func->GetInfo().
-                                                                                  groupName.
-                                                                                  c_str()))
+                                                if (ImGui::CollapsingHeader(func->GetInfo().groupName.c_str()))
                                                     func->Render();
                                             } else
                                                 func->Render();
@@ -280,25 +253,21 @@ auto APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserv
                                         ImGui::EndTabItem();
                                     }
                                 }
-
                                 ImGui::EndTabBar();
                             }
 
                             ImGui::End();
                         }
                     }
-
-                    for (const auto& _features :
-                         initSpace::Feature::features | std::views::values) {
+ 
+                    for (const auto& _features : initSpace::Feature::features | std::views::values) {
                         for (const auto func : _features)
                             func->DrawStatus();
                     }
 
                     if (initSpace::guiInfo.tipsShow) {
                         if (ImGui::Begin("Tips")) {
-                            ImGui::Text(reinterpret_cast<const char*>(
-                                            u8"按下Delete (Del) 键显示隐藏菜单界面, 打开菜单界面禁用游戏内鼠标事件防止误触\n"
-                                            u8"*鼠标出现按键无效、鼠标未锁定、键盘失效等按下Windows徽标键重新聚焦窗口"));
+                            ImGui::Text(reinterpret_cast<const char*>(u8"按下Delete (Del) 键显示隐藏菜单界面"));
                             if (ImGui::Button("OK"))
                                 initSpace::guiInfo.tipsShow = false;
                             ImGui::End();
@@ -308,9 +277,7 @@ auto APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserv
                     // 结束并渲染
                     ImGui::EndFrame();
                     ImGui::Render();
-                    dxhook::Hk11::GetContext()->OMSetRenderTargets(1,
-                                                                   dxhook::Hk11::GetTargetView(),
-                                                                   nullptr);
+                    dxhook::Hk11::GetContext()->OMSetRenderTargets(1,dxhook::Hk11::GetTargetView(),nullptr);
                     ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
                 });
 
@@ -320,9 +287,11 @@ auto APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserv
                     Sleep(1);
 
                     // 多线程并发
-                    for (const auto feature : initSpace::Feature::features | std::views::values) {
+                    for (const auto& feature : initSpace::Feature::features | std::views::values) {
                         for (const auto func : feature)
-                            futuresUpdate.push_back(std::async(std::launch::async, [&func] { func->Update(); }));
+                            futuresUpdate.push_back(std::async(std::launch::async, [&func] {
+                                func->Update();
+                            }));
                     }
 
                     // 检查是否所有任务都已完成

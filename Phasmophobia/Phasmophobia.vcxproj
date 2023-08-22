@@ -17,12 +17,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>Intel C++ Compiler 2023</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
     <BasePlatformToolset>v143</BasePlatformToolset>
     <UseIntelIPP1A>false</UseIntelIPP1A>
-    <UseInteloneMKL>Parallel</UseInteloneMKL>
+    <UseInteloneMKL>No</UseInteloneMKL>
     <UseILP64Interfaces1A>false</UseILP64Interfaces1A>
     <EnableMKLOpenMPOffloadToGPU>false</EnableMKLOpenMPOffloadToGPU>
     <UseInteloneDAL>false</UseInteloneDAL>
@@ -49,41 +49,42 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>false</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;RAVENFIELD_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ConformanceMode>true</ConformanceMode>
+      <ConformanceMode>Default</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <DiagnosticsFormat>Caret</DiagnosticsFormat>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
-      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
       <OmitFramePointers>false</OmitFramePointers>
       <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
       <StringPooling>true</StringPooling>
       <ExceptionHandling>Async</ExceptionHandling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <ControlFlowGuard>Guard</ControlFlowGuard>
+      <ControlFlowGuard>false</ControlFlowGuard>
       <EnableParallelCodeGeneration>true</EnableParallelCodeGeneration>
-      <EnableEnhancedInstructionSet>AdvancedVectorExtensions2</EnableEnhancedInstructionSet>
+      <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
       <FloatingPointModel>Precise</FloatingPointModel>
       <FloatingPointExceptions>false</FloatingPointExceptions>
-      <CreateHotpatchableImage>true</CreateHotpatchableImage>
+      <CreateHotpatchableImage>false</CreateHotpatchableImage>
       <EnableModules>true</EnableModules>
       <BuildStlModules>true</BuildStlModules>
-      <ExpandAttributedSource>true</ExpandAttributedSource>
-      <AssemblerOutput>All</AssemblerOutput>
-      <UseUnicodeForAssemblerListing>true</UseUnicodeForAssemblerListing>
-      <CompileAs>CompileAsCpp</CompileAs>
+      <ExpandAttributedSource>false</ExpandAttributedSource>
+      <AssemblerOutput>NoListing</AssemblerOutput>
+      <UseUnicodeForAssemblerListing>false</UseUnicodeForAssemblerListing>
+      <CompileAs>Default</CompileAs>
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <UseMSVC>false</UseMSVC>
       <GuardEHContMetadata>false</GuardEHContMetadata>
       <UseProcessorExtensions>HOST</UseProcessorExtensions>
-      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
       <CCppSupport>Cpp20Support</CCppSupport>
       <OpenMP>None</OpenMP>
       <OpenMPOffloading>None</OpenMPOffloading>
-      <Optimization>MaxSpeedHighLevel</Optimization>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <Optimization>Disabled</Optimization>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -92,6 +93,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <WPOAssemblyOutput>Asm_and_MachineCode_and_Source</WPOAssemblyOutput>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -100,6 +102,7 @@
     <ClCompile Include="features\Ghost.cpp" />
     <ClCompile Include="features\GhostList.cpp" />
     <ClCompile Include="features\HighSpeed.cpp" />
+    <ClCompile Include="features\MoreXP.cpp" />
     <ClCompile Include="features\NoDead.cpp" />
     <ClCompile Include="features\PlayerList.cpp" />
     <ClCompile Include="Init.cpp" />
@@ -120,9 +123,12 @@
     <ClInclude Include="features\Ghost.h" />
     <ClInclude Include="features\GhostList.h" />
     <ClInclude Include="features\HighSpeed.h" />
+    <ClInclude Include="features\MoreXP.h" />
     <ClInclude Include="features\NoDead.h" />
     <ClInclude Include="features\PlayerList.h" />
-    <ClInclude Include="GenshinImpactFont.h" />
+    <ClInclude Include="gameAPI\GhostAPI.h" />
+    <ClInclude Include="gameAPI\LevelAPI.h" />
+    <ClInclude Include="gameAPI\PlayerAPI.h" />
     <ClInclude Include="Init.h" />
     <ClInclude Include="library\detours\detours.h" />
     <ClInclude Include="library\detours\HookManager.h" />
@@ -183,7 +189,6 @@
     <ClInclude Include="library\stb\stb_truetype.h" />
     <ClInclude Include="library\stb\stb_voxel_render.h" />
     <ClInclude Include="library\UnityHack.h" />
-    <ClInclude Include="StarRailFont.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="library\detours\[x64]detours.lib" />
