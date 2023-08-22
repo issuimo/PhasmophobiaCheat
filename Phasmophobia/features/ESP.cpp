@@ -21,7 +21,10 @@ auto ESP::GetInfo() const -> const GuiInfo& {
 
 auto ESP::Render() -> void {
     ImGui::Checkbox(reinterpret_cast<const char*>(u8"鬼魂透视"), &ghostEsp);
+    ImGui::SameLine();
     ImGui::Checkbox(reinterpret_cast<const char*>(u8"门透视"), &doorEsp);
+    ImGui::SameLine();
+    ImGui::Checkbox(reinterpret_cast<const char*>(u8"显示鬼房"), &gRoomEsp);
 }
 
 auto ESP::Update() -> void {
@@ -32,7 +35,7 @@ auto ESP::DrawStatus() -> void {
         if (ghostEsp) {
             const auto ghosts = GhostList::GetGhosts();
             for (auto& ghost : ghosts) {
-                auto vector3 = unity::CSharper::IL2cpp::Camera::GetMain()->WorldToScreenPoint(ghost->GetTransform()->GetPosition(), unity::CSharper::IL2cpp::Camera::m_eCameraEye_Center);
+                auto vector3 = unity::CSharper::IL2cpp::Camera::GetMain()->WorldToScreenPoint(reinterpret_cast<unity::CSharper::IL2cpp::Component*>(ghost)->GetTransform()->GetPosition(),unity::CSharper::IL2cpp::Camera::m_eCameraEye_Center);
                 vector3.y = initSpace::GuiInfo::h - vector3.y;
                 if ((vector3.x > 0 && vector3.y > 0) && (vector3.x < initSpace::GuiInfo::w && vector3.y < initSpace::GuiInfo::h) && vector3.z > 0) {
                     ImGui::GetBackgroundDrawList()->AddText(ImVec2(vector3.x, vector3.y), 0xFF0000FF, std::format("{}.{}\n[{}] M", static_cast<int>(ghost->GetGhostType()), magic_enum::enum_name<GhostAPI::GhostType>(ghost->GetGhostType()), vector3.z).c_str());
@@ -49,12 +52,23 @@ auto ESP::DrawStatus() -> void {
                 }
             }
         }
+        if (gRoomEsp) {
+            const auto ghosts = GhostList::GetGhosts();
+            for (auto& ghost : ghosts) {
+                auto vector3 = unity::CSharper::IL2cpp::Camera::GetMain()->WorldToScreenPoint(reinterpret_cast<unity::CSharper::IL2cpp::Component*>(ghost->GetRoom())->GetTransform()->GetPosition(), unity::CSharper::IL2cpp::Camera::m_eCameraEye_Center);
+                vector3.y = initSpace::GuiInfo::h - vector3.y;
+                if ((vector3.x > 0 && vector3.y > 0) && (vector3.x < initSpace::GuiInfo::w && vector3.y < initSpace::GuiInfo::h) && vector3.z > 0) {
+                    ImGui::GetBackgroundDrawList()->AddText(ImVec2(vector3.x, vector3.y), ImColor(255, 255,255), std::format("GhostRoom:{} \n [{}] M", ghost->GetRoom()->GetName(), magic_enum::enum_name<GhostAPI::GhostType>(ghost->GetGhostType()), vector3.z).c_str());
+                }
+            }
+        }
     } catch (...) {}
 }
 
 auto ESP::Save(nlohmann::json& json) -> void {
     json["ghostEsp"] = ghostEsp;
     json["doorEsp"] = doorEsp;
+    json["gRoomEsp"] = gRoomEsp;
 }
 
 auto ESP::Load(nlohmann::json& json) -> void {
@@ -63,5 +77,8 @@ auto ESP::Load(nlohmann::json& json) -> void {
     }
     if (json.contains("doorEsp")) {
         doorEsp = json["doorEsp"];
+    }
+    if (json.contains("gRoomEsp")) {
+        gRoomEsp = json["gRoomEsp"];
     }
 }
