@@ -84,7 +84,7 @@
       <OpenMP>None</OpenMP>
       <OpenMPOffloading>None</OpenMPOffloading>
       <BufferSecurityCheck>false</BufferSecurityCheck>
-      <Optimization>Disabled</Optimization>
+      <Optimization>MaxSpeed</Optimization>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
