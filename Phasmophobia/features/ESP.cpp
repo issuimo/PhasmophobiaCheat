@@ -43,8 +43,8 @@ auto ESP::DrawStatus() -> void {
                         vector3.y = h - vector3.y;
                         if ((vector3.x > 0 && vector3.y > 0) && (vector3.x < w && vector3.y < h) && vector3.z > 0) {
                             const auto offset1 = *reinterpret_cast<std::uint64_t*>(reinterpret_cast<std::uint64_t>(ghost) + 0x38);
-                            const auto type = *reinterpret_cast<GhostList::GhostType*>(offset1 + 0x28);
-                            ImGui::GetBackgroundDrawList()->AddText(ImVec2(vector3.x, vector3.y), 0xFF0000FF, std::format("{}.{}\n[{}] M", *reinterpret_cast<int*>(offset1 + 0x28), magic_enum::enum_name<GhostList::GhostType>(type), vector3.z).c_str());
+                            const auto type = static_cast<GhostList::GhostType>(*reinterpret_cast<GhostList::GhostType*>(offset1 + 0x28) + 1);
+                            ImGui::GetBackgroundDrawList()->AddText(ImVec2(vector3.x, vector3.y), 0xFF0000FF, std::format("{}.{}\n[{}] M", *reinterpret_cast<int*>(offset1 + 0x28) + 1, magic_enum::enum_name<GhostList::GhostType>(type), vector3.z).c_str());
                         }
                     }
                 }

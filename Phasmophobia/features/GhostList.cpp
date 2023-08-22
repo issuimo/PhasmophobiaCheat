@@ -81,8 +81,8 @@ auto GhostList::Render() -> void {
                 }
                 if (ImGui::TableSetColumnIndex(5)) {;
                     const auto offset1 = *reinterpret_cast<std::uint64_t*>(reinterpret_cast<std::uint64_t>(actor) + 0x38);
-                    const auto type = *reinterpret_cast<GhostType*>(offset1 + 0x28);
-                    ImGui::Text(std::format("{}.{}", *reinterpret_cast<int*>(offset1 + 0x28), magic_enum::enum_name<GhostType>(type)).c_str());
+                    const auto type = static_cast<GhostType>(*reinterpret_cast<GhostType*>(offset1 + 0x28) + 1);
+                    ImGui::Text(std::format("{}.{}", *reinterpret_cast<int*>(offset1 + 0x28) + 1, magic_enum::enum_name<GhostType>(type)).c_str());
                 }
                 if (ImGui::TableSetColumnIndex(6)) {
                     ImGui::Text(std::format("{}", *reinterpret_cast<bool*>(reinterpret_cast<std::uint64_t>(actor) + 0xC4)).c_str());

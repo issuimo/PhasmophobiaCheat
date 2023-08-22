@@ -37,7 +37,7 @@ public:
         salt
     };
 
-    enum GhostType {
+    enum GhostType : int {
         Spirit = 1,
         Wraith,
         Phantom,

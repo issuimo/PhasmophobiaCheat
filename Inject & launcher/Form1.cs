@@ -101,6 +101,8 @@ namespace Inject___launcher {
 
                                Int32 PROCESS_ALL_ACCESS = (STANDARD_RIGHTS_REQUIRED | SYNCHRONIZE | 0xFFF);
 
+                               MessageBox.Show("点击确定开始注入", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+
                                 string dllname = System.AppDomain.CurrentDomain.BaseDirectory + "Phasmophobia.dll";
                                this.listBox1.Items.Add(Log.FormatLog("游戏ID: " + process[0].Id));
                                nint handle = OpenProcess(PROCESS_ALL_ACCESS, false, process[0].Id);

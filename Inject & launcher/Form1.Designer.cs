@@ -96,10 +96,10 @@
             this.linkLabel1.Font = new Font("SDK_SC_Web", 10.4999981F);
             this.linkLabel1.Location = new Point(12, 352);
             this.linkLabel1.Name = "linkLabel1";
-            this.linkLabel1.Size = new Size(57, 17);
+            this.linkLabel1.Size = new Size(89, 17);
             this.linkLabel1.TabIndex = 6;
             this.linkLabel1.TabStop = true;
-            this.linkLabel1.Text = "Github";
+            this.linkLabel1.Text = "Github 开源";
             this.linkLabel1.LinkClicked += linkLabel1_LinkClicked;
             // 
             // listBox1
