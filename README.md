@@ -8,7 +8,6 @@
 > [!IMPORTANT]\
 > 遇到bug请拉取Issues \
 > 辅助不能确保任何人都能够完美运行 \
-> 无法编译请使用Intel C++编译器打开mkl选项 \
 > C# 项目需要.NET 8.0
 
 > [!NOTE]\
