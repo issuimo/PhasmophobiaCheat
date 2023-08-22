@@ -18,13 +18,14 @@
 
 
 namespace initSpace {
-    inline static struct {
-        bool mainShow;
-        bool imGuiInit;
-        bool tipsShow;
-        LONG h;
-        LONG w;
-    }guiInfo;
+    class GuiInfo {
+    public:
+        inline static bool mainShow;
+        inline static bool imGuiInit;
+        inline static bool tipsShow;
+        inline static LONG h;
+        inline static LONG w;
+    };
 
     class Feature {
     public:

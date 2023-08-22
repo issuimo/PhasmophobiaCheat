@@ -8,6 +8,7 @@
 
 #include <TlHelp32.h>
 
+#include "features/DoorList.h"
 #include "features/ESP.h"
 #include "features/Ghost.h"
 #include "features/MoreXP.h"
@@ -27,6 +28,7 @@ void AntiAntiCheat() {
 
 namespace initSpace {
 
+    
 #define ADD(name) Feature::features[name::GetInstance().GetInfo().tableName].push_back(&name::GetInstance())
 
     auto Feature::Init() -> void {
@@ -37,5 +39,6 @@ namespace initSpace {
         ADD(Ghost);
         ADD(ESP);
         ADD(MoreXP);
+        ADD(DoorList);
     }
 }

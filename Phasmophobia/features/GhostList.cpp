@@ -9,10 +9,8 @@ auto GhostList::Ghost_Awake_NEW(GhostAPI* class_) -> void {
 }
 
 GhostList::GhostList() : Feature{} {
-    HookManager::install(reinterpret_cast<void(*)(GhostAPI*)>(
-        unity::Il2cpp::Method::GetAddress("GhostAI", "Awake", 0)),
-        Ghost_Awake_NEW);
-    StartHuntingTimer = reinterpret_cast<void*(*)(void*)>(unity::Il2cpp::Method::GetAddress("GhostAI", "StartHuntingTimer", 0));
+    HookManager::install(reinterpret_cast<void(*)(GhostAPI*)>(unity::Il2cpp::Method::GetAddress("GhostAI", "Awake", 0)),Ghost_Awake_NEW);
+    GhostAPI::Interact_Address = reinterpret_cast<void(*)(void*)>(unity::Il2cpp::Method::GetAddress("GhostAI", "StartHuntingTimer", 0));
 }
 
 auto GhostList::GetInstance() -> GhostList& {
@@ -60,8 +58,10 @@ auto GhostList::Render() -> void {
                     ImGui::Text(std::format("{:#x}", reinterpret_cast<std::uint64_t>(actor)).c_str());
                 }
                 if (ImGui::TableSetColumnIndex(2)) {
-                    if (ImGui::SmallButton("Hunting")) {
-                        StartHuntingTimer(actor);
+                    if (ImGui::SmallButton(reinterpret_cast<const char*>(u8"互动"))) {
+                        try {
+                            actor->Interact();
+                        }catch (...) { }
                     }
                 }
                 if (ImGui::TableSetColumnIndex(3)) {
@@ -76,7 +76,7 @@ auto GhostList::Render() -> void {
                 }
                 if (ImGui::TableSetColumnIndex(5)) {;
                     try {
-                        ImGui::Text(std::format("{}.{}",static_cast<int>(actor->GetGhostState()), magic_enum::enum_name<GhostAPI::GhostType>(actor->GetGhostType())).c_str());
+                        ImGui::Text(std::format("{}.{}",static_cast<int>(actor->GetGhostType()), magic_enum::enum_name<GhostAPI::GhostType>(actor->GetGhostType())).c_str());
                     } catch (...) {}
                 }
                 if (ImGui::TableSetColumnIndex(6)) {

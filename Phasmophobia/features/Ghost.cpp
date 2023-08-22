@@ -102,15 +102,15 @@ auto Ghost::Load(nlohmann::json& json) -> void {
         noHunt = json["noHunt"];
     }
     if (json.contains("noNewRoom")) {
-        noHunt = json["noNewRoom"];
+        noNewRoom = json["noNewRoom"];
     }
     if (json.contains("noCloseDoor")) {
-        noHunt = json["noCloseDoor"];
+        noCloseDoor = json["noCloseDoor"];
     }
     if (json.contains("fixSpeed")) {
-        noHunt = json["fixSpeed"];
+        fixSpeed = json["fixSpeed"];
     }
     if (json.contains("speed")) {
-        noHunt = json["speed"];
+        speed = json["speed"];
     }
 }

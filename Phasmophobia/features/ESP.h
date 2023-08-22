@@ -15,5 +15,5 @@ protected:
 
     ESP();
 private:
-    inline static bool ghostEsp;
+    inline static bool ghostEsp, doorEsp;
 };

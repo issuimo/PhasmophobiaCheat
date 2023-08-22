@@ -98,6 +98,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp" />
+    <ClCompile Include="features\DoorList.cpp" />
     <ClCompile Include="features\ESP.cpp" />
     <ClCompile Include="features\Ghost.cpp" />
     <ClCompile Include="features\GhostList.cpp" />
@@ -119,6 +120,7 @@
     <ClCompile Include="library\stb\stb_vorbis.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="features\DoorList.h" />
     <ClInclude Include="features\ESP.h" />
     <ClInclude Include="features\Ghost.h" />
     <ClInclude Include="features\GhostList.h" />
@@ -126,6 +128,7 @@
     <ClInclude Include="features\MoreXP.h" />
     <ClInclude Include="features\NoDead.h" />
     <ClInclude Include="features\PlayerList.h" />
+    <ClInclude Include="gameAPI\DoorAPI.h" />
     <ClInclude Include="gameAPI\GhostAPI.h" />
     <ClInclude Include="gameAPI\LevelAPI.h" />
     <ClInclude Include="gameAPI\PlayerAPI.h" />

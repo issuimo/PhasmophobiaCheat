@@ -65,7 +65,7 @@ public:
         try {
             const auto offset1 = *reinterpret_cast<std::uint64_t*>(reinterpret_cast<std::uint64_t>(player) + 0xD8);
             const auto offset2 = *reinterpret_cast<std::uint64_t*>(offset1 + 0x130);
-            const auto offset3 = *reinterpret_cast<unity::CSharper::IL2cpp::String**>(offset2 + 0xE0);
+            const auto offset3 = *reinterpret_cast<unity::CSharper::String**>(offset2 + 0xE0);
             return offset3->ToString();
         } catch (...) {
             return "";
@@ -129,6 +129,15 @@ public:
             return nullptr;
         }
     }
+
+    void Interact() {
+        try {
+            Interact_Address(*reinterpret_cast<void**>(reinterpret_cast<std::uint64_t>(this) + 0x58));
+        }
+        catch (...) {}
+    }
+
+    inline static void(*Interact_Address)(void*);
 private:
     inline static std::uintptr_t ghostStateOffset{ 0x28 };
     inline static std::uintptr_t ghostInfoOffset{ 0x38 };

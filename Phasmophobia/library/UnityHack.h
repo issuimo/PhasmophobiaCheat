@@ -297,62 +297,62 @@ namespace unity {
             auto operator[](const int i) -> float* { return m[i]; }
         };
 
+        struct Object {
+        protected:
+            union {
+                struct Class* klass{ nullptr };
+                struct VTable* vtable;
+            };
+
+            struct MonitorData* monitor{ nullptr };
+
+        public:
+            auto GetClass() const -> Class* { return this->klass; }
+        };
+
+        struct String : Object {
+        protected:
+            int32_t m_stringLength{ 0 };
+            wchar_t m_firstChar{ 0 };
+
+        public:
+            auto ToString() const -> std::string {
+                std::string sRet(static_cast<size_t>(m_stringLength) * 3 + 1, '\0');
+                WideCharToMultiByte(CP_UTF8,
+                    0,
+                    &m_firstChar,
+                    m_stringLength,
+                    &sRet[0],
+                    static_cast<int>(sRet.size()),
+                    nullptr,
+                    nullptr);
+                return sRet;
+            }
+        };
+
+        template<typename T>
+        struct Array : Object {
+        protected:
+            struct {
+                size_t length;
+                size_t lower_bound;
+            }*bounds{ nullptr };
+
+            size_t max_length{ 0 };
+            T* vector{ nullptr };
+
+        public:
+            auto Size() const -> size_t { return this->max_length; }
+
+            auto Fill(T& v) -> void {
+                for (size_t i = 0; i < this->max_length; i++)
+                    this->vector[i] = v;
+            }
+
+            auto operator[](size_t i) -> T& { return this->vector[i]; }
+        };
+
         struct IL2cpp {
-            struct Object {
-            protected:
-                union {
-                    struct Class* klass{ nullptr };
-                    struct VTable* vtable;
-                };
-
-                struct MonitorData* monitor{ nullptr };
-
-            public:
-                auto GetClass() const -> Class* { return this->klass; }
-            };
-
-            struct String : Object {
-            protected:
-                int32_t m_stringLength{ 0 };
-                wchar_t m_firstChar{ 0 };
-
-            public:
-                auto ToString() const -> std::string {
-                    std::string sRet(static_cast<size_t>(m_stringLength) * 3 + 1, '\0');
-                    WideCharToMultiByte(CP_UTF8,
-                        0,
-                        &m_firstChar,
-                        m_stringLength,
-                        &sRet[0],
-                        static_cast<int>(sRet.size()),
-                        nullptr,
-                        nullptr);
-                    return sRet;
-                }
-            };
-
-            template<typename T>
-            struct Array : Object {
-            protected:
-                struct {
-                    size_t length;
-                    size_t lower_bound;
-                }*bounds{ nullptr };
-
-                size_t max_length{ 0 };
-                T* vector{ nullptr };
-
-            public:
-                auto Size() const -> size_t { return this->max_length; }
-
-                auto Fill(T& v) -> void {
-                    for (size_t i = 0; i < this->max_length; i++)
-                        this->vector[i] = v;
-                }
-
-                auto operator[](size_t i) -> T& { return this->vector[i]; }
-            };
-
             struct Camera {
             public:
                 enum CameraEye : int {
@@ -404,6 +404,17 @@ namespace unity {
 
                 auto SetPosition(Vector3 v) -> void {
                     return reinterpret_cast<void(*)(void*, Vector3)>(methodAddress_["Transform.get_position"])(this, v);
+                }
+            };
+
+            struct GameObject {
+            public:
+                Transform* GetTransform() {
+                    return reinterpret_cast<Transform*(*)(void*)>(methodAddress_["GameObject.get_transform"])(this);
+                }
+
+                String* GetTag() {
+                    return reinterpret_cast<String * (*)(void*)>(methodAddress_["GameObject.get_tag"])(this);
                 }
             };
         };
@@ -591,7 +602,7 @@ namespace unity {
                     "mono_image_get_table_info"])(this, 2);
                     const size_t count = table->GetRows();
                     for (size_t i = 0; i < count; i++) {
-                        auto class_ = static_cast<Class * (*)(Image * _this, std::uint32_t index)>(address_[
+                        auto class_ = static_cast<Class * (*)(Image * _this, size_t index)>(address_[
                             "mono_class_get"])(this, 0x02000000 | (i + 1));
                             if (class_)
                                 classes.push_back(class_);
@@ -665,7 +676,7 @@ namespace unity {
             }
 
             auto GetMethodFromName(const std::string& name, const size_t param_count = -1) -> Method* {
-                return static_cast<Method * (*)(Class * _this, const char* name, int param_count)>(address_[
+                return static_cast<Method * (*)(Class * _this, const char* name, size_t param_count)>(address_[
                     "mono_class_get_method_from_name"])(this, name.c_str(), param_count);
             }
 
@@ -1726,7 +1737,7 @@ namespace unity {
             }
 
             auto GetMethodFromName(const std::string& name, const size_t param_count = -1) -> Method* {
-                return static_cast<Method * (*)(Class * _this, const char* name, int param_count)>(address_[
+                return static_cast<Method * (*)(Class * _this, const char* name, size_t param_count)>(address_[
                     "il2cpp_class_get_method_from_name"])(this, name.c_str(), param_count);
             }
 
@@ -2003,6 +2014,8 @@ namespace unity {
             methodAddress_["Camera.set_depth"] = Il2cpp::Method::GetAddress("Camera", "set_depth", 1);
             methodAddress_["Transform.get_position"] = Il2cpp::Method::GetAddress("Transform", "get_position", 0);
             methodAddress_["Transform.set_position"] = Il2cpp::Method::GetAddress("Transform", "set_position", 1);
+            methodAddress_["GameObject.get_transform"] = Il2cpp::Method::GetAddress("GameObject", "get_transform", 0);
+            methodAddress_["GameObject.get_tag"] = Il2cpp::Method::GetAddress("GameObject", "get_tag", 0);
         }
         else {
             methodAddress_["Camera.WorldToScreenPoint"] = Mono::Method::GetAddress("Camera", "WorldToScreenPoint", 2);
@@ -2015,6 +2028,8 @@ namespace unity {
             methodAddress_["Camera.set_depth"] = Mono::Method::GetAddress("Camera", "set_depth", 1);
             methodAddress_["Transform.get_position"] = Mono::Method::GetAddress("Transform", "get_position", 0);
             methodAddress_["Transform.set_position"] = Mono::Method::GetAddress("Transform", "set_position", 1);
+            methodAddress_["GameObject.get_transform"] = Mono::Method::GetAddress("GameObject", "get_transform", 0);
+            methodAddress_["GameObject.get_tag"] = Mono::Method::GetAddress("GameObject", "get_tag", 0);
         }
     }
 }

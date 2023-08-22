@@ -23,7 +23,7 @@ auto APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserv
 
                 // 安装D3D11HOOK
                 dxhook::Hk11::Build([hModule] {
-                    if (!initSpace::guiInfo.imGuiInit) {
+                    if (!initSpace::GuiInfo::imGuiInit) {
                         IMGUI_CHECKVERSION();
 
                         // 创建ImGui上下文 
@@ -64,10 +64,10 @@ auto APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserv
                                 case WM_KEYDOWN:
                                     // 处理界面显示/隐藏
                                     if (wParam == VK_DELETE) {
-                                        if (initSpace::guiInfo.mainShow)
-                                            initSpace::guiInfo.mainShow = false;
+                                        if (initSpace::GuiInfo::mainShow)
+                                            initSpace::GuiInfo::mainShow = false;
                                         else
-                                            initSpace::guiInfo.mainShow = true;
+                                            initSpace::GuiInfo::mainShow = true;
                                     }
                                     break;
                                 case WM_KEYUP:
@@ -195,13 +195,9 @@ auto APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserv
                         styles.WindowRounding             = 0.0;
                         styles.WindowTitleAlign           = ImVec2(0.0, 0.5);
 
-                        initSpace::guiInfo.imGuiInit = true;
-                        initSpace::guiInfo.mainShow  = true;
-                        initSpace::guiInfo.tipsShow  = true;
-                        tagRECT Rect;
-                        GetClientRect(dxhook::Hk11::GetHwnd(), &Rect);
-                        initSpace::guiInfo.w = Rect.right - Rect.left;
-                        initSpace::guiInfo.h = Rect.bottom - Rect.top;
+                        initSpace::GuiInfo::imGuiInit = true;
+                        initSpace::GuiInfo::mainShow  = true;
+                        initSpace::GuiInfo::tipsShow  = true;
                     }
 
                     // 创建新的画面帧
@@ -209,10 +205,10 @@ auto APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserv
                     ImGui_ImplWin32_NewFrame();
                     ImGui::NewFrame();
 
-                    ImGui::GetBackgroundDrawList()->AddCircle(ImVec2(initSpace::guiInfo.w / 2, initSpace::guiInfo.h / 2), 3, 0xFF0000FF, 4, 2);
+                    ImGui::GetBackgroundDrawList()->AddCircle(ImVec2(initSpace::GuiInfo::w / 2, initSpace::GuiInfo::h / 2), 3, 0xFF0000FF, 4, 2);
 
                     // 主界面
-                    if (initSpace::guiInfo.mainShow && !initSpace::guiInfo.tipsShow) {
+                    if (initSpace::GuiInfo::mainShow && !initSpace::GuiInfo::tipsShow) {
                         if (ImGui::Begin(reinterpret_cast<const char*>(u8"Phasmophobia Cheat By 遂沫"))) {
 
                             if (ImGui::Button(reinterpret_cast<const char*>(u8"保存"))) {
@@ -234,7 +230,9 @@ auto APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserv
                                     nlohmann::json js = nlohmann::json::parse(i);
                                     for (const auto& _features : initSpace::Feature::features | std::views::values) {
                                         for (const auto func : _features)
-                                            func->Load(js);
+                                            try {
+                                                func->Load(js);
+                                            } catch (...) {}
                                     }
                                     i.close();
                                 }
@@ -265,11 +263,11 @@ auto APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserv
                             func->DrawStatus();
                     }
 
-                    if (initSpace::guiInfo.tipsShow) {
+                    if (initSpace::GuiInfo::tipsShow) {
                         if (ImGui::Begin("Tips")) {
                             ImGui::Text(reinterpret_cast<const char*>(u8"按下Delete (Del) 键显示隐藏菜单界面"));
                             if (ImGui::Button("OK"))
-                                initSpace::guiInfo.tipsShow = false;
+                                initSpace::GuiInfo::tipsShow = false;
                             ImGui::End();
                         }
                     }
@@ -284,6 +282,10 @@ auto APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserv
                 // 线程异步更新
                 std::vector<std::future<void>> futuresUpdate;
                 while (true) {
+                    tagRECT Rect;
+                    GetClientRect(dxhook::Hk11::GetHwnd(), &Rect);
+                    initSpace::GuiInfo::w = Rect.right - Rect.left;
+                    initSpace::GuiInfo::h = Rect.bottom - Rect.top;
                     Sleep(1);
 
                     // 多线程并发
