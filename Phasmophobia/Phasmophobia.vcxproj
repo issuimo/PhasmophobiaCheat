@@ -96,6 +96,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp" />
+    <ClCompile Include="features\ESP.cpp" />
     <ClCompile Include="features\Ghost.cpp" />
     <ClCompile Include="features\GhostList.cpp" />
     <ClCompile Include="features\HighSpeed.cpp" />
@@ -115,6 +116,7 @@
     <ClCompile Include="library\stb\stb_vorbis.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="features\ESP.h" />
     <ClInclude Include="features\Ghost.h" />
     <ClInclude Include="features\GhostList.h" />
     <ClInclude Include="features\HighSpeed.h" />

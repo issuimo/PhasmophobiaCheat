@@ -40,8 +40,6 @@ namespace dxhook {
 
 		inline static HWND hwnd{};
 		inline static WNDPROC oldWndProc{};
-        inline static UINT g_ResizeWidth;
-        inline static UINT g_ResizeHeight;
 
 		inline static std::function<void()> present;
 		inline static char(*WndProc)(HWND, UINT, WPARAM, LPARAM);
@@ -120,31 +118,12 @@ namespace dxhook {
                 }
             }
 
-            // Handle window resize (we don't resize directly in the WM_SIZE handler)
-            if (g_ResizeWidth != 0 && g_ResizeHeight != 0) {
-                g_TargetView->Release();
-                g_SwapChain->ResizeBuffers(0, g_ResizeWidth, g_ResizeHeight, DXGI_FORMAT_UNKNOWN, 0);
-                g_ResizeWidth = g_ResizeHeight = 0;
-                ID3D11Texture2D* pBackBuffer;
-                g_SwapChain->GetBuffer(0, IID_PPV_ARGS(&pBackBuffer));
-                g_Device->CreateRenderTargetView(pBackBuffer, nullptr, &g_TargetView);
-                pBackBuffer->Release();
-            }
-
             present();
 
             return HookManager::call(MyPresent, a, b, c);
 		}
 
 		static auto CALLBACK NewWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) -> LRESULT {
-			switch (uMsg) {
-	            case WM_SIZE:
-	                if (wParam == SIZE_MINIMIZED)
-	                    return 0;
-                    g_ResizeWidth  = static_cast<UINT>(LOWORD(lParam)); // Queue resize
-                    g_ResizeHeight = static_cast<UINT>(HIWORD(lParam));
-			}
-
 			const auto ret = WndProc(hWnd, uMsg, wParam, lParam);
             if (ret == 1)
                 return CallWindowProc(oldWndProc, hWnd, uMsg, wParam, lParam);

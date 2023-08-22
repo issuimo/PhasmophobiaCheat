@@ -14,6 +14,7 @@
 #include "library/detours/HookManager.h"
 #include "library/imgui/imgui.h"
 #include "library/UnityHack.h"
+#include "library/imgui/implot.h"
 
 namespace initSpace {
     inline static struct {

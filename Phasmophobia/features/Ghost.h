@@ -19,5 +19,6 @@ protected:
     static auto Ghost_HuntingCloseDoorNetworked_NEW(void* p, void* p1) -> void;
     Ghost();
 private:
-    inline static bool noHunt, noCloseDoor, noNewRoom;
+    inline static bool noHunt, noCloseDoor, noNewRoom, fixSpeed;
+    inline static float speed;
 };

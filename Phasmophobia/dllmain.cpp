@@ -31,6 +31,7 @@ auto APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserv
 
                         // 创建ImGui上下文 
                         ImGui::CreateContext();
+                        ImPlot::CreateContext();
 
                         // 获取ImGui IO 并设置 键盘和手柄控制
                         auto io = ImGui::GetIO();
@@ -225,11 +226,45 @@ auto APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserv
                     ImGui_ImplWin32_NewFrame();
                     ImGui::NewFrame();
 
+                    tagRECT Rect;
+                    GetClientRect(dxhook::Hk11::GetHwnd(), &Rect);
+                    float w = Rect.right - Rect.left;
+                    float h = Rect.bottom - Rect.top;
+                    ImGui::GetBackgroundDrawList()->AddCircle(ImVec2(w / 2, h / 2), 3, 0xFF0000FF, 4, 2);
+                    
                     // 主界面
                     if (initSpace::guiInfo.mainShow && !initSpace::guiInfo.tipsShow) {
                         if (
                             ImGui::Begin(reinterpret_cast<const char*>(
                                              u8"Phasmophobia Cheat By 遂沫"))) {
+                            if (ImGui::Button(reinterpret_cast<const char*>(u8"保存"))) {
+                                nlohmann::json js;
+                                std::ofstream o(".\\cfg.json");
+                                if (o) {
+                                    for (const auto& _features :
+                                        initSpace::Feature::features | std::views::values) {
+                                        for (const auto func : _features)
+                                            func->Save(js);
+                                    }
+                                    o << js;
+                                    o.close();
+                                }
+                            }
+                            ImGui::SameLine();
+                            if (ImGui::Button(reinterpret_cast<const char*>(u8"读取"))) {
+                                nlohmann::json js;
+                                std::ifstream i(".\\cfg.json");
+                                if (i) {
+                                    i >> js;
+                                    i.close();
+                                    for (const auto& _features :
+                                        initSpace::Feature::features | std::views::values) {
+                                        for (const auto func : _features)
+                                            func->Load(js);
+                                    }
+                                }
+                            }
+                            
                             if (ImGui::BeginTabBar("memList")) {
                                 for (const auto& [name, _features] : initSpace::Feature::features) {
                                     if (ImGui::BeginTabItem(name.c_str())) {

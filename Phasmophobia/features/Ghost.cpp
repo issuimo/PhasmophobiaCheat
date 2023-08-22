@@ -1,4 +1,5 @@
 ﻿#include "Ghost.h"
+#include "GhostList.h"
 
 auto Ghost::Ghost_StartHuntingTimer_NEW(void* p) -> void {
     if (noHunt) {
@@ -69,12 +70,47 @@ auto Ghost::Render() -> void {
     ImGui::Checkbox(reinterpret_cast<const char*>(u8"鬼不换房"), &noNewRoom);
     ImGui::SameLine();
     ImGui::Checkbox(reinterpret_cast<const char*>(u8"猎杀不关门"), &noCloseDoor);
+    ImGui::SameLine();
+    ImGui::Checkbox(reinterpret_cast<const char*>(u8"修改速度"), &fixSpeed);
+    if (fixSpeed) {
+        ImGui::SliderFloat(reinterpret_cast<const char*>(u8"速度"), &speed, 0.0F, 20.0F, "%.1f");
+    }
 }
 
-auto Ghost::Update() -> void {}
+auto Ghost::Update() -> void {
+    const auto ghosts = GhostList::GetGhosts();
+    for (const auto ghost : ghosts) {
+        try {
+            *reinterpret_cast<float*>(reinterpret_cast<std::uint64_t>(ghost) + 0xB8) = fixSpeed ? speed : 1.0;
+        }
+        catch (...) {}
+    }
+}
 
 auto Ghost::DrawStatus() -> void {}
 
-auto Ghost::Save(nlohmann::json& json) -> void {}
+auto Ghost::Save(nlohmann::json& json) -> void {
+    json["noHunt"] = noHunt;
+    json["noNewRoom"] = noNewRoom;
+    json["noCloseDoor"] = noCloseDoor;
+    json["fixSpeed"] = fixSpeed;
+    json["speed"] = speed;
+}
 
-auto Ghost::Load(nlohmann::json& json) -> void {}
+auto Ghost::Load(nlohmann::json& json) -> void {
+    if (json.find("noHunt") != json.end()) {
+        noHunt = json["noHunt"];
+    }
+    if (json.find("noNewRoom") != json.end()) {
+        noHunt = json["noNewRoom"];
+    }
+    if (json.find("noCloseDoor") != json.end()) {
+        noHunt = json["noCloseDoor"];
+    }
+    if (json.find("fixSpeed") != json.end()) {
+        noHunt = json["fixSpeed"];
+    }
+    if (json.find("speed") != json.end()) {
+        noHunt = json["speed"];
+    }
+}

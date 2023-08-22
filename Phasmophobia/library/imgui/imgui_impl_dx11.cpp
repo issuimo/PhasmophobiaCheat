@@ -31,7 +31,6 @@
 //  2016-05-07: DirectX11: Disabling depth-write.
 
 #include "imgui.h"
-#ifndef IMGUI_DISABLE
 #include "imgui_impl_dx11.h"
 
 // DirectX
@@ -584,7 +583,6 @@ void ImGui_ImplDX11_Shutdown()
     if (bd->pd3dDeviceContext)    { bd->pd3dDeviceContext->Release(); }
     io.BackendRendererName = nullptr;
     io.BackendRendererUserData = nullptr;
-    io.BackendFlags &= ~ImGuiBackendFlags_RendererHasVtxOffset;
     IM_DELETE(bd);
 }
 
@@ -596,7 +594,3 @@ void ImGui_ImplDX11_NewFrame()
     if (!bd->pFontSampler)
         ImGui_ImplDX11_CreateDeviceObjects();
 }
-
-//-----------------------------------------------------------------------------
-
-#endif // #ifndef IMGUI_DISABLE

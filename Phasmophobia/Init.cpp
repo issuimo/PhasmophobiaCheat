@@ -8,6 +8,7 @@
 
 #include <TlHelp32.h>
 
+#include "features/ESP.h"
 #include "features/Ghost.h"
 
 auto CreateToolhelp32Snapshot_NEW(unsigned long i, unsigned long arg) -> void* {
@@ -33,5 +34,6 @@ namespace initSpace {
         ADD(NoDead);
         ADD(GhostList);
         ADD(Ghost);
+        ADD(ESP);
     }
 }

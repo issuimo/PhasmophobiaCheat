@@ -13,6 +13,12 @@
 // 请使用OneApi Base包内Intel C++ 编译器打开MKL选项后编
 #include <mkl.h>
 
+#ifdef _WIN64
+#define CALLING_CONVENTION __fastcall
+#elif _WIN32
+#define CALLING_CONVENTION __cdecl
+#endif
+
 namespace unity {
     class CSharper {
     public:
@@ -289,96 +295,115 @@ namespace unity {
             auto operator[](const int i) -> float* { return m[i]; }
         };
 
-        struct Object {
-        protected:
-            union {
-                struct Class*  klass{nullptr};
-                struct VTable* vtable;
+        struct IL2cpp {
+            struct Object {
+            protected:
+                union {
+                    struct Class*  klass{nullptr};
+                    struct VTable* vtable;
+                };
+
+                struct MonitorData* monitor{nullptr};
+
+            public:
+                auto GetClass() const -> Class* { return this->klass; }
             };
 
-            struct MonitorData* monitor{nullptr};
+            struct String : Object {
+            protected:
+                int32_t m_stringLength{0};
+                wchar_t m_firstChar{0};
 
-        public:
-            auto GetClass() const -> Class* { return this->klass; }
-        };
+            public:
+                auto ToString() const -> std::string {
+                    std::string sRet(static_cast<size_t>(m_stringLength) * 3 + 1, '\0');
+                    WideCharToMultiByte(CP_UTF8,
+                                        0,
+                                        &m_firstChar,
+                                        m_stringLength,
+                                        &sRet[0],
+                                        static_cast<int>(sRet.size()),
+                                        nullptr,
+                                        nullptr);
+                    return sRet;
+                }
+            };
 
-        struct String : Object {
-        protected:
-            int32_t m_stringLength{0};
-            wchar_t m_firstChar{0};
+            template<typename T>
+            struct Array : Object {
+            protected:
+                struct {
+                    size_t length;
+                    size_t lower_bound;
+                }*         bounds{nullptr};
 
-        public:
-            auto ToString() const -> std::string {
-                std::string sRet(static_cast<size_t>(m_stringLength) * 3 + 1, '\0');
-                WideCharToMultiByte(CP_UTF8,
-                                    0,
-                                    &m_firstChar,
-                                    m_stringLength,
-                                    &sRet[0],
-                                    static_cast<int>(sRet.size()),
-                                    nullptr,
-                                    nullptr);
-                return sRet;
-            }
-        };
+                size_t max_length{0};
+                T*     vector{nullptr};
 
-        template<typename T>
-        struct Array : Object {
-        protected:
-            struct {
-                size_t length;
-                size_t lower_bound;
-            }*         bounds{nullptr};
+            public:
+                auto Size() const -> size_t { return this->max_length; }
 
-            size_t max_length{0};
-            T*     vector{nullptr};
+                auto Fill(T& v) -> void {
+                    for (size_t i       = 0; i < this->max_length; i++)
+                        this->vector[i] = v;
+                }
 
-        public:
-            auto Size() const -> size_t { return this->max_length; }
+                auto operator[](size_t i) -> T& { return this->vector[i]; }
+            };
 
-            auto Fill(T& v) -> void {
-                for (size_t i       = 0; i < this->max_length; i++)
-                    this->vector[i] = v;
-            }
+            struct Camera {
+            public:
+                enum CameraEye : int {
+                    m_eCameraEye_Left = 0,
+                    m_eCameraEye_Right = 1,
+                    m_eCameraEye_Center = 2,
+                };
 
-            auto operator[](size_t i) -> T& { return this->vector[i]; }
-        };
+                auto WorldToScreenPoint(const Vector3& position, CameraEye eye) -> Vector3 {
+                    return reinterpret_cast<Vector3(*)(Camera*, Vector3, CameraEye)>(methodAddress_[
+                        "Camera.WorldToScreenPoint"])(this, position, eye);
+                }
 
-        struct Camera {
-        public:
-            auto WorldToScreenPoint(const Vector3& position) -> Vector3 {
-                return reinterpret_cast<Vector3(*)(Camera*, Vector3)>(methodAddress_[
-                    "Camera.WorldToScreenPoint"])(this, position);
-            }
+                auto ScreenToWorldPoint(const Vector3& position) -> Vector3 {
+                    return reinterpret_cast<Vector3(*)(Camera*, Vector3)>(methodAddress_[
+                        "Camera.ScreenToWorldPoint"])(this, position);
+                }
 
-            auto ScreenToWorldPoint(const Vector3& position) -> Vector3 {
-                return reinterpret_cast<Vector3(*)(Camera*, Vector3)>(methodAddress_[
-                    "Camera.ScreenToWorldPoint"])(this, position);
-            }
+                auto GetDepth() -> float {
+                    return reinterpret_cast<float(*)(Camera*)>(methodAddress_["Camera.get_depth"])(this);
+                }
 
-            auto GetDepth() -> float {
-                return reinterpret_cast<float(*)(Camera*)>(methodAddress_["Camera.get_depth"])(this);
-            }
+                auto SetDepth(const float value) -> void {
+                    return reinterpret_cast<void(*)(Camera*, float)>(methodAddress_["Camera.set_depth"])(this, value);
+                }
 
-            auto SetDepth(const float value) -> void {
-                return reinterpret_cast<void(*)(Camera*, float)>(methodAddress_["Camera.set_depth"])(this, value);
-            }
+                static auto GetMain() -> Camera* {
+                    return reinterpret_cast<Camera * (*)()>(methodAddress_["Camera.get_main"])();
+                }
 
-            static auto GetMain() -> Camera* {
-                return reinterpret_cast<Camera * (*)()>(methodAddress_["Camera.get_main"])();
-            }
+                static auto GetCurrent() -> Camera* {
+                    return reinterpret_cast<Camera * (*)()>(methodAddress_["Camera.get_current"])();
+                }
 
-            static auto GetCurrent() -> Camera* {
-                return reinterpret_cast<Camera * (*)()>(methodAddress_["Camera.get_current"])();
-            }
+                static auto GetCameraCount() -> size_t {
+                    return reinterpret_cast<size_t(*)()>(methodAddress_["Camera.get_allCamerasCount"])();
+                }
 
-            static auto GetCameraCount() -> size_t {
-                return reinterpret_cast<size_t(*)()>(methodAddress_["Camera.get_allCamerasCount"])();
-            }
+                static auto GetAllCamera() -> Array<Camera>& {
+                    return reinterpret_cast<Array<Camera>&(*)()>(methodAddress_["Camera.get_allCameras"])();
+                }
+            };
 
-            static auto GetAllCamera() -> Array<Camera>& {
-                return reinterpret_cast<Array<Camera>&(*)()>(methodAddress_["Camera.get_allCameras"])();
-            }
+            struct Transform {
+            public:
+                auto GetPosition() -> Vector3 {
+                    return reinterpret_cast<Vector3(*)(void*)>(methodAddress_["Transform.get_position"])(this);
+                }
+
+                auto SetPosition(Vector3 v) -> void {
+                    return reinterpret_cast<void(*)(void*, Vector3)>(methodAddress_["Transform.get_position"])(this, v);
+                }
+            };
         };
 
         static auto SetIL2cppMod() -> void { il2cpp = true; }
@@ -1614,11 +1639,12 @@ namespace unity {
             auto GetFile() const -> std::string { return this->name; }
 
             auto EnumClasses(std::vector<Class*>& classes) const -> size_t {
-                const auto count = this->typeCount;
+                const auto count = static_cast<size_t(*)(const Image* _this)>(address_[
+                    "il2cpp_image_get_class_count"])(this);
                 classes.reserve(count);
                 for (size_t i = 0; i < count; i++) {
                     if (auto klass = static_cast<Class * (*)(const Image* _this, size_t index)>(address_[
-                        "il2cpp_image_get_name"])(this, i))
+                        "il2cpp_image_get_class"])(this, i))
                         classes.push_back(klass);
                 }
                 return classes.size();
@@ -1627,8 +1653,19 @@ namespace unity {
             auto GetClassCount() const -> size_t { return this->typeCount; }
 
             auto GetClassFromName(const std::string& name, const std::string& name_space = "") const -> Class* {
-                return static_cast<Class * (*)(const Image* _this, const char* name_space, const char* name)>(address_[
-                    "il2cpp_class_from_name"])(this, name_space.c_str(), name.c_str());
+                std::vector<Class*> classes;
+                this->EnumClasses(classes);
+                for (const auto& klass : classes) {
+                    if (klass == nullptr)
+                        continue;
+                    if (klass->GetName() != name)
+                        continue;
+                    if (name_space != "")
+                        if (klass->GetNamespace() != name_space)
+                            continue;
+                    return klass;
+                }
+                return nullptr;
             }
         };
 
@@ -1695,14 +1732,15 @@ namespace unity {
                 std::vector<Assembly*> assemblys;
                 Assembly::EnumAssemblys(assemblys);
                 for (const auto& assembly : assemblys) {
-                    const auto klass = assembly->GetImage()->GetClassFromName(class_name);
+                    const auto klass = assembly->GetImage()->GetClassFromName(class_name, namespaze);
 
-                    if (klass == nullptr
-                            ? true
-                            : (klass->GetName() != class_name || (namespaze == ""
-                                                                      ? false
-                                                                      : klass->GetNamespace() != namespaze)))
+                    if (klass == nullptr)
                         continue;
+                    if (klass->GetName() != class_name)
+                        continue;
+                    if (namespaze != "")
+                        if (klass->GetNamespace() != namespaze)
+                            continue;
 
                     return klass;
                 }
@@ -1817,7 +1855,7 @@ namespace unity {
                                    const std::string& method_name,
                                    const size_t       param_count = -1,
                                    const std::string& namespaze   = "") -> std::uintptr_t {
-                const auto klass = Class::GetClassFromName(class_name);
+                const auto klass = Class::GetClassFromName(class_name, namespaze);
 
                 if (klass == nullptr)
                     return 0;
@@ -1951,18 +1989,20 @@ namespace unity {
     inline auto CSharper::SetMap(std::unordered_map<std::string, void*>& map) -> void {
         address_ = &map;
         if (il2cpp) {
-            methodAddress_["Camera.WorldToScreenPoint"] = Il2cpp::Method::GetAddress("Camera", "WorldToScreenPoint", 1);
+            methodAddress_["Camera.WorldToScreenPoint"] = Il2cpp::Method::GetAddress("Camera", "WorldToScreenPoint", 2);
             methodAddress_["Camera.ScreenToWorldPoint"] = Il2cpp::Method::GetAddress("Camera", "ScreenToWorldPoint", 1);
             methodAddress_["Camera.get_main"] = Il2cpp::Method::GetAddress("Camera", "get_main", 0);
             methodAddress_["Camera.get_current"] = Il2cpp::Method::GetAddress("Camera", "get_current", 0);
             methodAddress_["Camera.get_allCamerasCount"] = Il2cpp::Method::GetAddress("Camera",
                                                                                       "get_allCamerasCount",
                                                                                       0);
-            methodAddress_["Camera.get_allCameras"] = Il2cpp::Method::GetAddress("Camera", "get_allCameras", 0);
-            methodAddress_["Camera.get_depth"]      = Il2cpp::Method::GetAddress("Camera", "get_depth", 0);
-            methodAddress_["Camera.set_depth"]      = Il2cpp::Method::GetAddress("Camera", "set_depth", 1);
+            methodAddress_["Camera.get_allCameras"]  = Il2cpp::Method::GetAddress("Camera", "get_allCameras", 0);
+            methodAddress_["Camera.get_depth"]       = Il2cpp::Method::GetAddress("Camera", "get_depth", 0);
+            methodAddress_["Camera.set_depth"]       = Il2cpp::Method::GetAddress("Camera", "set_depth", 1);
+            methodAddress_["Transform.get_position"] = Il2cpp::Method::GetAddress("Transform", "get_position", 0);
+            methodAddress_["Transform.set_position"] = Il2cpp::Method::GetAddress("Transform", "set_position", 1);
         } else {
-            methodAddress_["Camera.WorldToScreenPoint"]  = Mono::Method::GetAddress("Camera", "WorldToScreenPoint", 1);
+            methodAddress_["Camera.WorldToScreenPoint"]  = Mono::Method::GetAddress("Camera", "WorldToScreenPoint", 2);
             methodAddress_["Camera.ScreenToWorldPoint"]  = Mono::Method::GetAddress("Camera", "ScreenToWorldPoint", 1);
             methodAddress_["Camera.get_main"]            = Mono::Method::GetAddress("Camera", "get_main", 0);
             methodAddress_["Camera.get_current"]         = Mono::Method::GetAddress("Camera", "get_current", 0);
@@ -1970,6 +2010,8 @@ namespace unity {
             methodAddress_["Camera.get_allCameras"]      = Mono::Method::GetAddress("Camera", "get_allCameras", 0);
             methodAddress_["Camera.get_depth"]           = Mono::Method::GetAddress("Camera", "get_depth", 0);
             methodAddress_["Camera.set_depth"]           = Mono::Method::GetAddress("Camera", "set_depth", 1);
+            methodAddress_["Transform.get_position"]     = Mono::Method::GetAddress("Transform", "get_position", 0);
+            methodAddress_["Transform.set_position"]     = Mono::Method::GetAddress("Transform", "set_position", 1);
         }
     }
 }

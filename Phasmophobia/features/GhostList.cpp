@@ -57,7 +57,7 @@ auto GhostList::Render() -> void {
                         if (offset2 != 0) {
                             const auto offset3 = *reinterpret_cast<std::uint64_t*>(offset2 + 0xE0);
                             if (offset3 != 0) {
-                                ImGui::Text(std::format("{}", reinterpret_cast<unity::CSharper::String*>(offset3)->ToString()).c_str());
+                                ImGui::Text(std::format("{}", reinterpret_cast<unity::CSharper::IL2cpp::String*>(offset3)->ToString()).c_str());
                             }
                         }
                     }
@@ -77,13 +77,12 @@ auto GhostList::Render() -> void {
                     const auto offset1 = reinterpret_cast<std::uint64_t>(actor) + ghostInfoOffset;
                     const auto offset2 = *reinterpret_cast<std::uint64_t*>(offset1) + levelRoomOffset;
                     const auto offset3 = *reinterpret_cast<std::uint64_t*>(offset2) + levelRoomNameOffset;
-                    ImGui::Text(std::format("{}", reinterpret_cast<unity::CSharper::String*>(*reinterpret_cast<std::uint64_t*>(offset3))->ToString()).c_str());
+                    ImGui::Text(std::format("{}", reinterpret_cast<unity::CSharper::IL2cpp::String*>(*reinterpret_cast<std::uint64_t*>(offset3))->ToString()).c_str());
                 }
-                if (ImGui::TableSetColumnIndex(5)) {
-                    const auto offset1 = *reinterpret_cast<std::uint64_t*>(reinterpret_cast<std::uint64_t>(actor) + ghostInfoOffset);
-                    const auto offset2 = *reinterpret_cast<std::uint64_t*>(offset1 + 0x38);
+                if (ImGui::TableSetColumnIndex(5)) {;
+                    const auto offset1 = *reinterpret_cast<std::uint64_t*>(reinterpret_cast<std::uint64_t>(actor) + 0x38);
                     const auto type = *reinterpret_cast<GhostType*>(offset1 + 0x28);
-                    ImGui::Text(std::format("{}", magic_enum::enum_name<GhostType>(type)).c_str());
+                    ImGui::Text(std::format("{}.{}", *reinterpret_cast<int*>(offset1 + 0x28), magic_enum::enum_name<GhostType>(type)).c_str());
                 }
                 if (ImGui::TableSetColumnIndex(6)) {
                     ImGui::Text(std::format("{}", *reinterpret_cast<bool*>(reinterpret_cast<std::uint64_t>(actor) + 0xC4)).c_str());

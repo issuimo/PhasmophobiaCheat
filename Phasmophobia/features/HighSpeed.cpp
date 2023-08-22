@@ -35,6 +35,16 @@ auto HighSpeed::Update() -> void {
 
 auto HighSpeed::DrawStatus() -> void {}
 
-auto HighSpeed::Save(nlohmann::json& json) -> void {}
+auto HighSpeed::Save(nlohmann::json& json) -> void {
+    json["playerSpeed"] = on;
+    json["playerSpeedV"] = speed;
+}
 
-auto HighSpeed::Load(nlohmann::json& json) -> void {}
+auto HighSpeed::Load(nlohmann::json& json) -> void {
+    if (json.find("playerSpeed") != json.end()) {
+        on = json["playerSpeed"];
+    }
+    if (json.find("playerSpeedV") != json.end()) {
+        speed = json["playerSpeedV"];
+    }
+}

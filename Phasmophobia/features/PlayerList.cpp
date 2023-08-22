@@ -65,7 +65,7 @@ auto PlayerList::Render() -> void {
                         if (offset2 != 0) {
                             const auto offset3 = *reinterpret_cast<std::uint64_t*>(offset2 + 0x20);
                             if (offset3 != 0)
-                                ImGui::Text(std::format("{}", reinterpret_cast<unity::CSharper::String*>(offset3)->ToString()).c_str());
+                                ImGui::Text(std::format("{}", reinterpret_cast<unity::CSharper::IL2cpp::String*>(offset3)->ToString()).c_str());
                         }
                     }
                 }
@@ -74,7 +74,7 @@ auto PlayerList::Render() -> void {
                     if (offset1 != 0) {
                         const auto offset2 = *reinterpret_cast<std::uint64_t*>(offset1 + 0x68);
                         if (offset2 != 0)
-                            ImGui::Text(std::format("{}", reinterpret_cast<unity::CSharper::String*>(offset2)->ToString()).c_str());
+                            ImGui::Text(std::format("{}", reinterpret_cast<unity::CSharper::IL2cpp::String*>(offset2)->ToString()).c_str());
                     }
                 }
                 if (ImGui::TableSetColumnIndex(2)) {

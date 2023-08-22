@@ -57,6 +57,12 @@ auto NoDead::Update() -> void { }
 
 auto NoDead::DrawStatus() -> void {}
 
-auto NoDead::Save(nlohmann::json& json) -> void {}
+auto NoDead::Save(nlohmann::json& json) -> void {
+    json["noDead"] = noDead;
+}
 
-auto NoDead::Load(nlohmann::json& json) -> void {}
+auto NoDead::Load(nlohmann::json& json) -> void {
+    if (json.find("noDead") != json.end()) {
+        noDead = json["noDead"];
+    }
+}
