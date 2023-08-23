@@ -9,7 +9,7 @@ using namespace System::Security::Permissions;
 [assembly:AssemblyConfigurationAttribute(L"")];
 [assembly:AssemblyCompanyAttribute(L"")];
 [assembly:AssemblyProductAttribute(L"Phasmophobia")];
-[assembly:AssemblyCopyrightAttribute(L"版权所有(c)  2023")];
+[assembly:AssemblyCopyrightAttribute(L"遂沫 版权所有(c)  2023")];
 [assembly:AssemblyTrademarkAttribute(L"")];
 [assembly:AssemblyCultureAttribute(L"")];
 

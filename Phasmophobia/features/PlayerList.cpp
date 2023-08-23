@@ -86,6 +86,8 @@ auto PlayerList::Render() -> void {
                     try {
                         if (ImGui::SmallButton("kill")) {
                             StartKillingPlayer(actor);
+                            static_cast<Player^>(actor)->StartKillingPlayer();
+                            System::Runtime::InteropServices::Marshal::PtrToStructure(actor, Player);
                         }
                     } catch (...) {}
                 }
