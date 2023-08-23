@@ -2,6 +2,7 @@
 #include "NoDead.h"
 #include "GhostList.h"
 #include "DoorList.h"
+#include "ESP.h"
 
 auto PlayerList::Player_Awake_NEW(PlayerAPI* player) -> void {
     std::lock_guard lock(mutex);
@@ -16,6 +17,7 @@ auto PlayerList::Player_OnDestroy_NEW(PlayerAPI* player) -> void {
         players.erase(it);
     GhostList::ClearVector();
     DoorList::ClearVector();
+    ESP::ClearAllAdress();
     return HookManager::call(Player_OnDestroy_NEW, player);
 }
 

@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "../library/UnityHack.h"
 class DoorAPI {
 public:
     inline static void(*LockDoor)(DoorAPI*, bool);
