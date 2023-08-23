@@ -15,9 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AssemblyInfo.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="features\DoorList.cpp">
       <Filter>源文件</Filter>
     </ClCompile>

@@ -16,7 +16,6 @@
 #include <vector>
 #include <map>
 
-
 namespace initSpace {
     class GuiInfo {
     public:
