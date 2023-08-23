@@ -45,7 +45,7 @@ namespace unity {
             }
 
             auto ToVectors(Vector3* m_pForward, Vector3* m_pRight, Vector3* m_pUp) const -> void {
-                constexpr float m_fDeg2Rad = 3.1415926 / 180.f;
+                constexpr float m_fDeg2Rad = static_cast<float>(3.1415926) / 180.F;
 
                 const float m_fSinX = sinf(x * m_fDeg2Rad);
                 const float m_fCosX = cosf(x * m_fDeg2Rad);
@@ -168,7 +168,7 @@ namespace unity {
         struct Vector4 {
             float x, y, z, w;
 
-            Vector4() { x = y = z = w = 0.f; }
+            Vector4() { x = y = z = w = 0.F; }
 
             Vector4(const float f1, const float f2, const float f3, const float f4) {
                 x = f1;
@@ -181,7 +181,7 @@ namespace unity {
         struct Quaternion {
             float x, y, z, w;
 
-            Quaternion() { x = y = z = w = 0.f; }
+            Quaternion() { x = y = z = w = 0.F; }
 
             Quaternion(const float f1, const float f2, const float f3, const float f4) {
                 x = f1;
@@ -191,11 +191,11 @@ namespace unity {
             }
 
             auto Euler(float m_fX, float m_fY, float m_fZ) -> Quaternion {
-                constexpr float m_fDeg2Rad = 3.1415926 / 180.f;
+                constexpr float m_fDeg2Rad = static_cast<float>(3.1415926) / 180.F;
 
-                m_fX = m_fX * m_fDeg2Rad * 0.5f;
-                m_fY = m_fY * m_fDeg2Rad * 0.5f;
-                m_fZ = m_fZ * m_fDeg2Rad * 0.5f;
+                m_fX = m_fX * m_fDeg2Rad * 0.5F;
+                m_fY = m_fY * m_fDeg2Rad * 0.5F;
+                m_fZ = m_fZ * m_fDeg2Rad * 0.5F;
 
                 const float m_fSinX = sinf(m_fX);
                 const float m_fCosX = cosf(m_fX);
@@ -222,23 +222,23 @@ namespace unity {
                 const float m_fDist = (x * x) + (y * y) + (z * z) + (w * w);
 
                 const float m_fTest = x * w - y * z;
-                if (m_fTest > 0.4995f * m_fDist) {
-                    m_vEuler.x = 3.1415926 * 0.5f;
-                    m_vEuler.y = 2.f * atan2f(y, x);
-                    m_vEuler.z = 0.f;
+                if (m_fTest > 0.4995F * m_fDist) {
+                    m_vEuler.x = static_cast<float>(3.1415926) * 0.5F;
+                    m_vEuler.y = 2.F * atan2f(y, x);
+                    m_vEuler.z = 0.F;
                 }
-                else if (m_fTest < -0.4995f * m_fDist) {
-                    m_vEuler.x = 3.1415926 * -0.5f;
-                    m_vEuler.y = -2.f * atan2f(y, x);
-                    m_vEuler.z = 0.f;
+                else if (m_fTest < -0.4995F * m_fDist) {
+                    m_vEuler.x = static_cast<float>(3.1415926) * -0.5F;
+                    m_vEuler.y = -2.F * atan2f(y, x);
+                    m_vEuler.z = 0.F;
                 }
                 else {
-                    m_vEuler.x = asinf(2.f * (w * x - y * z));
-                    m_vEuler.y = atan2f(2.f * w * y + 2.f * z * x, 1.f - 2.f * (x * x + y * y));
-                    m_vEuler.z = atan2f(2.f * w * z + 2.f * x * y, 1.f - 2.f * (z * z + x * x));
+                    m_vEuler.x = asinf(2.F * (w * x - y * z));
+                    m_vEuler.y = atan2f(2.F * w * y + 2.F * z * x, 1.F - 2.F * (x * x + y * y));
+                    m_vEuler.z = atan2f(2.F * w * z + 2.F * x * y, 1.F - 2.F * (z * z + x * x));
                 }
 
-                constexpr float m_fRad2Deg = 180.f / 3.1415926;
+                constexpr float m_fRad2Deg = 180.F / static_cast<float>(3.1415926);
                 m_vEuler.x *= m_fRad2Deg;
                 m_vEuler.y *= m_fRad2Deg;
                 m_vEuler.z *= m_fRad2Deg;

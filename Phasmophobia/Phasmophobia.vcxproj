@@ -86,6 +86,7 @@
     <ClCompile Include="library\imgui\implot.cpp" />
     <ClCompile Include="library\imgui\implot_demo.cpp" />
     <ClCompile Include="library\imgui\implot_items.cpp" />
+    <ClCompile Include="library\stb\stb_vorbis.c" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Assembly-CSharp">
