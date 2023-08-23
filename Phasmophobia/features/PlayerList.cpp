@@ -17,7 +17,7 @@ auto PlayerList::Player_OnDestroy_NEW(PlayerAPI* player) -> void {
         players.erase(it);
     GhostList::ClearVector();
     DoorList::ClearVector();
-    ESP::ClearAllAdress();
+    ESP::ClearAllAddress();
     return HookManager::call(Player_OnDestroy_NEW, player);
 }
 
@@ -28,8 +28,8 @@ PlayerList::PlayerList() : Feature{} {
     HookManager::install(reinterpret_cast<void(*)(PlayerAPI*)>(
                              unity::Il2cpp::Method::GetAddress("Player", "OnDestroy", 0)),
                          Player_OnDestroy_NEW);
-    StartKillingPlayer = reinterpret_cast<void(*)(void*)>(
-        unity::Il2cpp::Method::GetAddress("Player", "StartKillingPlayer", 0));
+    RevivePlayer = reinterpret_cast<void(*)(void*)>(unity::Il2cpp::Method::GetAddress("Player", "RevivePlayer", 0));
+    StartKillingPlayer = reinterpret_cast<void(*)(void*)>(unity::Il2cpp::Method::GetAddress("Player", "StartKillingPlayer", 0));
 }
 
 auto PlayerList::GetInstance() -> PlayerList& {
@@ -44,7 +44,7 @@ auto PlayerList::GetInfo() const -> const GuiInfo& {
 
 auto PlayerList::Render() -> void {
     if (ImGui::BeginTable("PlayerList",
-                          5,
+                          6,
                           ImGuiTableFlags_ScrollX | ImGuiTableFlags_SizingFixedFit | ImGuiTableFlags_ScrollY |
                           ImGuiTableFlags_RowBg | ImGuiTableFlags_BordersOuter | ImGuiTableFlags_BordersV |
                           ImGuiTableFlags_Resizable | ImGuiTableFlags_Reorderable | ImGuiTableFlags_Hideable,
@@ -55,8 +55,9 @@ auto PlayerList::Render() -> void {
         ImGui::TableSetupColumn(reinterpret_cast<const char*>(u8"死亡"), ImGuiTableColumnFlags_None);
         ImGui::TableSetupColumn(reinterpret_cast<const char*>(u8"地址"), ImGuiTableColumnFlags_None);
         ImGui::TableSetupColumn(reinterpret_cast<const char*>(u8"操作"), ImGuiTableColumnFlags_None);
+        ImGui::TableSetupColumn(reinterpret_cast<const char*>(u8"复活"), ImGuiTableColumnFlags_None);
         ImGui::TableHeadersRow();
-        
+
         std::lock_guard lock(mutex);
         for (const auto& actor : players) {
             ImGui::TableNextRow();
@@ -82,9 +83,18 @@ auto PlayerList::Render() -> void {
                     ImGui::Text(std::format("{:#x}", reinterpret_cast<std::uint64_t>(actor)).c_str());
                 }
                 if (ImGui::TableSetColumnIndex(4)) {
-                    if (ImGui::SmallButton("kill")) {
-                        StartKillingPlayer(actor);
-                    }
+                    try {
+                        if (ImGui::SmallButton("kill")) {
+                            StartKillingPlayer(actor);
+                        }
+                    } catch (...) {}
+                }
+                if (ImGui::TableSetColumnIndex(5)) {
+                    try {
+                        if (ImGui::SmallButton("Revive")) {
+                            RevivePlayer(actor);
+                        }
+                    } catch (...) {}
                 }
             } catch (...) {}
             ImGui::PopID();

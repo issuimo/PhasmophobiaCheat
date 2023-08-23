@@ -1,0 +1,331 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="源文件">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="头文件">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="AssemblyInfo.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="features\DoorList.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="features\ESP.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="features\Ghost.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="features\GhostList.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="features\HighSpeed.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="features\MoreXP.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="features\NoDead.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="features\PlayerList.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="library\imgui\Font.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="library\imgui\imgui.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="library\imgui\imgui_demo.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="library\imgui\imgui_draw.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="library\imgui\imgui_impl_dx9.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="library\imgui\imgui_impl_dx10.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="library\imgui\imgui_impl_dx11.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="library\imgui\imgui_impl_win32.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="library\imgui\imgui_stdlib.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="library\imgui\imgui_tables.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="library\imgui\imgui_widgets.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="library\imgui\implot.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="library\imgui\implot_demo.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="library\imgui\implot_items.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="dllmain.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Init.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="features\DoorList.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="features\ESP.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="features\Ghost.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="features\GhostList.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="features\HighSpeed.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="features\MoreXP.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="features\NoDead.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="features\PlayerList.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="gameAPI\CursedItemsControllerAPI.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="gameAPI\DoorAPI.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="gameAPI\GhostAPI.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="gameAPI\LevelAPI.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="gameAPI\PlayerAPI.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="library\d3d11hook.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="library\Font.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="library\json.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="library\log.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="library\UnityHack.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="library\magic_enum\magic_enum.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="library\magic_enum\magic_enum_all.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="library\magic_enum\magic_enum_containers.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="library\magic_enum\magic_enum_flags.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="library\magic_enum\magic_enum_format.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="library\magic_enum\magic_enum_fuse.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="library\magic_enum\magic_enum_iostream.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="library\magic_enum\magic_enum_switch.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="library\magic_enum\magic_enum_utility.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="library\imgui\imstb_truetype.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="library\imgui\Font.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="library\imgui\imconfig.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="library\imgui\imgui.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="library\imgui\imgui_impl_dx9.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="library\imgui\imgui_impl_dx10.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="library\imgui\imgui_impl_dx11.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="library\imgui\imgui_impl_win32.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="library\imgui\imgui_internal.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="library\imgui\imgui_stdlib.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="library\imgui\implot.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="library\imgui\implot_internal.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="library\imgui\imstb_rectpack.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="library\imgui\imstb_textedit.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="library\fmt\args.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="library\fmt\chrono.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="library\fmt\color.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="library\fmt\compile.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="library\fmt\core.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="library\fmt\format.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="library\fmt\format-inl.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="library\fmt\os.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="library\fmt\ostream.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="library\fmt\printf.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="library\fmt\ranges.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="library\fmt\std.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="library\fmt\xchar.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="library\detours\detours.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="library\detours\HookManager.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Init.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="library\stb\stb_c_lexer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="library\stb\stb_connected_components.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="library\stb\stb_divide.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="library\stb\stb_ds.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="library\stb\stb_dxt.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="library\stb\stb_easy_font.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="library\stb\stb_herringbone_wang_tile.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="library\stb\stb_hexwave.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="library\stb\stb_image.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="library\stb\stb_image_resize.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="library\stb\stb_image_write.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="library\stb\stb_include.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="library\stb\stb_leakcheck.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="library\stb\stb_perlin.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="library\stb\stb_rect_pack.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="library\stb\stb_sprintf.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="library\stb\stb_textedit.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="library\stb\stb_tilemap_editor.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="library\stb\stb_truetype.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="library\stb\stb_voxel_render.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="library\detours\[x64]detours.lib" />
+    <Library Include="library\detours\[x86]detours.lib" />
+  </ItemGroup>
+</Project>

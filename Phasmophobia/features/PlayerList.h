@@ -23,7 +23,8 @@ protected:
     static auto Player_Awake_NEW(PlayerAPI* player) -> void;
     static auto Player_OnDestroy_NEW(PlayerAPI* player) -> void;
 
-    void(*StartKillingPlayer)(void*);
+    inline static void(*RevivePlayer)(void*);
+    inline static void(*StartKillingPlayer)(void*);
 private:
     inline static std::mutex              mutex;
     inline static std::vector<PlayerAPI*> players;

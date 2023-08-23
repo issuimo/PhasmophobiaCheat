@@ -1,6 +1,8 @@
 ﻿#pragma once
 #include "../Init.h"
 
+#include "../gameAPI/CursedItemsControllerAPI.h"
+
 class ESP final : public initSpace::Feature {
 public:
     static auto GetInstance() -> ESP&;
@@ -11,13 +13,24 @@ public:
     auto        Save(nlohmann::json& json) -> void override;
     auto        Load(nlohmann::json& json) -> void override;
 
-    static auto ClearAllAdress() -> void {
-        CursedItemsController_This = 0;
+    static auto ClearAllAddress() -> void {
+        CursedItemsControllerAPI::hauntedMirror_ = 0;
+        CursedItemsControllerAPI::monkeyPaw_ = 0;
+        CursedItemsControllerAPI::musicBox_ = 0;
+        CursedItemsControllerAPI::ouijaBoard_ = 0;
+        CursedItemsControllerAPI::summoningCircle_ = 0;
+        CursedItemsControllerAPI::tarotCards_ = 0;
+        CursedItemsControllerAPI::voodooDoll_ = 0;
     }
 protected:
-    static auto CursedItemsController_Awake_NEW(void* p) -> void;
+    static auto MusicBox_ctor_NEW(void* p) -> void;
+    static auto VoodooDoll_ctor_NEW(void* p) -> void;
+    static auto MonkeyPaw_ctor_NEW(void* p) -> void;
+    static auto HauntedMirror_ctor_NEW(void* p) -> void;
+    static auto OuijaBoard_ctor_NEW(void* p) -> void;
+    static auto SummoningCircle_ctor_NEW(void* p) -> void;
+    static auto TarotCard_ctor_NEW(void* p) -> void;
     ESP();
 private:
     inline static bool ghostEsp, doorEsp, gRoomEsp, curseObj;
-    inline static std::uintptr_t CursedItemsController_This;
 };

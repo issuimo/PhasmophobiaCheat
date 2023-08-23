@@ -301,7 +301,7 @@ class case_insensitive {
 
  public:
   template <typename L, typename R>
-  constexpr auto operator()(L lhs,R rhs) const noexcept -> std::enable_if_t<std::is_same_v<std::decay_t<L>, char_type> && std::is_same_v<std::decay_t<R>, char_type>, bool> {
+  constexpr auto operator()(L lhs, R rhs) const noexcept -> std::enable_if_t<std::is_same_v<std::decay_t<L>, char_type> && std::is_same_v<std::decay_t<R>, char_type>, bool> {
     return Op{}(to_lower(lhs), to_lower(rhs));
   }
 };
@@ -434,7 +434,11 @@ constexpr auto n() noexcept {
       name.str_ += 37;
     }
 #elif defined(_MSC_VER)
-    auto name = str_view{__FUNCSIG__ + 40, sizeof(__FUNCSIG__) - 57};
+    // CLI/C++ workaround (see https://github.com/Neargye/magic_enum/issues/284).
+    str_view name;
+    name.str_ = __FUNCSIG__;
+    name.str_ += 40;
+    name.size_ += sizeof(__FUNCSIG__) - 57;
 #else
     auto name = str_view{};
 #endif
@@ -508,7 +512,10 @@ constexpr auto n() noexcept {
 #elif defined(_MSC_VER)
     str_view name;
     if ((__FUNCSIG__[5] == '_' && __FUNCSIG__[35] != '(') || (__FUNCSIG__[5] == 'c' && __FUNCSIG__[41] != '(')) {
-      name = str_view{__FUNCSIG__ + 35, sizeof(__FUNCSIG__) - 52};
+      // CLI/C++ workaround (see https://github.com/Neargye/magic_enum/issues/284).
+      name.str_ = __FUNCSIG__;
+      name.str_ += 35;
+      name.size_ = sizeof(__FUNCSIG__) - 52;
     }
 #else
     auto name = str_view{};
@@ -543,7 +550,10 @@ constexpr auto n() noexcept {
   constexpr auto name_ptr = MAGIC_ENUM_GET_ENUM_NAME_BUILTIN(V);
   auto name = name_ptr ? str_view{name_ptr, std::char_traits<char>::length(name_ptr)} : str_view{};
 #  else
-  str_view name = str_view{__FUNCSIG__, sizeof(__FUNCSIG__) - 17};
+  // CLI/C++ workaround (see https://github.com/Neargye/magic_enum/issues/284).
+  str_view name;
+  name.str_ = __FUNCSIG__;
+  name.size_ = sizeof(__FUNCSIG__) - 17;
   std::size_t p = 0;
   for (std::size_t i = name.size_; i > 0; --i) {
     if (name.str_[i] == ',' || name.str_[i] == ':') {

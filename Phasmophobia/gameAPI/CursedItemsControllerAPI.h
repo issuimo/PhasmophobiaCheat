@@ -2,62 +2,70 @@
 #include "../library/UnityHack.h"
 class CursedItemsControllerAPI {
 public:
-    void* hasHauntedMirror() {
+    inline static std::uintptr_t hauntedMirror_;
+    inline static std::uintptr_t musicBox_;
+    inline static std::uintptr_t monkeyPaw_;
+    inline static std::uintptr_t ouijaBoard_;
+    inline static std::uintptr_t summoningCircle_;
+    inline static std::uintptr_t tarotCards_;
+    inline static std::uintptr_t voodooDoll_;
+
+    static void* hasHauntedMirror() {
         try {
-            return *reinterpret_cast<void**>(reinterpret_cast<std::uint64_t>(this) + 0x40);
+            return reinterpret_cast<void*>(hauntedMirror_);
         } catch (...) {
             return nullptr;
         }
     }
 
-    void* hasMusicBox() {
+    static void* hasMusicBox() {
         try {
-            return *reinterpret_cast<void**>(reinterpret_cast<std::uint64_t>(this) + 0x28);
+            return reinterpret_cast<void*>(musicBox_);
         }
         catch (...) {
             return nullptr;
         }
     }
 
-    void* hasMonkeyPaw() {
+    static void* hasMonkeyPaw() {
         try {
-            return *reinterpret_cast<void**>(reinterpret_cast<std::uint64_t>(this) + 0x50);
+            return reinterpret_cast<void*>(monkeyPaw_);
         }
         catch (...) {
             return nullptr;
         }
     }
 
-    void* hasOuijaBoard() {
+    static void* hasOuijaBoard() {
         try {
-            return *reinterpret_cast<void**>(reinterpret_cast<std::uint64_t>(this) + 0x20);
+            return reinterpret_cast<void*>(ouijaBoard_);
         }
         catch (...) {
             return nullptr;
         }
     }
 
-    void* hasSummoningCircle() {
+    static void* hasSummoningCircle() {
         try {
-            return *reinterpret_cast<void**>(reinterpret_cast<std::uint64_t>(this) + 0x38);
+            return reinterpret_cast<void*>(summoningCircle_);
         }
         catch (...) {
             return nullptr;
         }
     }
 
-    void* hasTarotCards() {
+    static void* hasTarotCards() {
         try {
-            return *reinterpret_cast<void**>(reinterpret_cast<std::uint64_t>(this) + 0x30);
+            return reinterpret_cast<void*>(tarotCards_);
         }
         catch (...) {
             return nullptr;
         }
     }
 
-    void* hasVoodooDoll() {
+    static void* hasVoodooDoll() {
         try {
-            return *reinterpret_cast<void**>(reinterpret_cast<std::uint64_t>(this) + 0x48);
+            return reinterpret_cast<void*>(voodooDoll_);
         }
         catch (...) {
             return nullptr;
