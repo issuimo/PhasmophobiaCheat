@@ -2,52 +2,53 @@
 
 #include "DoorList.h"
 #include "GhostList.h"
+#include "PlayerList.h"
 
 #include "../library/magic_enum/magic_enum.hpp"
 
-auto ESP::MusicBox_ctor_NEW(void* p) -> void {
+auto ESP::MusicBox_ctor_NEW(void* p, unity::CSharper::Vector3 v) -> void {
     CursedItemsControllerAPI::musicBox_ = reinterpret_cast<std::uintptr_t>(p);
-    return HookManager::call(MusicBox_ctor_NEW, p);
+    return HookManager::call(MusicBox_ctor_NEW, p, v);
 }
 
-auto ESP::VoodooDoll_ctor_NEW(void* p) -> void {
+auto ESP::VoodooDoll_ctor_NEW(void* p, unity::CSharper::Vector3 v) -> void {
     CursedItemsControllerAPI::voodooDoll_ = reinterpret_cast<std::uintptr_t>(p);
-    return HookManager::call(VoodooDoll_ctor_NEW, p);
+    return HookManager::call(VoodooDoll_ctor_NEW, p, v);
 }
 
-auto ESP::MonkeyPaw_ctor_NEW(void* p) -> void {
+auto ESP::MonkeyPaw_ctor_NEW(void* p, unity::CSharper::Vector3 v) -> void {
     CursedItemsControllerAPI::monkeyPaw_ = reinterpret_cast<std::uintptr_t>(p);
-    return HookManager::call(MonkeyPaw_ctor_NEW, p);
+    return HookManager::call(MonkeyPaw_ctor_NEW, p, v);
 }
 
-auto ESP::HauntedMirror_ctor_NEW(void* p) -> void {
+auto ESP::HauntedMirror_ctor_NEW(void* p, unity::CSharper::Vector3 v) -> void {
     CursedItemsControllerAPI::hauntedMirror_ = reinterpret_cast<std::uintptr_t>(p);
-    return HookManager::call(HauntedMirror_ctor_NEW, p);
+    return HookManager::call(HauntedMirror_ctor_NEW, p, v);
 }
 
-auto ESP::OuijaBoard_ctor_NEW(void* p) -> void {
+auto ESP::OuijaBoard_Awake_NEW(void* p) -> void {
     CursedItemsControllerAPI::ouijaBoard_ = reinterpret_cast<std::uintptr_t>(p);
-    return HookManager::call(OuijaBoard_ctor_NEW, p);
+    return HookManager::call(OuijaBoard_Awake_NEW, p);
 }
 
-auto ESP::SummoningCircle_ctor_NEW(void* p) -> void {
+auto ESP::SummoningCircle_ctor_NEW(void* p, unity::CSharper::Vector3 v) -> void {
     CursedItemsControllerAPI::summoningCircle_ = reinterpret_cast<std::uintptr_t>(p);
-    return HookManager::call(SummoningCircle_ctor_NEW, p);
+    return HookManager::call(SummoningCircle_ctor_NEW, p, v);
 }
 
-auto ESP::TarotCard_ctor_NEW(void* p) -> void {
+auto ESP::TarotCard_Awake_NEW(void* p) -> void {
     CursedItemsControllerAPI::tarotCards_ = reinterpret_cast<std::uintptr_t>(p);
-    return HookManager::call(TarotCard_ctor_NEW, p);
+    return HookManager::call(TarotCard_Awake_NEW, p);
 }
 
 ESP::ESP() : Feature{} {
-    HookManager::install(reinterpret_cast<void(*)(void*)>(unity::Il2cpp::Method::GetAddress("MusicBox", ".ctor", 0)), MusicBox_ctor_NEW);
-    HookManager::install(reinterpret_cast<void(*)(void*)>(unity::Il2cpp::Method::GetAddress("VoodooDoll", ".ctor", 0)), VoodooDoll_ctor_NEW);
-    HookManager::install(reinterpret_cast<void(*)(void*)>(unity::Il2cpp::Method::GetAddress("MonkeyPaw", ".ctor", 0)), MonkeyPaw_ctor_NEW);
-    HookManager::install(reinterpret_cast<void(*)(void*)>(unity::Il2cpp::Method::GetAddress("HauntedMirror", ".ctor", 0)), HauntedMirror_ctor_NEW);
-    HookManager::install(reinterpret_cast<void(*)(void*)>(unity::Il2cpp::Method::GetAddress("OuijaBoard", ".ctor", 0)), OuijaBoard_ctor_NEW);
-    HookManager::install(reinterpret_cast<void(*)(void*)>(unity::Il2cpp::Method::GetAddress("SummoningCircle", ".ctor", 0)), SummoningCircle_ctor_NEW);
-    HookManager::install(reinterpret_cast<void(*)(void*)>(unity::Il2cpp::Method::GetAddress("TarotCard", ".ctor", 0)), TarotCard_ctor_NEW);
+    HookManager::install(reinterpret_cast<void(*)(void*, unity::CSharper::Vector3)>(unity::Il2cpp::Method::GetAddress("MusicBox", "InitNetworked", 1)), MusicBox_ctor_NEW);
+    HookManager::install(reinterpret_cast<void(*)(void*, unity::CSharper::Vector3)>(unity::Il2cpp::Method::GetAddress("VoodooDoll", "InitNetworked", 1)), VoodooDoll_ctor_NEW);
+    HookManager::install(reinterpret_cast<void(*)(void*, unity::CSharper::Vector3)>(unity::Il2cpp::Method::GetAddress("MonkeyPaw", "InitNetworked", 1)), MonkeyPaw_ctor_NEW);
+    HookManager::install(reinterpret_cast<void(*)(void*, unity::CSharper::Vector3)>(unity::Il2cpp::Method::GetAddress("HauntedMirror", "InitNetworked", 1)), HauntedMirror_ctor_NEW);
+    HookManager::install(reinterpret_cast<void(*)(void*)>(unity::Il2cpp::Method::GetAddress("OuijaBoard", "Awake", 0)), OuijaBoard_Awake_NEW);
+    HookManager::install(reinterpret_cast<void(*)(void* , unity::CSharper::Vector3)>(unity::Il2cpp::Method::GetAddress("SummoningCircle", "InitNetworked", 1)), SummoningCircle_ctor_NEW);
+    HookManager::install(reinterpret_cast<void(*)(void*)>(unity::Il2cpp::Method::GetAddress("TarotCard", "Start", 0)), TarotCard_Awake_NEW);
 }
 
 auto ESP::GetInstance() -> ESP& {
@@ -68,6 +69,8 @@ auto ESP::Render() -> void {
     ImGui::Checkbox(reinterpret_cast<const char*>(u8"鬼房"), &gRoomEsp);
     ImGui::SameLine();
     ImGui::Checkbox(reinterpret_cast<const char*>(u8"诅咒道具"), &curseObj);
+    ImGui::SameLine();
+    ImGui::Checkbox(reinterpret_cast<const char*>(u8"玩家"), &playerEsp);
 }
 
 auto ESP::Update() -> void {
@@ -84,6 +87,17 @@ auto ESP::DrawStatus() -> void {
                 vector3.y = initSpace::GuiInfo::h - vector3.y;
                 if ((vector3.x > 0 && vector3.y > 0) && (vector3.x < initSpace::GuiInfo::w && vector3.y < initSpace::GuiInfo::h) && vector3.z > 0) {
                     ImGui::GetBackgroundDrawList()->AddText(ImVec2(vector3.x, vector3.y), ImColor(255, 0, 0), std::format("{}.{}\n[{}] M", static_cast<int>(ghost->GetGhostType()), magic_enum::enum_name<GhostAPI::GhostType>(ghost->GetGhostType()), vector3.z).c_str());
+                }
+            }
+        }
+
+        if (playerEsp) {
+            const auto players = PlayerList::GetPlayers();
+            for (auto& player : players) {
+                auto vector3 = camera->WorldToScreenPoint(reinterpret_cast<unity::CSharper::IL2cpp::Component*>(player)->GetTransform()->GetPosition(), unity::CSharper::IL2cpp::Camera::m_eCameraEye_Center);
+                vector3.y = initSpace::GuiInfo::h - vector3.y;
+                if ((vector3.x > 0 && vector3.y > 0) && (vector3.x < initSpace::GuiInfo::w && vector3.y < initSpace::GuiInfo::h) && vector3.z > 0) {
+                    ImGui::GetBackgroundDrawList()->AddText(ImVec2(vector3.x, vector3.y), ImColor(255, 0, 0), std::format("{}\n[{}] M", player->GetName(), vector3.z).c_str());
                 }
             }
         }
@@ -169,6 +183,7 @@ auto ESP::Save(nlohmann::json& json) -> void {
     json["doorEsp"] = doorEsp;
     json["gRoomEsp"] = gRoomEsp;
     json["curseObj"] = curseObj;
+    json["playerEsp"] = playerEsp;
 }
 
 auto ESP::Load(nlohmann::json& json) -> void {
@@ -183,5 +198,8 @@ auto ESP::Load(nlohmann::json& json) -> void {
     }
     if (json.contains("curseObj")) {
         curseObj = json["curseObj"];
+    }
+    if (json.contains("playerEsp")) {
+        playerEsp = json["playerEsp"];
     }
 }

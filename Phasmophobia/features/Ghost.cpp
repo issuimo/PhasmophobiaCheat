@@ -1,13 +1,6 @@
 ﻿#include "Ghost.h"
 #include "GhostList.h"
 
-auto Ghost::Ghost_StartHuntingTimer_NEW(void* p) -> void {
-    if (noHunt) {
-        return;
-    }
-    return HookManager::call(Ghost_StartHuntingTimer_NEW, p);
-}
-
 auto Ghost::Ghost_Hunting_NEW(void* p, bool arg, int i, void* p1) -> void {
     if (noHunt) {
         return;
@@ -37,9 +30,6 @@ auto Ghost::Ghost_HuntingCloseDoorNetworked_NEW(void* p, void* p1) -> void {
 }
 
 Ghost::Ghost() : Feature{} {
-    HookManager::install(reinterpret_cast<void(*)(void*)>(
-        unity::Il2cpp::Method::GetAddress("GhostAI", "StartHuntingTimer", 0)),
-        Ghost_StartHuntingTimer_NEW);
     HookManager::install(reinterpret_cast<void(*)(void*, bool, int, void*)>(
         unity::Il2cpp::Method::GetAddress("GhostAI", "Hunting", 3)),
         Ghost_Hunting_NEW);

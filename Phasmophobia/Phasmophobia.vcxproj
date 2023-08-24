@@ -22,6 +22,7 @@
     <PlatformToolset>v143</PlatformToolset>
     <CLRSupport>false</CLRSupport>
     <CharacterSet>Unicode</CharacterSet>
+    <UseInteloneMKL>Parallel</UseInteloneMKL>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -71,6 +72,7 @@
     <ClCompile Include="features\MoreXP.cpp" />
     <ClCompile Include="features\NoDead.cpp" />
     <ClCompile Include="features\PlayerList.cpp" />
+    <ClCompile Include="features\RoomList.cpp" />
     <ClCompile Include="Init.cpp" />
     <ClCompile Include="library\imgui\Font.cpp" />
     <ClCompile Include="library\imgui\imgui.cpp" />
@@ -120,6 +122,7 @@
     <ClInclude Include="features\MoreXP.h" />
     <ClInclude Include="features\NoDead.h" />
     <ClInclude Include="features\PlayerList.h" />
+    <ClInclude Include="features\RoomList.h" />
     <ClInclude Include="gameAPI\CursedItemsControllerAPI.h" />
     <ClInclude Include="gameAPI\DoorAPI.h" />
     <ClInclude Include="gameAPI\GhostAPI.h" />

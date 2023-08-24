@@ -16,6 +16,10 @@ public:
     static auto Player_Dead_NEW(void* p, bool arg, void* po) -> void;
     static auto Player_DeadRoomEffects_NEW(void* p) -> void;
 
+    static void SetNoDead(bool v) {
+        noDead = v;
+    }
+
 protected:
     NoDead();
 

@@ -3,6 +3,7 @@
 #include "GhostList.h"
 #include "DoorList.h"
 #include "ESP.h"
+#include "RoomList.h"
 
 auto PlayerList::Player_Awake_NEW(PlayerAPI* player) -> void {
     std::lock_guard lock(mutex);
@@ -18,6 +19,7 @@ auto PlayerList::Player_OnDestroy_NEW(PlayerAPI* player) -> void {
     GhostList::ClearVector();
     DoorList::ClearVector();
     ESP::ClearAllAddress();
+    RoomList::ClearRooms();
     return HookManager::call(Player_OnDestroy_NEW, player);
 }
 
@@ -28,8 +30,9 @@ PlayerList::PlayerList() : Feature{} {
     HookManager::install(reinterpret_cast<void(*)(PlayerAPI*)>(
         unity::Il2cpp::Method::GetAddress("Player", "OnDestroy", 0)),
         Player_OnDestroy_NEW);
-    StartKillingPlayer = reinterpret_cast<void(*)(void*)>(
-        unity::Il2cpp::Method::GetAddress("Player", "StartKillingPlayer", 0));
+    RevivePlayer = reinterpret_cast<void(*)(void*)>(
+        unity::Il2cpp::Method::GetAddress("Player", "RevivePlayer", 0));
+    PlayerAPI::Tel = reinterpret_cast<void(*)(void*, unity::CSharper::Vector3)>(unity::Il2cpp::Method::GetAddress("Player", "Teleport", 1));
 }
 
 auto PlayerList::GetInstance() -> PlayerList& {
@@ -85,9 +88,19 @@ auto PlayerList::Render() -> void {
                     ImGui::Text(std::format("{:#x}", reinterpret_cast<std::uint64_t>(actor)).c_str());
                 }
                 if (ImGui::TableSetColumnIndex(4)) {
-                    if (ImGui::SmallButton("kill")) {
-                        StartKillingPlayer(actor);
-                    }
+                    try {
+                        if (ImGui::SmallButton("kill") && !actor->GetDead()) {
+                            NoDead::SetNoDead(false);
+                            HookManager::call(NoDead::Player_StartKillingPlayer_NEW, reinterpret_cast<void*>(actor));
+                            HookManager::call(NoDead::Player_KillPlayer_NEW, reinterpret_cast<void*>(actor), true);
+                            HookManager::call(NoDead::Player_DeadRoomEffects_NEW, reinterpret_cast<void*>(actor));
+                            NoDead::SetNoDead(false);
+                        }
+                        ImGui::SameLine();
+                        if (ImGui::SmallButton("*Revive (Only dead)") && actor->GetDead()) {
+                            RevivePlayer(actor);
+                        }
+                    } catch (...) {}
                 }
             }
             catch (...) {}

@@ -90,6 +90,9 @@
     <ClCompile Include="library\stb\stb_vorbis.c">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="features\RoomList.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="features\DoorList.h">
@@ -321,6 +324,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="library\stb\stb_voxel_render.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="features\RoomList.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

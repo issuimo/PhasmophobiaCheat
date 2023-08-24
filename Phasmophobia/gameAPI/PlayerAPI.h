@@ -6,6 +6,8 @@
 
 class PlayerAPI {
 public:
+    inline static void(*Tel)(void*, unity::CSharper::Vector3);
+
     std::string GetName() {
         try {
             const auto offset1 = *reinterpret_cast<std::uint64_t*>(reinterpret_cast<std::uint64_t>(this) + 0x20);
@@ -22,6 +24,15 @@ public:
             return *reinterpret_cast<LevelAPI**>(reinterpret_cast<std::uint64_t>(this) + 0x60);
         } catch (...) {
             return nullptr;
+        }
+    }
+
+    void Teleport(unity::CSharper::Vector3 p) {
+        try {
+            return Tel(this, p);
+        }
+        catch (...) {
+            return;
         }
     }
 

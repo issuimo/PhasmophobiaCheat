@@ -25,7 +25,7 @@ auto NoDead::Player_DeadRoomEffects_NEW(void* p) -> void {
 }
 
 NoDead::NoDead() : Feature{} {
-    //HookManager::install(reinterpret_cast<void(*)(void*)>(unity::Il2cpp::Method::GetAddress("Player", "StartKillingPlayer", 0)),Player_StartKillingPlayer_NEW);
+    HookManager::install(reinterpret_cast<void(*)(void*)>(unity::Il2cpp::Method::GetAddress("Player", "StartKillingPlayer", 0)),Player_StartKillingPlayer_NEW);
     HookManager::install(reinterpret_cast<void(*)(void*, bool)>(unity::Il2cpp::Method::GetAddress("Player", "KillPlayer", 1)),Player_KillPlayer_NEW);
     HookManager::install(reinterpret_cast<void(*)(void*, bool, void*)>(unity::Il2cpp::Method::GetAddress("Player", "Dead", 2)),Player_Dead_NEW);
     HookManager::install(reinterpret_cast<void(*)(void*)>(unity::Il2cpp::Method::GetAddress("Player", "DeadRoomEffects", 0)),Player_DeadRoomEffects_NEW);

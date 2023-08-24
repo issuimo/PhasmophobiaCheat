@@ -23,14 +23,14 @@ public:
         CursedItemsControllerAPI::voodooDoll_ = 0;
     }
 protected:
-    static auto MusicBox_ctor_NEW(void* p) -> void;
-    static auto VoodooDoll_ctor_NEW(void* p) -> void;
-    static auto MonkeyPaw_ctor_NEW(void* p) -> void;
-    static auto HauntedMirror_ctor_NEW(void* p) -> void;
-    static auto OuijaBoard_ctor_NEW(void* p) -> void;
-    static auto SummoningCircle_ctor_NEW(void* p) -> void;
-    static auto TarotCard_ctor_NEW(void* p) -> void;
+    static auto MusicBox_ctor_NEW(void* p, unity::CSharper::Vector3 v) -> void;
+    static auto VoodooDoll_ctor_NEW(void* p, unity::CSharper::Vector3 v) -> void;
+    static auto MonkeyPaw_ctor_NEW(void* p, unity::CSharper::Vector3 v) -> void;
+    static auto HauntedMirror_ctor_NEW(void* p, unity::CSharper::Vector3 v) -> void;
+    static auto OuijaBoard_Awake_NEW(void* p) -> void;
+    static auto SummoningCircle_ctor_NEW(void* p, unity::CSharper::Vector3 v) -> void;
+    static auto TarotCard_Awake_NEW(void* p) -> void;
     ESP();
 private:
-    inline static bool ghostEsp, doorEsp, gRoomEsp, curseObj;
+    inline static bool ghostEsp, doorEsp, gRoomEsp, curseObj, playerEsp;
 };

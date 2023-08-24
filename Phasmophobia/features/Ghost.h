@@ -12,7 +12,6 @@ public:
     auto        Load(nlohmann::json& json) -> void override;
 
 protected:
-    static auto Ghost_StartHuntingTimer_NEW(void* p) -> void;
     static auto Ghost_Hunting_NEW(void* p, bool arg, int i, void* p1) -> void;
     static auto Ghost_ChangeFavouriteRoomTo_NEW(void* p, void* arg) -> void;
     static auto Ghost_HuntingCloseDoor_NEW(void* p) -> void;
