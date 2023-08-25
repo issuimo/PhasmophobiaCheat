@@ -5,11 +5,11 @@
 
 #pragma comment(lib, "d3d11.lib")
  
-namespace dxhook {
+namespace DxHook {
 	class Hk11 {
 		using IDXGISwapChainPresent = HRESULT(*)(IDXGISwapChain*, UINT, UINT);
 	public:
-		static auto Build(std::function<void()> fn) -> bool {
+		static auto Build(const std::function<void()>& fn) -> bool {
             if (!fn)
                 return false;
 
@@ -23,22 +23,22 @@ namespace dxhook {
 
 		static auto SetWndProc(char(*wndProc)(HWND, UINT, WPARAM, LPARAM)) -> void {
             WndProc = wndProc;
-            oldWndProc = reinterpret_cast<WNDPROC>(GetWindowLongPtr(hwnd, GWLP_WNDPROC));
-            SetWindowLongPtr(hwnd, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(NewWndProc));
+            oldWndProc = reinterpret_cast<WNDPROC>(GetWindowLongPtr(hWnd_, GWLP_WNDPROC));
+            SetWindowLongPtr(hWnd_, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(NewWndProc));
 		}
 
 		static auto Unbuild() -> void { HookManager::detach(MyPresent); }
 
-		inline static auto GetHwnd() -> HWND { return hwnd; }
+		inline static auto GetHwnd() -> HWND { return hWnd_; }
 		inline static auto GetDevice() -> ID3D11Device* { return g_Device; }
 		inline static auto GetSwapChain() -> IDXGISwapChain* { return g_SwapChain; }
 		inline static auto GetContext() -> ID3D11DeviceContext* { return g_Context; }
 		inline static auto GetTargetView() -> ID3D11RenderTargetView* const * { return &g_TargetView; }
 
 	private:
-		inline static bool inited{false};
+		inline static bool Init{false};
 
-		inline static HWND hwnd{};
+		inline static HWND hWnd_{};
 		inline static WNDPROC oldWndProc{};
 
 		inline static std::function<void()> present;
@@ -58,7 +58,7 @@ namespace dxhook {
             if (!RegisterClassEx(&wc))
                 return nullptr;
 
-            HWND hWnd = CreateWindow(wc.lpszClassName, TEXT(""), WS_DISABLED, 0, 0, 0, 0, NULL, NULL, NULL, nullptr);
+			const HWND hWnd = CreateWindow(wc.lpszClassName, TEXT(""), WS_DISABLED, 0, 0, 0, 0, NULL, NULL, NULL, nullptr);
             IDXGISwapChain* pSwapChain;
 
             D3D_FEATURE_LEVEL    featureLevel;
@@ -90,7 +90,7 @@ namespace dxhook {
             const DWORD_PTR* pSwapChainVtable = reinterpret_cast<DWORD_PTR*>(pSwapChain);
             pSwapChainVtable = reinterpret_cast<DWORD_PTR*>(pSwapChainVtable[0]);
 
-            auto swapChainPresent = reinterpret_cast<IDXGISwapChainPresent>(pSwapChainVtable[8]);
+			const auto swapChainPresent = reinterpret_cast<IDXGISwapChainPresent>(pSwapChainVtable[8]);
 
             pDevice->Release();
             pContext->Release();
@@ -102,19 +102,19 @@ namespace dxhook {
 		}
 
 		static auto MyPresent(IDXGISwapChain* a, UINT b, UINT c) -> HRESULT {
-            if (!inited) {
-                g_SwapChain = a;
-                auto result = a->GetDevice(__uuidof(g_Device), reinterpret_cast<void**>(&g_Device));
+            if (!Init) {
+                g_SwapChain       = a;
+				const auto result = a->GetDevice(__uuidof(g_Device), reinterpret_cast<void**>(&g_Device));
                 if (SUCCEEDED(result)) {
                     g_Device->GetImmediateContext(&g_Context);
                     DXGI_SWAP_CHAIN_DESC sd;
                     a->GetDesc(&sd);
-                    hwnd = sd.OutputWindow;
+                    hWnd_ = sd.OutputWindow;
                     ID3D11Texture2D* pBackBuffer{};
                     a->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<LPVOID*>(&pBackBuffer));
                     g_Device->CreateRenderTargetView(pBackBuffer, nullptr, &g_TargetView);
                     pBackBuffer->Release();
-                    inited = true;
+                    Init = true;
                 }
             }
 
@@ -132,6 +132,7 @@ namespace dxhook {
             if (ret == 2) {
                 return NULL;
             }
+            return NULL;
 		}
 	};
 }

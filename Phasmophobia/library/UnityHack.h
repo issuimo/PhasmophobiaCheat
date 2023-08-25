@@ -10,6 +10,8 @@
 #include <fstream>
 #include <sstream>
 
+#include "Console.hpp"
+
 // 请使用OneApi Base包内Intel C++ 编译器打开MKL选项后编
 #include <mkl.h>
 
@@ -83,7 +85,7 @@ namespace unity {
             }
 
             auto Distance(const std::vector<Vector3>& events) const -> std::vector<float> {
-                const int     numEvents = events.size();
+                const size_t     numEvents = events.size();
                 constexpr int numDimensions = 3;
                 const int     numElements = numEvents * numDimensions;
 
@@ -133,7 +135,7 @@ namespace unity {
             }
 
             auto Distance(const std::vector<Vector2>& events) const -> std::vector<float> {
-                const int     numEvents = events.size();
+                const size_t     numEvents = events.size();
                 constexpr int numDimensions = 2;
                 const int     numElements = numEvents * numDimensions;
 
@@ -854,12 +856,26 @@ namespace unity {
                 const std::string& method_name,
                 const size_t       param_count = -1,
                 const std::string& namespaze = "") -> std::uintptr_t {
-                const auto klass = Class::GetClassFromName(class_name, namespaze);
-
-                if (klass == nullptr)
+                Class* klass{};
+                try {
+                    klass = Class::GetClassFromName(class_name, namespaze);
+                    if (klass == nullptr) {
+                        LOG_WARNING(std::format("Cant Find \"{}\" Class", class_name));
+                        return 0;
+                    }
+                }
+                catch (...) {
+                    LOG_WARNING(std::format("Cant Find \"{}\" Class", class_name));
                     return 0;
+                }
 
-                return klass->GetMethodFromName(method_name, param_count)->GetAddress();
+                try {
+                    return klass->GetMethodFromName(method_name, param_count)->GetAddress();
+                }
+                catch (...) {
+                    LOG_WARNING(std::format("Cant Find \"{}\" Method", method_name));
+                    return 0;
+                }
             }
         };
 
@@ -1889,12 +1905,26 @@ namespace unity {
                 const std::string& method_name,
                 const size_t       param_count = -1,
                 const std::string& namespaze = "") -> std::uintptr_t {
-                const auto klass = Class::GetClassFromName(class_name, namespaze);
 
-                if (klass == nullptr)
+                Class* klass{};
+                try {
+                    klass = Class::GetClassFromName(class_name, namespaze);
+                    if (klass == nullptr) {
+                        LOG_WARNING(std::format("Cant Find \"{}\" Class", class_name));
+                        return 0;
+                    }
+                }
+                catch (...) {
+                    LOG_WARNING(std::format("Cant Find \"{}\" Class", class_name));
                     return 0;
+                }
 
-                return klass->GetMethodFromName(method_name, param_count)->GetAddress();
+                try {
+                    return klass->GetMethodFromName(method_name, param_count)->GetAddress();
+                } catch (...) {
+                    LOG_WARNING(std::format("Cant Find \"{}\" Method", method_name));
+                    return 0;
+                }
             }
         };
 

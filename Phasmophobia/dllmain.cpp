@@ -1,7 +1,7 @@
 ﻿#include "Init.h"
 #include "library/Font.hpp"
-#include "library/d3d11hook.h"
-#include "library/log.h"
+#include "library/D3D11Hook.h"
+#include "library/Console.hpp"
 #include "library/imgui/imgui_impl_dx11.h"
 #include "library/imgui/imgui_impl_win32.h"
 
@@ -13,7 +13,7 @@ auto APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserv
             AntiAntiCheat();
             std::thread([hModule] {
                 // 打开控制台
-                easyLog::Log::OpenConsole();
+                Console::StartConsole(L"Console", false);
 
                 // 初始化Mono
                 unity::Il2cpp::SetModule(GetModuleHandleA("GameAssembly.dll"));
@@ -22,7 +22,7 @@ auto APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserv
                 initSpace::Feature::Init();
 
                 // 安装D3D11HOOK
-                dxhook::Hk11::Build([hModule] {
+                DxHook::Hk11::Build([hModule] {
                     if (!initSpace::GuiInfo::imGuiInit) {
                         IMGUI_CHECKVERSION();
 
@@ -42,19 +42,16 @@ auto APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserv
                                                        nullptr,
                                                        io.Fonts->GetGlyphRangesChineseFull());
 
-                        // 设置ImGui主题
-                        ImGui::StyleColorsClassic();
-
                         // 初始化ImGui D3D11设备和窗口
-                        ImGui_ImplWin32_Init(dxhook::Hk11::GetHwnd());
-                        ImGui_ImplDX11_Init(dxhook::Hk11::GetDevice(), dxhook::Hk11::GetContext());
+                        ImGui_ImplWin32_Init(DxHook::Hk11::GetHwnd());
+                        ImGui_ImplDX11_Init(DxHook::Hk11::GetDevice(), DxHook::Hk11::GetContext());
 
                         // 接管窗口消息
-                        dxhook::Hk11::SetWndProc([](HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) -> char {
+                        DxHook::Hk11::SetWndProc([](HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) -> char {
                             ImGuiIO& io = ImGui::GetIO();
                             POINT    mPos;
                             GetCursorPos(&mPos);
-                            ScreenToClient(dxhook::Hk11::GetHwnd(), &mPos);
+                            ScreenToClient(DxHook::Hk11::GetHwnd(), &mPos);
                             ImGui::GetIO().MousePos.x = static_cast<float>(mPos.x);
                             ImGui::GetIO().MousePos.y = static_cast<float>(mPos.y);
                             ImGui_ImplWin32_WndProcHandler(hWnd,msg,wParam,lParam);
@@ -275,7 +272,7 @@ auto APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserv
                     // 结束并渲染
                     ImGui::EndFrame();
                     ImGui::Render();
-                    dxhook::Hk11::GetContext()->OMSetRenderTargets(1,dxhook::Hk11::GetTargetView(),nullptr);
+                    DxHook::Hk11::GetContext()->OMSetRenderTargets(1,DxHook::Hk11::GetTargetView(),nullptr);
                     ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
                 });
 
@@ -283,7 +280,7 @@ auto APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserv
                 std::vector<std::future<void>> futuresUpdate;
                 while (true) {
                     tagRECT Rect;
-                    GetClientRect(dxhook::Hk11::GetHwnd(), &Rect);
+                    GetClientRect(DxHook::Hk11::GetHwnd(), &Rect);
                     initSpace::GuiInfo::w = Rect.right - Rect.left;
                     initSpace::GuiInfo::h = Rect.bottom - Rect.top;
                     Sleep(1);

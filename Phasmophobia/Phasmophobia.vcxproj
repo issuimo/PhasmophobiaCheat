@@ -57,6 +57,8 @@
       <ExceptionHandling>Async</ExceptionHandling>
       <EnableModules>true</EnableModules>
       <BuildStlModules>true</BuildStlModules>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <AdditionalDependencies>$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
@@ -89,6 +91,7 @@
     <ClCompile Include="library\imgui\implot_demo.cpp" />
     <ClCompile Include="library\imgui\implot_items.cpp" />
     <ClCompile Include="library\stb\stb_vorbis.c" />
+    <ClCompile Include="library\VEHHook.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Assembly-CSharp">
@@ -129,7 +132,8 @@
     <ClInclude Include="gameAPI\LevelAPI.h" />
     <ClInclude Include="gameAPI\PlayerAPI.h" />
     <ClInclude Include="Init.h" />
-    <ClInclude Include="library\d3d11hook.h" />
+    <ClInclude Include="library\Console.hpp" />
+    <ClInclude Include="library\D3D11Hook.h" />
     <ClInclude Include="library\detours\detours.h" />
     <ClInclude Include="library\detours\HookManager.h" />
     <ClInclude Include="library\fmt\args.h" />
@@ -161,7 +165,6 @@
     <ClInclude Include="library\imgui\imstb_textedit.h" />
     <ClInclude Include="library\imgui\imstb_truetype.h" />
     <ClInclude Include="library\json.hpp" />
-    <ClInclude Include="library\log.h" />
     <ClInclude Include="library\magic_enum\magic_enum.hpp" />
     <ClInclude Include="library\magic_enum\magic_enum_all.hpp" />
     <ClInclude Include="library\magic_enum\magic_enum_containers.hpp" />
@@ -192,6 +195,7 @@
     <ClInclude Include="library\stb\stb_truetype.h" />
     <ClInclude Include="library\stb\stb_voxel_render.h" />
     <ClInclude Include="library\UnityHack.h" />
+    <ClInclude Include="library\VEHHook.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="library\detours\[x64]detours.lib" />

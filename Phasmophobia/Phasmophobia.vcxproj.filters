@@ -93,6 +93,9 @@
     <ClCompile Include="features\RoomList.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="library\VEHHook.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="features\DoorList.h">
@@ -134,16 +137,13 @@
     <ClInclude Include="gameAPI\PlayerAPI.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="library\d3d11hook.h">
+    <ClInclude Include="library\D3D11Hook.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="library\Font.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="library\json.hpp">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="library\log.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="library\UnityHack.h">
@@ -327,6 +327,12 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="features\RoomList.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="library\Console.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="library\VEHHook.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

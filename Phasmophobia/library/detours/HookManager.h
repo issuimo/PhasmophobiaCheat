@@ -16,7 +16,7 @@ class HookManager
 {
 public:
 	template <typename Fn>
-	static bool install(Fn func, Fn handler) {
+	static auto install(Fn func, Fn handler) -> bool {
 		if (reinterpret_cast<void*>(handler) != nullptr && reinterpret_cast<void*>(func) != nullptr) {
 			if (enable(func, handler)) {
 				std::lock_guard map(lock);
@@ -28,23 +28,23 @@ public:
 	}
 
 	template <typename Fn>
-	inline static Fn getOrigin(Fn handler) noexcept {
+	inline static auto getOrigin(Fn handler) noexcept -> Fn {
 		std::lock_guard map(lock);
-		if (holderMap.count(reinterpret_cast<void*>(handler)) == 0) {
+		if (!holderMap.contains(reinterpret_cast<void*>(handler))) {
 			return nullptr;
 		}
 		return reinterpret_cast<Fn>(holderMap[reinterpret_cast<void*>(handler)]);
 	}
 
 	template <typename Fn>
-	static void detach(Fn handler) noexcept {
+	static auto detach(Fn handler) noexcept -> void {
 		std::lock_guard map(lock);
 		disable(handler);
 		holderMap.erase(reinterpret_cast<void*>(handler));
 	}
 
 	template <typename RType, typename... Params>
-	inline static RType call(RType(* handler)(Params...), Params... params) {
+	inline static auto call(RType (*handler)(Params...), Params... params) -> RType {
 		auto origin = getOrigin(handler);
 		if (origin != nullptr)
 			return origin(params...);
@@ -53,7 +53,7 @@ public:
 	}
 
 	template <typename RType, typename... Params>
-	inline static RType ccall(RType(__cdecl* handler)(Params...), Params... params) {
+	inline static auto ccall(RType (__cdecl*handler)(Params...), Params... params) -> RType {
 		auto origin = getOrigin(handler);
 		if (origin != nullptr)
 			return origin(params...);
@@ -62,7 +62,7 @@ public:
 	}
 
 	template <typename RType, typename... Params>
-	inline static RType scall(RType(__stdcall* handler)(Params...), Params... params) {
+	inline static auto scall(RType (__stdcall*handler)(Params...), Params... params) -> RType {
 		auto origin = getOrigin(handler);
 		if (origin != nullptr)
 			return origin(params...);
@@ -71,7 +71,7 @@ public:
 	}
 
 	template <typename RType, typename... Params>
-	inline static RType fcall(RType(__fastcall* handler)(Params...), Params... params) {
+	inline static auto fcall(RType (__fastcall*handler)(Params...), Params... params) -> RType {
 		auto origin = getOrigin(handler);
 		if (origin != nullptr)
 			return origin(params...);
@@ -80,7 +80,7 @@ public:
 	}
 
 	template <typename RType, typename... Params>
-	inline static RType vcall(RType(__vectorcall* handler)(Params...), Params... params) {
+	inline static auto vcall(RType (__vectorcall*handler)(Params...), Params... params) -> RType {
 		auto origin = getOrigin(handler);
 		if (origin != nullptr)
 			return origin(params...);
@@ -88,9 +88,9 @@ public:
 		return RType();
 	}
 
-	static void detachAll() noexcept {
+	static auto detachAll() noexcept -> void {
 		std::lock_guard map(lock);
-		for (const auto& [key, value] : holderMap) {
+		for (const auto& key : holderMap | std::views::keys) {
 			disable(key);
 		}
 		holderMap.clear();
@@ -101,19 +101,19 @@ private:
 	inline static std::unordered_map<void*, void*> holderMap{};
 
 	template <typename Fn>
-	static void disable(Fn handler) {
+	static auto disable(Fn handler) -> void {
 		Fn origin = getOrigin(handler);
 		DetourTransactionBegin();
 		DetourUpdateThread(GetCurrentThread());
-		DetourDetach(&(PVOID&)origin, handler);
+		DetourDetach(&reinterpret_cast<PVOID&>(origin), handler);
 		DetourTransactionCommit();
 	}
 
 	template <typename Fn>
-	static bool enable(Fn& func, Fn handler) {
+	static auto enable(Fn& func, Fn handler) -> bool {
 		DetourTransactionBegin();
 		DetourUpdateThread(GetCurrentThread());
-		bool ret = !DetourAttach(&(PVOID&)func, handler);
+		const bool ret = !DetourAttach(&reinterpret_cast<PVOID&>(func), handler);
 		DetourTransactionCommit();
 		return ret;
 	}
