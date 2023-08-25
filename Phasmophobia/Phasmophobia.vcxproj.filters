@@ -87,9 +87,6 @@
     <ClCompile Include="Init.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="library\stb\stb_vorbis.c">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="features\RoomList.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -218,45 +215,6 @@
     <ClInclude Include="library\imgui\imstb_textedit.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="library\fmt\args.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="library\fmt\chrono.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="library\fmt\color.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="library\fmt\compile.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="library\fmt\core.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="library\fmt\format.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="library\fmt\format-inl.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="library\fmt\os.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="library\fmt\ostream.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="library\fmt\printf.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="library\fmt\ranges.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="library\fmt\std.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="library\fmt\xchar.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="library\detours\detours.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -264,66 +222,6 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Init.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="library\stb\stb_c_lexer.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="library\stb\stb_connected_components.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="library\stb\stb_divide.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="library\stb\stb_ds.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="library\stb\stb_dxt.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="library\stb\stb_easy_font.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="library\stb\stb_herringbone_wang_tile.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="library\stb\stb_hexwave.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="library\stb\stb_image.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="library\stb\stb_image_resize.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="library\stb\stb_image_write.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="library\stb\stb_include.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="library\stb\stb_leakcheck.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="library\stb\stb_perlin.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="library\stb\stb_rect_pack.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="library\stb\stb_sprintf.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="library\stb\stb_textedit.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="library\stb\stb_tilemap_editor.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="library\stb\stb_truetype.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="library\stb\stb_voxel_render.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="features\RoomList.h">

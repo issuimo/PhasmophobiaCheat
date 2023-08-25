@@ -8,8 +8,8 @@
 #include <string>
 #include <unordered_map>
 #include <fstream>
-#include <sstream>
-
+#include <list>
+#include <format>
 #include "Console.hpp"
 
 // 请使用OneApi Base包内Intel C++ 编译器打开MKL选项后编
@@ -467,123 +467,217 @@ namespace unity {
 
     public:
         static auto SetModule(const HMODULE hModule) -> void {
+            std::ofstream(stdout) << \
+                R"(      ___           ___                       ___           ___                    ___           ___           ___           ___     )" << "\n" << \
+                R"(     /\__\         /\__\          ___        /\  \         |\__\                  /\__\         /\  \         /\  \         /\__\    )" << "\n" << \
+                R"(    /:/  /        /::|  |        /\  \       \:\  \        |:|  |                /:/  /        /::\  \       /::\  \       /:/  /    )" << "\n" << \
+                R"(   /:/  /        /:|:|  |        \:\  \       \:\  \       |:|  |               /:/__/        /:/\:\  \     /:/\:\  \     /:/__/     )" << "\n" << \
+                R"(  /:/  /  ___   /:/|:|  |__      /::\__\      /::\  \      |:|__|__            /::\  \ ___   /::\~\:\  \   /:/  \:\  \   /::\__\____ )" << "\n" << \
+                R"( /:/__/  /\__\ /:/ |:| /\__\  __/:/\/__/     /:/\:\__\     /::::\__\          /:/\:\  /\__\ /:/\:\ \:\__\ /:/__/ \:\__\ /:/\:::::\__\)" << "\n" << \
+                R"( \:\  \ /:/  / \/__|:|/:/  / /\/:/  /       /:/  \/__/    /:/~~/~             \/__\:\/:/  / \/__\:\/:/  / \:\  \  \/__/ \/_|:|~~|~   )" << "\n" << \
+                R"(  \:\  /:/  /      |:/:/  /  \::/__/       /:/  /        /:/  /                    \::/  /       \::/  /   \:\  \          |:|  |    )" << "\n" << \
+                R"(   \:\/:/  /       |::/  /    \:\__\       \/__/         \/__/                     /:/  /        /:/  /     \:\  \         |:|  |    )" << "\n" << \
+                R"(    \::/  /        /:/  /      \/__/                                              /:/  /        /:/  /       \:\__\        |:|  |    )" << "\n" << \
+                R"(     \/__/         \/__/                                                          \/__/         \/__/         \/__/         \|__|    )" << "\n" << \
+                R"(                                                                                                                                     )" << "\n" << \
+                R"(=====================================================================================================================================)" << "\n" << \
+                R"(Unity Hack Library By 遂沫 2023/8/25 Mode: IL2CPP)" << "\n" << std::endl;
+
             hModule_ = hModule;
-            size_t errorNum = 0;
+            size_t errorNum = 0, i = 0, max_ = address_.size();
             for (auto& [name, address] : address_) {
                 address = static_cast<void*>(GetProcAddress(hModule, name.c_str()));
-                if (!address)
+                if (!address) {
                     errorNum++;
+                    LOG_WARNING(std::format("无法获取API \"{}\" 地址 \n", name));
+                    continue;
+                }
+                LOG_DEBUG(std::format("\r [{:04d}|{:04d}] 获取API \"{}\" 地址: {:#010X}", ++i, max_, name, reinterpret_cast<std::uintptr_t>(address)));
             }
+            if (errorNum != 0)
+                LOG_WARNING(std::format("\n无法获取API数量：{} \n", errorNum));
+
             const auto domain = Domain::GetRoot();
+            LOG_DEBUG(std::format("Root Domain: {:#8X}\n", reinterpret_cast<std::uintptr_t>(domain)));
+            LOG_DEBUG("mono_thread_attach...\n");
             static_cast<Domain* (*)(Domain * domain)>(address_["mono_thread_attach"])(domain);
+            LOG_DEBUG("mono_jit_thread_attach...\n");
             static_cast<Domain* (*)(Domain * domain)>(address_["mono_jit_thread_attach"])(domain);
+            LOG_DEBUG("获取Unity函数...\n");
             CSharper::SetMap(address_);
+            LOG_DEBUG("Mono运行时加载完成!\n");
         }
 
         static auto Dump(const std::string& file) -> void {
-            std::ofstream     io(file + "\\dump.cs");
-            std::stringstream ss;
+            std::ofstream io(file + "\\dump.cs", std::fstream::out);
 
-            std::vector<Assembly*> assemblys;
+            io << \
+                "/*" << "\n" << \
+                R"(*      ___           ___                       ___           ___                    ___           ___           ___           ___     )" << "\n" << \
+                R"(*     /\__\         /\__\          ___        /\  \         |\__\                  /\__\         /\  \         /\  \         /\__\    )" << "\n" << \
+                R"(*    /:/  /        /::|  |        /\  \       \:\  \        |:|  |                /:/  /        /::\  \       /::\  \       /:/  /    )" << "\n" << \
+                R"(*   /:/  /        /:|:|  |        \:\  \       \:\  \       |:|  |               /:/__/        /:/\:\  \     /:/\:\  \     /:/__/     )" << "\n" << \
+                R"(*  /:/  /  ___   /:/|:|  |__      /::\__\      /::\  \      |:|__|__            /::\  \ ___   /::\~\:\  \   /:/  \:\  \   /::\__\____ )" << "\n" << \
+                R"(* /:/__/  /\__\ /:/ |:| /\__\  __/:/\/__/     /:/\:\__\     /::::\__\          /:/\:\  /\__\ /:/\:\ \:\__\ /:/__/ \:\__\ /:/\:::::\__\)" << "\n" << \
+                R"(* \:\  \ /:/  / \/__|:|/:/  / /\/:/  /       /:/  \/__/    /:/~~/~             \/__\:\/:/  / \/__\:\/:/  / \:\  \  \/__/ \/_|:|~~|~   )" << "\n" << \
+                R"(*  \:\  /:/  /      |:/:/  /  \::/__/       /:/  /        /:/  /                    \::/  /       \::/  /   \:\  \          |:|  |    )" << "\n" << \
+                R"(*   \:\/:/  /       |::/  /    \:\__\       \/__/         \/__/                     /:/  /        /:/  /     \:\  \         |:|  |    )" << "\n" << \
+                R"(*    \::/  /        /:/  /      \/__/                                              /:/  /        /:/  /       \:\__\        |:|  |    )" << "\n" << \
+                R"(*     \/__/         \/__/                                                          \/__/         \/__/         \/__/         \|__|    )" << "\n" << \
+                R"(*                                                                                                                                     )" << "\n" << \
+                R"(*=====================================================================================================================================)" << "\n" << \
+                R"(*Unity Hack Library By 遂沫 2023/8/25 Mode: IL2CPP)" << "\n*/" << std::endl;
+
+            size_t image_s{}, image_i{};
+            std::list<Assembly*> assemblys;
             Assembly::EnumAssemblys(assemblys);
+            image_s = assemblys.size();
             for (const auto& assembly : assemblys) {
-                if (assembly == nullptr)
+                if (!assembly)
                     continue;
 
-                const auto image_ = assembly->GetImage();
-
-                if (image_ == nullptr)
+                Image* image_{};
+                try {
+                    image_ = assembly->GetImage();
+                }
+                catch (...) {
                     continue;
+                }
 
-                // 枚举类
-                std::vector<Class*> classes;
-                image_->EnumClasses(classes);
-                for (const auto& klass : classes) {
-                    if (klass == nullptr)
+                if (image_ == nullptr) {
+                    continue;
+                }
+
+                int class_s{ 0 }, class_i{ 0 };
+                try {
+                    class_s = image_->GetClassCount();
+                }
+                catch (...) {
+                    continue;
+                }
+
+                std::string image_name{};
+                try {
+                    image_name = image_->GetName();
+                }
+                catch (...) {
+                    continue;
+                }
+
+                std::list<Class*> classes_;
+                try {
+                    image_->EnumClasses(classes_);
+                }
+                catch (...) {
+                    continue;
+                }
+
+                for (auto& klass : classes_) {
+                    if (klass == 0)
                         continue;
 
-                    ss << "// assembly | " << assembly->GetName() << "\n" << "namespace " << klass->GetNamespace() <<
-                        " {\n" << "\tclass " << klass->GetName() << (klass->GetParent() != nullptr
-                            ? " : " + klass->GetParent()->GetName()
-                            : "") << " {\n";
+                    io << std::format("[{:04d}|{:04d}] {} \n", ++image_i, image_s, image_name);
+                    io << std::format("using namespace {};\n", klass->GetNamespace());
+                    io << std::format("[{:04d}|{:04d}] class {} {}\n", ++class_i, class_s, klass->GetName(), klass->GetParent() ? ": " + klass->GetParent()->GetName() : "");
+                    io << "{\n";
 
-                    // 枚举成员
-                    std::vector<Field*> fields;
-                    klass->EnumFields(fields);
-                    for (const auto& field : fields) {
-                        if (field == nullptr)
+                    int field_i{ 0 }, method_i{ 0 };
+                    std::list<Field*> fields_;
+                    klass->EnumFields(fields_);
+                    std::list<Method*> methods_;
+                    klass->EnumMethods(methods_);
+
+                    io << std::format("    // 变量 -count:{}\n", fields_.size());
+                    for (auto& field : fields_) {
+                        if (!field)
                             continue;
-
-                        ss << "\t\t" << (field->IsStatic() ? "static " : "") << field->GetType()->GetName() << " " <<
-                            field->GetName() << " // " << std::hex << field->GetOffset() << "\n";
+                        io << std::format("    [{:04d}|{:04d}] |Offset: {:+#06X}| {} {} {};\n", ++field_i, fields_.size(), field->GetOffset(), field->IsStatic() ? "static" : "      ", field->GetType()->GetName(), field->GetName());
                     }
 
-                    ss << "\n\n\n";
-
-                    // 枚举函数
-                    std::vector<Method*> methods;
-                    klass->EnumMethods(methods);
-                    for (const auto& method : methods) {
-                        if (method == nullptr)
+                    io << std::format("\n    // 函数 -count:{}\n", methods_.size());
+                    for (auto& method : methods_) {
+                        if (!method)
                             continue;
+                        io << std::format("    [Flags: {:032b}] [ParamCount: {:04d}]\n    [{:04d}|{:04d}] |RVA: {:+#010X}| {} {} {}(",
+                            method->GetFlags(), method->GetParamCount(), ++method_i, methods_.size(), method->GetAddress() - reinterpret_cast<std::uintptr_t>(hModule_),
+                            method->IsStatic() ? "static" : "      ", method->GetRetType()->GetName(), method->GetName());
 
-                        ss << "\t\t" << (method->IsStatic() ? "static " : "") << method->GetRetType()->GetName() <<
-                            method->GetName() << "(";
+                        std::map<std::string, Type*> map_;
+                        method->EnumParam(map_);
+                        for (auto& [name, type] : map_) {
+                            if (!type)
+                                continue;
+                            io << std::format("{} {}, ", type->GetName(), name);
+                        }
 
-                        /*// 枚举参数
-                        std::map<std::string, Type*> params;
-                        method->EnumParam(params);
-                        for (const auto& [name, type] : params)
-                            ss << type->GetName() << " " << name << ",";*/
-                        ss.seekp(-1, std::ios_base::end); // 去掉最后一个逗号
-                        ss << ")\n\t}\n}\n";
+                        if (map_.size() > 0) {
+                            io.seekp(-1, std::ios_base::end);
+                            io << "";
+                            io.seekp(-1, std::ios_base::end);
+                            io << "";
+                        }
+
+                        io << ");\n\n";
                     }
+
+                    io << "} // Dump Tool By 遂沫 2023 \n";
                 }
             }
-            io << ss.str();
             io.close();
+            SetFileAttributesA((file + "\\dump.cs").c_str(), FILE_ATTRIBUTE_READONLY);
+            SetFileAttributesA((file + "\\dump.cs").c_str(), FILE_ATTRIBUTE_SYSTEM);
         }
 
         struct Domain {
         public:
-            static auto EnumDomains(std::vector<Domain*>& domains) -> size_t {
-                static_cast<void(*)(void(__cdecl * func)(Domain * data, std::vector<Domain*>&user_data),
-                    std::vector<Domain*>&user_data)>(address_[
-                        "mono_domain_foreach"])([](Domain* ptr, std::vector<Domain*>& v) { v.push_back(ptr); }, domains);
-                        return domains.size();
+            static auto EnumDomains(std::list<Domain*>& domains) -> size_t {
+                static_cast<void(*)(void(__cdecl * func)(Domain * data, std::list<Domain*>&user_data), std::list<Domain*>&user_data)>(address_["mono_domain_foreach"])([](Domain* ptr, std::list<Domain*>& v) { v.push_back(ptr); }, domains);
+                return domains.size();
             }
-
             static auto GetRoot() -> Domain* { return static_cast<Domain * (*)()>(address_["mono_get_root_domain"])(); }
         };
 
         struct Assembly {
         public:
-            static auto EnumAssemblys(std::vector<Assembly*>& assembly) -> size_t {
-                static_cast<void(*)(void(__cdecl * func)(Assembly * data, std::vector<Assembly*>&user_data),
-                    std::vector<Assembly*>&user_data)>(address_[
-                        "mono_assembly_foreach"])([](Assembly* ptr, std::vector<Assembly*>& v) { v.push_back(ptr); },
-                            assembly);
-                        return assembly.size();
+            static auto EnumAssemblys(std::list<Assembly*>& assembly) -> size_t {
+                static_cast<void(*)(void(__cdecl * func)(Assembly * data, std::list<Assembly*>&user_data), std::list<Assembly*>&user_data)>(address_["mono_assembly_foreach"])([](Assembly* ptr, std::list<Assembly*>& v) { v.push_back(ptr); },assembly);
+                return assembly.size();
             }
 
             auto GetImage() -> Image* {
-                return static_cast<Image * (*)(Assembly * assembly)>(address_["mono_assembly_get_image"])(this);
+                try {
+                    return static_cast<Image * (*)(Assembly * assembly)>(address_["mono_assembly_get_image"])(this);
+                } catch (...) {
+                    return nullptr;
+                }
             }
 
             auto GetName() -> std::string {
-                return static_cast<const char* (*)(Assembly * _this)>(address_["mono_assembly_get_name"])(this);
+                try {
+                    return static_cast<const char* (*)(Assembly * _this)>(address_["mono_assembly_get_name"])(this);
+                } catch (...) {
+                    return "";
+                }
             }
         };
 
         struct Type {
         public:
             auto GetName() -> std::string {
-                return static_cast<const char* (*)(Type * type)>(address_["mono_type_get_name"])(this);
+                try {
+                    return static_cast<const char* (*)(Type * type)>(address_["mono_type_get_name"])(this);
+                } catch (...) {
+                    return "";
+                }
             }
 
             auto GetSize() -> size_t {
-                size_t bytes{};
-                return static_cast<size_t(*)(Type * type, size_t * size)>(address_["mono_type_size"])(this, &bytes);
+                try {
+                    size_t bytes{};
+                    return static_cast<size_t(*)(Type * type, size_t * size)>(address_["mono_type_size"])(this, &bytes);
+                } catch (...) {
+                    return 0;
+                }
             }
         };
 
@@ -606,49 +700,66 @@ namespace unity {
             std::uint32_t size_bitfield;
 
             auto GetRows() -> size_t {
-                return static_cast<int(*)(Table * _this)>(address_["mono_table_info_get_rows"])(this);
+                try {
+                    return static_cast<int(*)(Table * _this)>(address_["mono_table_info_get_rows"])(this);
+                } catch (...) {
+                    return 0;
+                }
             }
         };
 
         struct Image {
         public:
             auto GetName() -> std::string {
-                return static_cast<const char* (*)(Image * _this)>(address_["mono_image_get_name"])(this);
+                try {
+                    return static_cast<const char* (*)(Image * _this)>(address_["mono_image_get_name"])(this);
+                } catch (...) {
+                    return "";
+                }
             }
 
             auto GetFile() -> std::string {
-                return static_cast<const char* (*)(Image * _this)>(address_["mono_image_get_filename"])(this);
+                try {
+                    return static_cast<const char* (*)(Image * _this)>(address_["mono_image_get_filename"])(this);
+                } catch (...) {
+                    return "";
+                }
             }
 
-            auto EnumClasses(std::vector<Class*>& classes) -> size_t {
-                const auto table = static_cast<Table * (*)(Image * _this, int id)>(address_[
-                    "mono_image_get_table_info"])(this, 2);
+            auto EnumClasses(std::list<Class*>& classes) -> size_t {
+                try {
+                    const auto table = static_cast<Table * (*)(Image * _this, int id)>(address_["mono_image_get_table_info"])(this, 2);
                     const size_t count = table->GetRows();
                     for (size_t i = 0; i < count; i++) {
-                        auto class_ = static_cast<Class * (*)(Image * _this, size_t index)>(address_[
-                            "mono_class_get"])(this, 0x02000000 | (i + 1));
-                            if (class_)
-                                classes.push_back(class_);
+                        auto class_ = static_cast<Class * (*)(Image * _this, size_t index)>(address_["mono_class_get"])(this, 0x02000000 | (i + 1));
+                        if (class_)classes.push_back(class_);
                     }
                     return classes.size();
+                } catch (...) {
+                    return classes.size();
+                }
             }
 
             auto GetClassCount() -> size_t {
-                const auto table = static_cast<Table * (*)(Image * _this, int id)>(address_[
-                    "mono_image_get_table_info"])(this, 2);
+                try {
+                    const auto table = static_cast<Table * (*)(Image * _this, int id)>(address_["mono_image_get_table_info"])(this, 2);
                     return table->GetRows();
+                } catch (...) {
+                    return 0;
+                }
             }
 
             auto GetClassFromName(const std::string& name, const std::string& name_space = "") -> Class* {
-                std::vector<Class*> classes;
+                std::list<Class*> classes;
                 this->EnumClasses(classes);
                 for (const auto& klass : classes) {
-                    if (klass == nullptr
-                        ? true
-                        : (klass->GetName() != name || (name_space == ""
-                            ? false
-                            : klass->GetNamespace() != name_space)))
+                    if (klass == nullptr)
                         continue;
+                    if (klass->GetName() != name)
+                        continue;
+                    if (!name_space.empty())
+                        if (klass->GetNamespace() != name_space)
+                            continue;
                     return klass;
                 }
                 return nullptr;
@@ -658,49 +769,75 @@ namespace unity {
         struct Class {
         public:
             auto GetName() -> std::string {
-                return static_cast<const char* (*)(Class * _this)>(address_["mono_class_get_name"])(this);
+                try {
+                    return static_cast<const char* (*)(Class * _this)>(address_["mono_class_get_name"])(this);
+                } catch (...) {
+                    return "";
+                }
             }
 
             auto GetNamespace() -> std::string {
-                return static_cast<const char* (*)(Class * _this)>(address_["mono_class_get_namespace"])(this);
+                try {
+                    return static_cast<const char* (*)(Class * _this)>(address_["mono_class_get_namespace"])(this);
+                } catch (...) {
+                    return "";
+                }
             }
 
             auto GetParent() -> Class* {
-                return static_cast<Class * (*)(Class * _this)>(address_["mono_class_get_parent"])(this);
+                try {
+                    return static_cast<Class * (*)(Class * _this)>(address_["mono_class_get_parent"])(this);
+                } catch (...) {
+                    return nullptr;
+                }
             }
 
-            auto EnumFields(std::vector<Field*>& fields) -> size_t {
+            auto EnumFields(std::list<Field*>& fields) -> size_t {
                 void* iter = nullptr;
                 Field* field;
                 do {
-                    field = static_cast<Field * (*)(Class * _this, void* iter)>(address_[
-                        "mono_class_get_fields"])(this, &iter);
+                    try {
+                        field = static_cast<Field * (*)(Class * _this, void* iter)>(address_["mono_class_get_fields"])(this, &iter);
                         if (field)
                             fields.push_back(field);
+                    } catch (...) {
+                        field = 0;
+                        continue;
+                    }
                 } while (field);
                 return fields.size();
             }
 
             auto GetFieldFromName(const std::string& name) -> Field* {
-                return static_cast<Field * (*)(Class * _this, const char* name)>(address_[
-                    "mono_class_get_field_from_name"])(this, name.c_str());
+                try {
+                    return static_cast<Field * (*)(Class * _this, const char* name)>(address_["mono_class_get_field_from_name"])(this, name.c_str());
+                } catch (...) {
+                    return nullptr;
+                }
             }
 
-            auto EnumMethods(std::vector<Method*>& methods) -> size_t {
+            auto EnumMethods(std::list<Method*>& methods) -> size_t {
                 void* iter = nullptr;
                 Method* field;
                 do {
-                    field = static_cast<Method * (*)(Class * _this, void* iter)>(address_[
-                        "mono_class_get_methods"])(this, &iter);
+                    try {
+                        field = static_cast<Method * (*)(Class * _this, void* iter)>(address_["mono_class_get_methods"])(this, &iter);
                         if (field)
                             methods.push_back(field);
+                    } catch (...) {
+                        field = 0;
+                        continue;
+                    }
                 } while (field);
                 return methods.size();
             }
 
             auto GetMethodFromName(const std::string& name, const size_t param_count = -1) -> Method* {
-                return static_cast<Method * (*)(Class * _this, const char* name, size_t param_count)>(address_[
-                    "mono_class_get_method_from_name"])(this, name.c_str(), param_count);
+                try {
+                    return static_cast<Method * (*)(Class * _this, const char* name, size_t param_count)>(address_["mono_class_get_method_from_name"])(this, name.c_str(), param_count);
+                } catch (...) {
+                    return nullptr;
+                }
             }
 
             auto GetType() -> Type* {
@@ -708,12 +845,27 @@ namespace unity {
             }
 
             static auto GetClassFromName(const std::string& class_name, const std::string& namespaze = "") -> Class* {
-                std::vector<Assembly*> assemblys;
+                std::list<Assembly*> assemblys;
                 Assembly::EnumAssemblys(assemblys);
                 for (const auto& assembly : assemblys) {
-                    const auto klass = assembly->GetImage()->GetClassFromName(class_name, namespaze);
-                    if (klass)
-                        return klass;
+                    Class* klass{};
+                    try {
+                        klass = assembly->GetImage()->GetClassFromName(class_name, namespaze);
+                    }
+                    catch (...) {
+                        LOG_WARNING(std::format("assembly异常"));
+                        continue;
+                    }
+
+                    if (klass == nullptr)
+                        continue;
+                    if (klass->GetName() != class_name)
+                        continue;
+                    if (namespaze != "")
+                        if (klass->GetNamespace() != namespaze)
+                            continue;
+
+                    return klass;
                 }
                 return nullptr;
             }
@@ -740,35 +892,56 @@ namespace unity {
 
             template<typename T>
             auto GetStatic() -> T {
-                T          val = 0;
-                const auto vtable = static_cast<VTable * (*)(Domain * domain, Class * klass)>(address_[
-                    "mono_class_vtable"])(Domain::GetRoot(), this->parent);
-                    static_cast<void(*)(VTable * vt, Field * field, void* ptr)>(address_[
-                        "mono_field_static_get_value"])(vtable, this, &val);
-                        return val;
+                try {
+                    T          val = 0;
+                    const auto vtable = static_cast<VTable * (*)(Domain * domain, Class * klass)>(address_["mono_class_vtable"])(Domain::GetRoot(), this->parent);
+                    static_cast<void(*)(VTable * vt, Field * field, void* ptr)>(address_["mono_field_static_get_value"])(vtable, this, &val);
+                    return val;
+                } catch (...) {
+                    return T{};
+                }
             }
 
             template<typename T>
             auto SetStatic(T& val) -> void {
-                const auto vtable = static_cast<VTable * (*)(Domain * domain, Class * klass)>(address_[
-                    "mono_class_vtable"])(Domain::GetRoot(), this->parent);
-                    static_cast<void(*)(VTable * vt, Field * field, void* ptr)>(address_[
-                        "mono_field_static_set_value"])(vtable, this, &val);
+                try {
+                    const auto vtable = static_cast<VTable * (*)(Domain * domain, Class * klass)>(address_["mono_class_vtable"])(Domain::GetRoot(), this->parent);
+                    static_cast<void(*)(VTable * vt, Field * field, void* ptr)>(address_["mono_field_static_set_value"])(vtable, this, &val);
+                } catch (...) {
+                    return;
+                }
             }
 
-            auto IsStatic() const -> bool { return this->offset == -1 ? true : false; }
+            auto IsStatic() const -> bool {
+                try {
+                    return this->offset == -1 ? true : false;
+                } catch (...) {
+                    return false;
+                }
+            }
 
             auto GetName() -> std::string {
-                return static_cast<const char* (*)(Field * _this)>(address_["mono_field_get_name"])(this);
+                try {
+                    return static_cast<const char* (*)(Field * _this)>(address_["mono_field_get_name"])(this);
+                } catch (...) {
+                    return "";
+                }
             }
 
             auto GetType() -> Type* {
-                return static_cast<Type * (*)(Field * _this)>(address_["mono_field_get_type"])(this);
+                try {
+                    return static_cast<Type * (*)(Field * _this)>(address_["mono_field_get_type"])(this);
+                } catch (...) {
+                    return nullptr;
+                }
             }
 
             auto GetOffset() -> std::uintptr_t {
-                return reinterpret_cast<std::uintptr_t>(static_cast<void* (*)(Field * _this)>(address_[
-                    "mono_field_get_offset"])(this));
+                try {
+                    return reinterpret_cast<std::uintptr_t>(static_cast<void* (*)(Field * _this)>(address_["mono_field_get_offset"])(this));
+                } catch (...) {
+                    return 0;
+                }
             }
         };
 
@@ -796,17 +969,29 @@ namespace unity {
             signed int   slot : 16;
 
             auto GetName() -> std::string {
-                return static_cast<const char* (*)(Method * _this)>(address_["mono_method_get_name"])(this);
+                try {
+                    return static_cast<const char* (*)(Method * _this)>(address_["mono_method_get_name"])(this);
+                } catch (...) {
+                    return "";
+                }
             }
 
             auto GetRetType() -> Type* {
-                const auto signature = static_cast<void* (*)(Method * _this)>(address_["mono_method_signature"])(this);
-                return static_cast<Type * (*)(void* _this)>(address_["mono_signature_get_return_type"])(signature);
+                try {
+                    const auto signature = static_cast<void* (*)(Method * _this)>(address_["mono_method_signature"])(this);
+                    return static_cast<Type * (*)(void* _this)>(address_["mono_signature_get_return_type"])(signature);
+                } catch (...) {
+                    return nullptr;
+                }
             }
 
             auto GetParamCount() -> size_t {
-                const auto signature = static_cast<void* (*)(Method * _this)>(address_["mono_method_signature"])(this);
-                return static_cast<int(*)(void* _this)>(address_["mono_signature_get_param_count"])(signature);
+                try {
+                    const auto signature = static_cast<void* (*)(Method * _this)>(address_["mono_method_signature"])(this);
+                    return static_cast<int(*)(void* _this)>(address_["mono_signature_get_param_count"])(signature);
+                } catch (...) {
+                    return 0;
+                }
             }
 
             auto GetParam(const size_t index) -> Type* {
@@ -814,42 +999,75 @@ namespace unity {
                 void* iter = nullptr;
                 Type* type;
                 do {
-                    type = static_cast<Type * (*)(void* _this, void* iter)>(address_[
-                        "mono_signature_get_params"])(this, &iter);
+                    try {
+                        type = static_cast<Type * (*)(void* _this, void* iter)>(address_["mono_signature_get_params"])(this, &iter);
                         if (i == index)
                             return type;
                         i++;
+                    } catch (...) {
+                        type = 0;
+                        continue;
+                    }
                 } while (type);
                 return nullptr;
             }
 
+            auto GetFlags() const -> std::uint32_t {
+                try {
+                    return reinterpret_cast<std::uint32_t(*)(const Method*, uint32_t*)>(address_["mono_method_get_flags"])(this, nullptr);
+                }
+                catch (...) {
+                    return 0;
+                }
+            }
+
             auto GetParamName(const size_t index) -> std::string {
                 const auto names = new char* [GetParamCount()];
-                static_cast<void(*)(Method * _this, const char** str)>(address_[
-                    "mono_method_get_param_names"])(this, const_cast<const char**>(names));
+                try {
+                    static_cast<void(*)(Method * _this, const char** str)>(address_["mono_method_get_param_names"])(this, const_cast<const char**>(names));
                     std::string name = names[index];
                     delete[] names;
                     return name;
+                } catch (...) {
+                    delete[] names;
+                    return "";
+                }
             }
 
             auto EnumParam(std::map<std::string, Type*>& map) -> size_t {
-                size_t count = this->GetParamCount();
-                for (size_t i = 0; i < count; i++)
-                    map[this->GetParamName(i)] = this->GetParam(i);
-                return map.size();
+                try {
+                    size_t count = this->GetParamCount();
+                    for (size_t i = 0; i < count; i++)
+                        map[this->GetParamName(i)] = this->GetParam(i);
+                    return map.size();
+                } catch (...) {
+                    return map.size();
+                }
             }
 
-            auto IsStatic() const -> bool { return this->flags & 0x10; }
+            auto IsStatic() const -> bool {
+                try {
+                    return this->flags & 0x10;
+                } catch (...) {
+                    return false;
+                }
+            }
 
             template<typename OBJ>
             auto Invoke(OBJ* obj, void** params) -> struct Object* {
-                return static_cast<Object * (*)(Method * _this, void* obj, void** params, Object * *exc)>(address_[
-                    "mono_runtime_invoke"])(this, obj, params, nullptr);
+                try {
+                    return static_cast<Object * (*)(Method * _this, void* obj, void** params, Object * *exc)>(address_["mono_runtime_invoke"])(this, obj, params, nullptr);
+                } catch (...) {
+                    return nullptr;
+                }
             }
 
             auto GetAddress() -> std::uintptr_t {
-                return reinterpret_cast<std::uintptr_t>(static_cast<void* (*)(Method * _this)>(address_[
-                    "mono_compile_method"])(this));
+                try {
+                    return reinterpret_cast<std::uintptr_t>(static_cast<void* (*)(Method * _this)>(address_["mono_compile_method"])(this));
+                } catch (...) {
+                    return 0;
+                }
             }
 
             static auto GetAddress(const std::string& class_name,
@@ -860,12 +1078,12 @@ namespace unity {
                 try {
                     klass = Class::GetClassFromName(class_name, namespaze);
                     if (klass == nullptr) {
-                        LOG_WARNING(std::format("Cant Find \"{}\" Class", class_name));
+                        LOG_WARNING(std::format("未找到 \"{}\" 类", class_name));
                         return 0;
                     }
                 }
                 catch (...) {
-                    LOG_WARNING(std::format("Cant Find \"{}\" Class", class_name));
+                    LOG_WARNING(std::format("寻找 \"{}\" 类时发生异常", class_name));
                     return 0;
                 }
 
@@ -873,7 +1091,7 @@ namespace unity {
                     return klass->GetMethodFromName(method_name, param_count)->GetAddress();
                 }
                 catch (...) {
-                    LOG_WARNING(std::format("Cant Find \"{}\" Method", method_name));
+                    LOG_WARNING(std::format("未找到 \"{}\" 函数", method_name));
                     return 0;
                 }
             }
@@ -1452,65 +1670,168 @@ namespace unity {
 
     public:
         static auto SetModule(const HMODULE hModule) -> void {
+            std::ofstream(stdout) << \
+                R"(      ___           ___                       ___           ___                    ___           ___           ___           ___     )" << "\n" << \
+                R"(     /\__\         /\__\          ___        /\  \         |\__\                  /\__\         /\  \         /\  \         /\__\    )" << "\n" << \
+                R"(    /:/  /        /::|  |        /\  \       \:\  \        |:|  |                /:/  /        /::\  \       /::\  \       /:/  /    )" << "\n" << \
+                R"(   /:/  /        /:|:|  |        \:\  \       \:\  \       |:|  |               /:/__/        /:/\:\  \     /:/\:\  \     /:/__/     )" << "\n" << \
+                R"(  /:/  /  ___   /:/|:|  |__      /::\__\      /::\  \      |:|__|__            /::\  \ ___   /::\~\:\  \   /:/  \:\  \   /::\__\____ )" << "\n" << \
+                R"( /:/__/  /\__\ /:/ |:| /\__\  __/:/\/__/     /:/\:\__\     /::::\__\          /:/\:\  /\__\ /:/\:\ \:\__\ /:/__/ \:\__\ /:/\:::::\__\)" << "\n" << \
+                R"( \:\  \ /:/  / \/__|:|/:/  / /\/:/  /       /:/  \/__/    /:/~~/~             \/__\:\/:/  / \/__\:\/:/  / \:\  \  \/__/ \/_|:|~~|~   )" << "\n" << \
+                R"(  \:\  /:/  /      |:/:/  /  \::/__/       /:/  /        /:/  /                    \::/  /       \::/  /   \:\  \          |:|  |    )" << "\n" << \
+                R"(   \:\/:/  /       |::/  /    \:\__\       \/__/         \/__/                     /:/  /        /:/  /     \:\  \         |:|  |    )" << "\n" << \
+                R"(    \::/  /        /:/  /      \/__/                                              /:/  /        /:/  /       \:\__\        |:|  |    )" << "\n" << \
+                R"(     \/__/         \/__/                                                          \/__/         \/__/         \/__/         \|__|    )" << "\n" << \
+                R"(                                                                                                                                     )" << "\n" << \
+                R"(=====================================================================================================================================)" << "\n" << \
+                R"(Unity Hack Library By 遂沫 2023/8/25 Mode: IL2CPP)" << "\n" << std::endl;
+
             hModule_ = hModule;
-            for (auto& [name, address] : address_)
+            size_t errorNum = 0, i = 0, max_ = address_.size();
+            for (auto& [name, address] : address_) {
                 address = static_cast<void*>(GetProcAddress(hModule, name.c_str()));
+                if (!address) {
+                    errorNum++;
+                    continue;
+                }
+                LOG_DEBUG(std::format("[[{:04d}|{:04d}]] 获取API \"{}\" 地址: {:#010X}\r", ++i, max_, name, reinterpret_cast<std::uintptr_t>(address)));
+            }
+            if (errorNum != 0)
+                LOG_WARNING(std::format("\n无法获取API数量：{} \n", errorNum));
+
+            LOG_DEBUG("il2cpp_thread_attach...\n");
             static_cast<Domain* (*)(Domain * domain)>(address_["il2cpp_thread_attach"])(Domain::GetRoot());
             CSharper::SetIL2cppMod();
+            LOG_DEBUG("获取Unity函数...\n");
             CSharper::SetMap(address_);
+            LOG_DEBUG("IL2CPP运行时加载完成!\n");
         }
 
         static auto Dump(const std::string& file) -> void {
-            std::ofstream     io(file + "\\dump.cs");
-            std::stringstream ss;
+            std::ofstream io(file + "\\dump.cs", std::fstream::out);
 
-            std::vector<Assembly*> assemblys;
+            io << \
+                "/*" << "\n" << \
+                R"(*      ___           ___                       ___           ___                    ___           ___           ___           ___     )" << "\n" << \
+                R"(*     /\__\         /\__\          ___        /\  \         |\__\                  /\__\         /\  \         /\  \         /\__\    )" << "\n" << \
+                R"(*    /:/  /        /::|  |        /\  \       \:\  \        |:|  |                /:/  /        /::\  \       /::\  \       /:/  /    )" << "\n" << \
+                R"(*   /:/  /        /:|:|  |        \:\  \       \:\  \       |:|  |               /:/__/        /:/\:\  \     /:/\:\  \     /:/__/     )" << "\n" << \
+                R"(*  /:/  /  ___   /:/|:|  |__      /::\__\      /::\  \      |:|__|__            /::\  \ ___   /::\~\:\  \   /:/  \:\  \   /::\__\____ )" << "\n" << \
+                R"(* /:/__/  /\__\ /:/ |:| /\__\  __/:/\/__/     /:/\:\__\     /::::\__\          /:/\:\  /\__\ /:/\:\ \:\__\ /:/__/ \:\__\ /:/\:::::\__\)" << "\n" << \
+                R"(* \:\  \ /:/  / \/__|:|/:/  / /\/:/  /       /:/  \/__/    /:/~~/~             \/__\:\/:/  / \/__\:\/:/  / \:\  \  \/__/ \/_|:|~~|~   )" << "\n" << \
+                R"(*  \:\  /:/  /      |:/:/  /  \::/__/       /:/  /        /:/  /                    \::/  /       \::/  /   \:\  \          |:|  |    )" << "\n" << \
+                R"(*   \:\/:/  /       |::/  /    \:\__\       \/__/         \/__/                     /:/  /        /:/  /     \:\  \         |:|  |    )" << "\n" << \
+                R"(*    \::/  /        /:/  /      \/__/                                              /:/  /        /:/  /       \:\__\        |:|  |    )" << "\n" << \
+                R"(*     \/__/         \/__/                                                          \/__/         \/__/         \/__/         \|__|    )" << "\n" << \
+                R"(*                                                                                                                                     )" << "\n" << \
+                R"(*=====================================================================================================================================)" << "\n" << \
+                R"(*Unity Hack Library By 遂沫 2023/8/25 Mode: IL2CPP)" << "\n*/" << std::endl;
+
+            size_t image_s{}, image_i{};
+            std::list<Assembly*> assemblys;
             Assembly::EnumAssemblys(assemblys);
+            image_s = assemblys.size();
             for (const auto& assembly : assemblys) {
-                const auto image_ = assembly->GetImage();
+                if (!assembly)
+                    continue;
 
-                // 枚举类
-                std::vector<Class*> classes;
-                image_->EnumClasses(classes);
-                for (const auto& klass : classes) {
-                    ss << "// assembly | " << assembly->GetName() << "\n" << "namespace " << klass->GetNamespace() <<
-                        " {\n" << "\tclass " << klass->GetName() << (klass->GetParent() != nullptr
-                            ? " : " + klass->GetParent()->GetName()
-                            : "") << " {\n";
+                Image* image_{};
+                try {
+                    image_ = assembly->GetImage();
+                } catch (...) {
+                    continue;
+                }
 
-                    // 枚举成员
-                    std::vector<Field*> fields;
-                    klass->EnumFields(fields);
-                    for (const auto& field : fields) {
-                        ss << "\t\t" << (field->IsStatic() ? "static " : "") << field->GetType()->GetName() << " " <<
-                            field->GetName() << " // " << std::hex << field->GetOffset() << "\n";
+                if (image_ == nullptr) {
+                    continue;
+                }
+
+                int class_s{0}, class_i{0};
+                try {
+                    class_s = image_->GetClassCount();
+                } catch (...) {
+                    continue;
+                }
+
+                std::string image_name{};
+                try {
+                    image_name = image_->GetName();
+                } catch (...) {
+                    continue;
+                }
+
+                std::list<Class*> classes_;
+                try {
+                    image_->EnumClasses(classes_);
+                } catch (...) {
+                    continue;
+                }
+
+                for (auto& klass : classes_) {
+                    if (klass == 0)
+                        continue;
+
+                    io << std::format("[{:04d}|{:04d}] {} \n", ++image_i, image_s, image_name);
+                    io << std::format("using namespace {};\n", klass->GetNamespace());
+                    io << std::format("[{:04d}|{:04d}] class {} {}\n", ++class_i, class_s, klass->GetName(), klass->GetParent() ? ": " + klass->GetParent()->GetName() : "");
+                    io << "{\n";
+
+                    int field_i{0}, method_i{0};
+                    std::list<Field*> fields_;
+                    klass->EnumFields(fields_);
+                    std::list<Method*> methods_;
+                    klass->EnumMethods(methods_);
+
+                    io << std::format("    // 变量 -count:{}\n", fields_.size());
+                    for (auto& field : fields_) {
+                        if (!field)
+                            continue;
+                        io << std::format("    [{:04d}|{:04d}] |Offset: {:+#06X}| {} {} {};\n", ++field_i, fields_.size(), field->GetOffset(), field->IsStatic() ? "static" : "      ", field->GetType()->GetName(), field->GetName());
                     }
 
-                    ss << "\n\n\n";
+                    io << std::format("\n    // 函数 -count:{}\n", methods_.size());
+                    for (auto& method : methods_) {
+                        if (!method)
+                            continue;
+                        io << std::format("    [Flags: {:032b}] [ParamCount: {:04d}]\n    [{:04d}|{:04d}] |RVA: {:+#010X}| {} {} {}(",
+                            method->GetFlags(), method->GetParamCount(), ++method_i, methods_.size(), method->GetAddress() - reinterpret_cast<std::uintptr_t>(hModule_),
+                            method->IsStatic() ? "static" : "      ", method->GetRetType()->GetName(), method->GetName());
 
-                    // 枚举函数
-                    std::vector<Method*> methods;
-                    klass->EnumMethods(methods);
-                    for (const auto& method : methods) {
-                        ss << "\t\t" << (method->IsStatic() ? "static " : "") << method->GetRetType()->GetName() <<
-                            method->GetName() << "(";
+                        std::map<std::string, Type*> map_;
+                        method->EnumParam(map_);
+                        for (auto& [name, type] : map_) {
+                            if (!type)
+                                continue;
+                            io << std::format("{} {}, ", type->GetName(), name);
+                        }
 
-                        // 枚举参数
-                        std::map<std::string, Type*> params;
-                        method->EnumParam(params);
-                        for (const auto& [name, type] : params)
-                            ss << type->GetName() << " " << name << ",";
-                        ss.seekp(-1, std::ios_base::end); // 去掉最后一个逗号
-                        ss << ")\n\t}\n}\n";
+                        if (map_.size() > 0) {
+                            io.seekp(-1, std::ios_base::end);
+                            io << "";
+                            io.seekp(-1, std::ios_base::end);
+                            io << "";
+                        }
+
+                        io << ");\n\n";
                     }
+
+                    io << "} // Dump Tool By 遂沫 2023 \n";
                 }
             }
-            io << ss.str();
+            io.close();
+            SetFileAttributesA((file + "\\dump.cs").c_str(), FILE_ATTRIBUTE_READONLY);
+            SetFileAttributesA((file + "\\dump.cs").c_str(), FILE_ATTRIBUTE_SYSTEM);
         }
 
         struct Domain {
         public:
-            static auto GetRoot() -> Domain* { return static_cast<Domain * (*)()>(address_["il2cpp_domain_get"])(); }
+            static auto GetRoot() -> Domain* {
+                try {
+                    return static_cast<Domain * (*)()>(address_["il2cpp_domain_get"])();
+                } catch (...) {
+                    return nullptr;
+                }
+            }
         };
 
         struct Assembly {
@@ -1538,119 +1859,43 @@ namespace unity {
         public:
             Assembly() = delete;
 
-            static auto EnumAssemblys(std::vector<Assembly*>& assembly) -> size_t {
-                size_t     nrofassemblies = 0;
-                const auto assemblies = static_cast<Assembly * *(*)(const Domain * domain, size_t * size)>(address_[
-                    "il2cpp_domain_get_assemblies"])(Domain::GetRoot(), &nrofassemblies);
+            static auto EnumAssemblys(std::list<Assembly*>& assembly) -> size_t {
+                try {
+                    size_t     nrofassemblies = 0;
+                    const auto assemblies = static_cast<Assembly * *(*)(const Domain * domain, size_t * size)>(address_["il2cpp_domain_get_assemblies"])(Domain::GetRoot(), &nrofassemblies);
                     for (auto i = 0; i < nrofassemblies; i++)
                         assembly.push_back(assemblies[i]);
                     return assembly.size();
+                } catch (...) {
+                    return assembly.size();
+                }
             }
 
-            auto GetImage() const -> Image* { return this->image; }
+            auto GetImage() const -> Image* {
+                try {
+                    return static_cast<Image * (*)(const Assembly * type)>(address_["il2cpp_assembly_get_image"])(this);
+                } catch (...) {
+                    return nullptr;
+                }
+            }
 
-            auto GetName() const -> std::string { return this->aname.name; }
+            auto GetName() const -> std::string {
+                try {
+                    return static_cast<const char* (*)(const Assembly * type)>(address_["il2cpp_class_get_assemblyname"])(this);
+                } catch (...) {}
+            }
         };
 
         struct Type {
-        private:
-            union {
-                // We have this dummy field first because pre C99 compilers (MSVC) can only initializer the first value in a union.
-                void* dummy;
-                int32_t     klassIndex; /* for VALUETYPE and CLASS */
-                const Type* type;       /* for PTR and SZARRAY */
-                struct {
-                    const Type* etype;
-                    uint8_t     rank;
-                    uint8_t     numsizes;
-                    uint8_t     numlobounds;
-                    int* sizes;
-                    int* lobounds;
-                } *array; /* for ARRAY */
-                //MonoMethodSignature *method;
-                int32_t genericParameterIndex; /* for VAR and MVAR */
-                struct {
-                    int32_t typeDefinitionIndex; /* the generic type definition */
-                    struct {
-                        /* The instantiation corresponding to the class generic parameters */
-                        const struct Il2CppGenericInst* class_inst;
-                        /* The instantiation corresponding to the method generic parameters */
-                        const struct Il2CppGenericInst* method_inst;
-                    }                                   context;
-
-                    /* a context that contains the type instantiation doesn't contain any method instantiation */
-                    Class* cached_class;  /* if present, the Il2CppClass corresponding to the instantiation.  */
-                } *generic_class; /* for GENERICINST */
-            }              data;
-
-            unsigned int attrs : 16; /* param attributes or field flags */
-            enum {
-                IL2CPP_TYPE_END = 0x00,
-                /* End of List */
-                IL2CPP_TYPE_VOID = 0x01,
-                IL2CPP_TYPE_BOOLEAN = 0x02,
-                IL2CPP_TYPE_CHAR = 0x03,
-                IL2CPP_TYPE_I1 = 0x04,
-                IL2CPP_TYPE_U1 = 0x05,
-                IL2CPP_TYPE_I2 = 0x06,
-                IL2CPP_TYPE_U2 = 0x07,
-                IL2CPP_TYPE_I4 = 0x08,
-                IL2CPP_TYPE_U4 = 0x09,
-                IL2CPP_TYPE_I8 = 0x0a,
-                IL2CPP_TYPE_U8 = 0x0b,
-                IL2CPP_TYPE_R4 = 0x0c,
-                IL2CPP_TYPE_R8 = 0x0d,
-                IL2CPP_TYPE_STRING = 0x0e,
-                IL2CPP_TYPE_PTR = 0x0f,
-                /* arg: <type> token */
-                IL2CPP_TYPE_BYREF = 0x10,
-                /* arg: <type> token */
-                IL2CPP_TYPE_VALUETYPE = 0x11,
-                /* arg: <type> token */
-                IL2CPP_TYPE_CLASS = 0x12,
-                /* arg: <type> token */
-                IL2CPP_TYPE_VAR = 0x13,
-                /* Generic parameter in a generic type definition, represented as number (compressed unsigned integer) number */
-                IL2CPP_TYPE_ARRAY = 0x14,
-                /* type, rank, boundsCount, bound1, loCount, lo1 */
-                IL2CPP_TYPE_GENERICINST = 0x15,
-                /* <type> <type-arg-count> <type-1> \x{2026} <type-n> */
-                IL2CPP_TYPE_TYPEDBYREF = 0x16,
-                IL2CPP_TYPE_I = 0x18,
-                IL2CPP_TYPE_U = 0x19,
-                IL2CPP_TYPE_FNPTR = 0x1b,
-                /* arg: full method signature */
-                IL2CPP_TYPE_OBJECT = 0x1c,
-                IL2CPP_TYPE_SZARRAY = 0x1d,
-                /* 0-based one-dim-array */
-                IL2CPP_TYPE_MVAR = 0x1e,
-                /* Generic parameter in a generic method definition, represented as number (compressed unsigned integer)  */
-                IL2CPP_TYPE_CMOD_REQD = 0x1f,
-                /* arg: typedef or typeref token */
-                IL2CPP_TYPE_CMOD_OPT = 0x20,
-                /* optional arg: typedef or typref token */
-                IL2CPP_TYPE_INTERNAL = 0x21,
-                /* CLR internal type */
-
-                IL2CPP_TYPE_MODIFIER = 0x40,
-                /* Or with the following types */
-                IL2CPP_TYPE_SENTINEL = 0x41,
-                /* Sentinel for varargs method signature */
-                IL2CPP_TYPE_PINNED = 0x45,
-                /* Local var that points to pinned object */
-
-                IL2CPP_TYPE_ENUM = 0x55 /* an enumeration */
-            }type : 8;
-
-            unsigned int num_mods : 6; /* max 64 modifiers follow at the end */
-            unsigned int byref : 1;
-            unsigned int pinned : 1; /* valid when included in a local var signature */
-            //MonoCustomMod modifiers [MONO_ZERO_LEN_ARRAY]; /* this may grow */
         public:
             Type() = delete;
 
             auto GetName() -> std::string {
-                return static_cast<const char* (*)(Type * type)>(address_["il2cpp_type_get_name"])(this);
+                try {
+                    return static_cast<const char* (*)(Type * type)>(address_["il2cpp_type_get_name"])(this);
+                } catch (...) {
+                    return "";
+                }
             }
         };
 
@@ -1670,47 +1915,55 @@ namespace unity {
             uint32_t customAttributeCount;
 
             int32_t entryPointIndex;
-
-#ifdef __cplusplus
-            mutable
-#endif
-                struct Il2CppNameToTypeDefinitionIndexHashTable* nameToClassHashTable;
-
-            const struct Il2CppCodeGenModule* codeGenModule;
-
-            uint32_t token;
-            uint8_t  dynamic;
-
         public:
             Image() = delete;
 
-            auto GetName() const -> std::string { return this->name; }
+            auto GetName() -> std::string {
+                try {
+                    return static_cast<const char* (*)(Image * _this)>(address_["il2cpp_image_get_name"])(this);
+                } catch (...) {
+                    return "";
+                }
+            }
 
-            auto GetFile() const -> std::string { return this->name; }
+            auto GetFile() -> std::string {
+                try {
+                    return static_cast<const char* (*)(Image * _this)>(address_["il2cpp_image_get_filename"])(this);
+                } catch (...) {
+                    return "";
+                }
+            }
 
-            auto EnumClasses(std::vector<Class*>& classes) const -> size_t {
-                const auto count = static_cast<size_t(*)(const Image * _this)>(address_[
-                    "il2cpp_image_get_class_count"])(this);
-                    classes.reserve(count);
+            auto EnumClasses(std::list<Class*>& classes) const -> size_t {
+                try {
+                    const auto count = static_cast<size_t(*)(const Image * _this)>(address_["il2cpp_image_get_class_count"])(this);
                     for (size_t i = 0; i < count; i++) {
-                        if (auto klass = static_cast<Class * (*)(const Image * _this, size_t index)>(address_[
-                            "il2cpp_image_get_class"])(this, i))
+                        if (auto klass = static_cast<Class * (*)(const Image * _this, size_t index)>(address_["il2cpp_image_get_class"])(this, i))
                             classes.push_back(klass);
                     }
                     return classes.size();
+                } catch (...) {
+                    return classes.size();
+                }
             }
 
-            auto GetClassCount() const -> size_t { return this->typeCount; }
+            auto GetClassCount() const -> size_t {
+                try {
+                    return static_cast<size_t(*)(const Image * _this)>(address_["il2cpp_image_get_class_count"])(this);;
+                } catch (...) {
+                    return 0;
+                }
+            }
 
             auto GetClassFromName(const std::string& name, const std::string& name_space = "") const -> Class* {
-                std::vector<Class*> classes;
+                std::list<Class*> classes;
                 this->EnumClasses(classes);
                 for (const auto& klass : classes) {
                     if (klass == nullptr)
                         continue;
                     if (klass->GetName() != name)
                         continue;
-                    if (name_space != "")
+                    if (!name_space.empty())
                         if (klass->GetNamespace() != name_space)
                             continue;
                     return klass;
@@ -1736,53 +1989,93 @@ namespace unity {
         public:
             Class() = delete;
 
-            auto GetImage() const -> Image* { return this->image; }
+            auto GetImage() const -> Image* {
+                try {
+                    return static_cast<Image * (*)(const Class * type)>(address_["il2cpp_class_get_image"])(this);
+                } catch (...) {
+                    return nullptr;
+                }
+            }
 
-            auto GetName() const -> std::string { return this->name; }
+            auto GetName() const -> std::string {
+                try {
+                    return static_cast<const char* (*)(const Class * _this)>(address_["il2cpp_class_get_name"])(this);
+                } catch (...) {
+                    return "";
+                }
+            }
 
-            auto GetNamespace() const -> std::string { return this->namespaze; }
+            auto GetNamespace() const -> std::string {
+                try {
+                    return static_cast<const char* (*)(const Class * _this)>(address_["il2cpp_class_get_namespace"])(this);
+                } catch (...) {
+                    return "";
+                }
+            }
 
-            auto GetParent() const -> Class* { return this->parent; }
+            auto GetParent() const -> Class* {
+                try {
+                    return static_cast<Class * (*)(const Class * _this)>(address_["il2cpp_class_get_parent"])(this);
+                } catch (...) {
+                    return nullptr;
+                }
+            }
 
-            auto EnumFields(std::vector<Field*>& fields) -> size_t {
+            auto EnumFields(std::list<Field*>& fields) -> size_t {
                 void* iter = nullptr;
                 Field* field;
                 do {
-                    field = static_cast<Field * (*)(Class * _this, void* iter)>(address_[
-                        "il2cpp_class_get_fields"])(this, &iter);
+                    try {
+                        field = static_cast<Field * (*)(Class * _this, void* iter)>(address_["il2cpp_class_get_fields"])(this, &iter);
                         if (field)
                             fields.push_back(field);
+                    } catch (...) {
+                        field = 0;
+                        continue;
+                    }
                 } while (field);
                 return fields.size();
             }
 
             auto GetFieldFromName(const std::string& name) -> Field* {
-                return static_cast<Field * (*)(Class * _this, const char* name)>(address_[
-                    "il2cpp_class_get_field_from_name"])(this, name.c_str());
+                return static_cast<Field * (*)(Class * _this, const char* name)>(address_["il2cpp_class_get_field_from_name"])(this, name.c_str());
             }
 
-            auto EnumMethods(std::vector<Method*>& methods) -> size_t {
+            auto EnumMethods(std::list<Method*>& methods) -> size_t {
                 void* iter = nullptr;
                 Method* field;
                 do {
-                    field = static_cast<Method * (*)(Class * _this, void* iter)>(address_[
-                        "il2cpp_class_get_methods"])(this, &iter);
+                    try {
+                        field = static_cast<Method * (*)(Class * _this, void* iter)>(address_["il2cpp_class_get_methods"])(this, &iter);
                         if (field)
                             methods.push_back(field);
+                    } catch (...) {
+                        field = 0;
+                        continue;
+                    }
                 } while (field);
                 return methods.size();
             }
 
             auto GetMethodFromName(const std::string& name, const size_t param_count = -1) -> Method* {
-                return static_cast<Method * (*)(Class * _this, const char* name, size_t param_count)>(address_[
-                    "il2cpp_class_get_method_from_name"])(this, name.c_str(), param_count);
+                try {
+                    return static_cast<Method * (*)(Class * _this, const char* name, size_t param_count)>(address_["il2cpp_class_get_method_from_name"])(this, name.c_str(), param_count);
+                } catch (...) {
+                    return nullptr;
+                }
             }
 
             static auto GetClassFromName(const std::string& class_name, const std::string& namespaze = "") -> Class* {
-                std::vector<Assembly*> assemblys;
+                std::list<Assembly*> assemblys;
                 Assembly::EnumAssemblys(assemblys);
                 for (const auto& assembly : assemblys) {
-                    const auto klass = assembly->GetImage()->GetClassFromName(class_name, namespaze);
+                    Class* klass{};
+                    try {
+                        klass = assembly->GetImage()->GetClassFromName(class_name, namespaze);
+                    } catch (...) {
+                        LOG_WARNING(std::format("assembly异常"));
+                        continue;
+                    }
 
                     if (klass == nullptr)
                         continue;
@@ -1811,23 +2104,55 @@ namespace unity {
 
             template<typename T>
             auto GetStatic() -> T {
-                T val = 0;
-                static_cast<void(*)(Field * field, void* ptr)>(address_["il2cpp_field_static_get_value"])(this, &val);
-                return val;
+                try {
+                    T val = 0;
+                    static_cast<void(*)(Field * field, void* ptr)>(address_["il2cpp_field_static_get_value"])(this, &val);
+                    return val;
+                } catch (...) {
+                    return T{};
+                }
             }
 
             template<typename T>
             auto SetStatic(T& val) -> void {
-                static_cast<void(*)(Field * field, void* ptr)>(address_["il2cpp_field_static_set_value"])(this, &val);
+                try {
+                    static_cast<void(*)(Field * field, void* ptr)>(address_["il2cpp_field_static_set_value"])(this, &val);
+                } catch (...) {
+                    return;
+                }
             }
 
-            auto IsStatic() const -> bool { return this->offset == -1 ? true : false; }
+            auto IsStatic() const -> bool {
+                try {
+                    return this->GetOffset() == -1 ? true : false;
+                } catch (...) {
+                    return false;
+                }
+            }
 
-            auto GetName() const -> std::string { return this->name; }
+            auto GetName() const -> std::string {
+                try {
+                    return static_cast<const char* (*)(const Field * _this)>(address_["il2cpp_field_get_name"])(this);
+                } catch (...) {
+                    return "";
+                }
+            }
 
-            auto GetType() const -> Type* { return this->type; }
+            auto GetType() const -> Type* {
+                try {
+                    return static_cast<Type* (*)(const Field * _this)>(address_["il2cpp_field_get_type"])(this);
+                } catch (...) {
+                    return nullptr;
+                }
+            }
 
-            auto GetOffset() const -> std::uintptr_t { return static_cast<std::uintptr_t>(this->offset); }
+            auto GetOffset() const -> std::uintptr_t {
+                try {
+                    return static_cast<size_t (*)(const Field * _this)>(address_["il2cpp_field_get_offset"])(this);
+                } catch (...) {
+                    return 0;
+                }
+            }
         };
 
         struct Method {
@@ -1844,85 +2169,109 @@ namespace unity {
                 uint32_t    token;
                 Type* parameter_type;
             } *parameters;
-
-            union {
-                union {
-                    void* rgctxDataDummy;
-                    const Method* method;
-                    const Type* type;
-                    Class* klass;
-                } *rgctx_data; /* is_inflated is true and is_generic is false, i.e. a generic instance method */
-                const struct Il2CppMethodDefinition* methodDefinition;
-            };
-
-            /* note, when is_generic == true and is_inflated == true the method represents an uninflated generic method on an inflated type. */
-            union {
-                const struct Il2CppGenericMethod* genericMethod;    /* is_inflated is true */
-                const struct Il2CppGenericContainer* genericContainer; /* is_inflated is false and is_generic is true */
-            };
-
-            uint32_t token;
-            uint16_t flags;
-            uint16_t iflags;
-            uint16_t slot;
-            uint8_t  parameters_count;
-            uint8_t  is_generic : 1; /* true if method is a generic method definition */
-            uint8_t  is_inflated : 1;
-            /* true if declaring_type is a generic instance or if method is a generic instance*/
-            uint8_t wrapper_type : 1; /* always zero (MONO_WRAPPER_NONE) needed for the debugger */
-            uint8_t is_marshaled_from_native : 1; /* a fake MethodInfo wrapping a native function pointer */
         public:
             Method() = delete;
 
-            auto GetName() const -> std::string { return this->name; }
-
-            auto GetRetType() const -> Type* { return this->return_type; }
-
-            auto GetParamCount() const -> size_t { return this->parameters_count; }
-
-            auto GetParam(const size_t index) const -> Type* { return this->parameters[index].parameter_type; }
-
-            auto GetParamName(const size_t index) const -> std::string { return this->parameters[index].name; }
-
-            auto EnumParam(std::map<std::string, Type*>& map) const -> size_t {
-                const size_t count = this->GetParamCount();
-                for (size_t i = 0; i < count; i++)
-                    map[this->GetParamName(i)] = this->GetParam(i);
-                return map.size();
+            auto GetName() const -> std::string {
+                try {
+                    return static_cast<const char* (*)(const Method * _this)>(address_["il2cpp_method_get_name"])(this);
+                } catch (...) {
+                    return "";
+                }
             }
 
-            auto IsStatic() const -> bool { return this->flags & 0x10; }
+            auto GetRetType() const -> Type* {
+                try {
+                    return static_cast<Type * (*)(const Method * _this)>(address_["il2cpp_method_get_return_type"])(this);
+                } catch (...) {
+                    return nullptr;
+                }
+            }
+
+            auto GetParamCount() const -> size_t {
+                try {
+                    return reinterpret_cast<size_t(*)(const Method*)>(address_["il2cpp_method_get_param_count"])(this);
+                } catch (...) {
+                    return 0;
+                }
+            }
+
+            auto GetParam(const size_t index) const -> Type* {
+                try {
+                    return static_cast<Type * (*)(const Method * _this, uint32_t)>(address_["il2cpp_method_get_return_type"])(this, index);
+                } catch (...) {
+                    return nullptr;
+                }
+            }
+
+            auto GetParamName(const size_t index) const -> std::string {
+                try {
+                    return static_cast<const char* (*)(const Method * _this, uint32_t)>(address_["il2cpp_method_get_param_name"])(this, index);
+                } catch (...) {
+                    return "";
+                }
+            }
+
+            auto EnumParam(std::map<std::string, Type*>& map) const -> size_t {
+                try {
+                    const size_t count = this->GetParamCount();
+                    for (size_t i = 0; i < count; i++)
+                        map[this->GetParamName(i)] = this->GetParam(i);
+                    return map.size();
+                } catch (...) {
+                    return map.size();
+                }
+            }
+
+            auto GetFlags() const -> std::uint32_t {
+                try {
+                    return reinterpret_cast<std::uint32_t(*)(const Method*, uint32_t*)>(address_["il2cpp_method_get_flags"])(this, nullptr);
+                } catch (...) {
+                    return 0;
+                }
+            }
+
+            auto IsStatic() const -> bool { return 0x10 & this->GetFlags(); }
 
             template<typename OBJ>
             auto Invoke(OBJ* obj, void** params) -> struct Object* {
-                return static_cast<Object * (*)(Method * _this, void* obj, void** params, Object * *exc)>(address_[
-                    "il2cpp_runtime_invoke"])(this, obj, params, nullptr);
+                try {
+                    return static_cast<Object * (*)(Method * _this, void* obj, void** params, Object * *exc)>(address_["il2cpp_runtime_invoke"])(this, obj, params, nullptr);
+                } catch (...) {
+                    return nullptr;
+                }
             }
 
-            auto GetAddress() -> std::uintptr_t { return reinterpret_cast<std::uintptr_t>(this->methodPointer); }
+            auto GetAddress() -> std::uintptr_t {
+                try {
+                    return reinterpret_cast<std::uintptr_t>(this->methodPointer);
+                } catch (...) {
+                    return 0;
+                }
+            }
 
             static auto GetAddress(const std::string& class_name,
-                const std::string& method_name,
-                const size_t       param_count = -1,
-                const std::string& namespaze = "") -> std::uintptr_t {
+                                   const std::string& method_name,
+                                   const size_t       param_count = -1,
+                                   const std::string& namespaze = "") -> std::uintptr_t {
 
                 Class* klass{};
                 try {
                     klass = Class::GetClassFromName(class_name, namespaze);
                     if (klass == nullptr) {
-                        LOG_WARNING(std::format("Cant Find \"{}\" Class", class_name));
+                        LOG_WARNING(std::format("未找到 \"{}\" 类\n", class_name));
                         return 0;
                     }
                 }
                 catch (...) {
-                    LOG_WARNING(std::format("Cant Find \"{}\" Class", class_name));
+                    LOG_WARNING(std::format("寻找 \"{}\" 类时发生异常\n", class_name));
                     return 0;
                 }
 
                 try {
                     return klass->GetMethodFromName(method_name, param_count)->GetAddress();
                 } catch (...) {
-                    LOG_WARNING(std::format("Cant Find \"{}\" Method", method_name));
+                    LOG_WARNING(std::format("未找到 \"{}\" 函数\n", method_name));
                     return 0;
                 }
             }
@@ -2089,6 +2438,11 @@ namespace unity {
             methodAddress_["Object.DestroyImmediate"] = Mono::Method::GetAddress("Object", "DestroyImmediate", 1, "UnityEngine");
             methodAddress_["Component.get_transform"] = Mono::Method::GetAddress("Component", "get_transform", 0, "UnityEngine");
             methodAddress_["Component.get_tag"] = Mono::Method::GetAddress("Component", "get_tag", 0, "UnityEngine");
+        }
+        for (auto& [name, address] : methodAddress_) {
+            if (address == 0) {
+                LOG_WARNING(std::format("Unity 函数 \"{}\" 无法获取到地址\n", name));
+            }
         }
     }
 }

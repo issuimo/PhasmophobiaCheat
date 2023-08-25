@@ -90,7 +90,6 @@
     <ClCompile Include="library\imgui\implot.cpp" />
     <ClCompile Include="library\imgui\implot_demo.cpp" />
     <ClCompile Include="library\imgui\implot_items.cpp" />
-    <ClCompile Include="library\stb\stb_vorbis.c" />
     <ClCompile Include="library\VEHHook.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -136,19 +135,6 @@
     <ClInclude Include="library\D3D11Hook.h" />
     <ClInclude Include="library\detours\detours.h" />
     <ClInclude Include="library\detours\HookManager.h" />
-    <ClInclude Include="library\fmt\args.h" />
-    <ClInclude Include="library\fmt\chrono.h" />
-    <ClInclude Include="library\fmt\color.h" />
-    <ClInclude Include="library\fmt\compile.h" />
-    <ClInclude Include="library\fmt\core.h" />
-    <ClInclude Include="library\fmt\format-inl.h" />
-    <ClInclude Include="library\fmt\format.h" />
-    <ClInclude Include="library\fmt\os.h" />
-    <ClInclude Include="library\fmt\ostream.h" />
-    <ClInclude Include="library\fmt\printf.h" />
-    <ClInclude Include="library\fmt\ranges.h" />
-    <ClInclude Include="library\fmt\std.h" />
-    <ClInclude Include="library\fmt\xchar.h" />
     <ClInclude Include="library\Font.hpp" />
     <ClInclude Include="library\imgui\Font.h" />
     <ClInclude Include="library\imgui\imconfig.h" />
@@ -174,26 +160,6 @@
     <ClInclude Include="library\magic_enum\magic_enum_iostream.hpp" />
     <ClInclude Include="library\magic_enum\magic_enum_switch.hpp" />
     <ClInclude Include="library\magic_enum\magic_enum_utility.hpp" />
-    <ClInclude Include="library\stb\stb_connected_components.h" />
-    <ClInclude Include="library\stb\stb_c_lexer.h" />
-    <ClInclude Include="library\stb\stb_divide.h" />
-    <ClInclude Include="library\stb\stb_ds.h" />
-    <ClInclude Include="library\stb\stb_dxt.h" />
-    <ClInclude Include="library\stb\stb_easy_font.h" />
-    <ClInclude Include="library\stb\stb_herringbone_wang_tile.h" />
-    <ClInclude Include="library\stb\stb_hexwave.h" />
-    <ClInclude Include="library\stb\stb_image.h" />
-    <ClInclude Include="library\stb\stb_image_resize.h" />
-    <ClInclude Include="library\stb\stb_image_write.h" />
-    <ClInclude Include="library\stb\stb_include.h" />
-    <ClInclude Include="library\stb\stb_leakcheck.h" />
-    <ClInclude Include="library\stb\stb_perlin.h" />
-    <ClInclude Include="library\stb\stb_rect_pack.h" />
-    <ClInclude Include="library\stb\stb_sprintf.h" />
-    <ClInclude Include="library\stb\stb_textedit.h" />
-    <ClInclude Include="library\stb\stb_tilemap_editor.h" />
-    <ClInclude Include="library\stb\stb_truetype.h" />
-    <ClInclude Include="library\stb\stb_voxel_render.h" />
     <ClInclude Include="library\UnityHack.h" />
     <ClInclude Include="library\VEHHook.hpp" />
   </ItemGroup>

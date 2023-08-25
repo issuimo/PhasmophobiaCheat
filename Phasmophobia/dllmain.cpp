@@ -7,16 +7,25 @@
 
 extern auto ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) -> LRESULT;
 
+
+long __stdcall callback(_EXCEPTION_POINTERS* excp) {
+    MessageBoxA(nullptr, std::format("code: {} {}", excp->ExceptionRecord->ExceptionCode).c_str(), "错误", 0);
+    return   EXCEPTION_EXECUTE_HANDLER;
+}
+
 auto APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserved) -> BOOL {
     switch (ul_reason_for_call) {
         case DLL_PROCESS_ATTACH:
             AntiAntiCheat();
             std::thread([hModule] {
+                SetUnhandledExceptionFilter(callback);
+
                 // 打开控制台
                 Console::StartConsole(L"Console", false);
 
                 // 初始化Mono
                 unity::Il2cpp::SetModule(GetModuleHandleA("GameAssembly.dll"));
+                unity::Il2cpp::Dump(".");
 
                 // 初始化功能列表
                 initSpace::Feature::Init();
