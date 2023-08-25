@@ -25,7 +25,6 @@ auto APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserv
 
                 // 初始化Mono
                 unity::Il2cpp::SetModule(GetModuleHandleA("GameAssembly.dll"));
-                unity::Il2cpp::Dump(".");
 
                 // 初始化功能列表
                 initSpace::Feature::Init();
