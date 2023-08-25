@@ -21,20 +21,6 @@ auto APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserv
                 // 初始化功能列表
                 initSpace::Feature::Init();
 
-                // 读取配置
-                std::ifstream i(".\\cfg.json");
-                if (i) {
-                    nlohmann::json js = nlohmann::json::parse(i);
-                    for (const auto& _features : initSpace::Feature::features | std::views::values) {
-                        for (const auto func : _features)
-                            try {
-                            func->Load(js);
-                        }
-                        catch (...) {}
-                    }
-                    i.close();
-                }
-
                 // 安装D3D11HOOK
                 DxHook::Hk11::Build([hModule] {
                     if (!initSpace::GuiInfo::imGuiInit) {
@@ -324,16 +310,6 @@ auto APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserv
         case DLL_THREAD_DETACH:
             break;
         case DLL_PROCESS_DETACH:
-            std::ofstream o(".\\cfg.json");
-            if (o) {
-                nlohmann::json js;
-                for (const auto& _features : initSpace::Feature::features | std::views::values) {
-                    for (const auto func : _features)
-                        func->Save(js);
-                }
-                o << js;
-                o.close();
-            }
             break;
     }
     return TRUE;
