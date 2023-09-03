@@ -66,11 +66,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp" />
+    <ClCompile Include="features\CursedItems.cpp" />
     <ClCompile Include="features\DoorList.cpp" />
     <ClCompile Include="features\ESP.cpp" />
     <ClCompile Include="features\Ghost.cpp" />
     <ClCompile Include="features\GhostList.cpp" />
     <ClCompile Include="features\HighSpeed.cpp" />
+    <ClCompile Include="features\IteamList.cpp" />
     <ClCompile Include="features\MoreXP.cpp" />
     <ClCompile Include="features\NoDead.cpp" />
     <ClCompile Include="features\PlayerList.cpp" />
@@ -116,11 +118,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="features\CursedItems.h" />
     <ClInclude Include="features\DoorList.h" />
     <ClInclude Include="features\ESP.h" />
     <ClInclude Include="features\Ghost.h" />
     <ClInclude Include="features\GhostList.h" />
     <ClInclude Include="features\HighSpeed.h" />
+    <ClInclude Include="features\IteamList.h" />
     <ClInclude Include="features\MoreXP.h" />
     <ClInclude Include="features\NoDead.h" />
     <ClInclude Include="features\PlayerList.h" />

@@ -8,9 +8,11 @@
 
 #include <TlHelp32.h>
 
+#include "features/CursedItems.h"
 #include "features/DoorList.h"
 #include "features/ESP.h"
 #include "features/Ghost.h"
+#include "features/IteamList.h"
 #include "features/MoreXP.h"
 #include "features/RoomList.h"
 
@@ -42,5 +44,7 @@ namespace initSpace {
         ADD(MoreXP);
         ADD(DoorList);
         ADD(RoomList);
+        ADD(CursedItems);
+        ADD(PhotonObjectInteract);
     }
 }
