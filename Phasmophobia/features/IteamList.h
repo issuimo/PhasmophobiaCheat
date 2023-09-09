@@ -13,7 +13,10 @@ public:
 
 protected:
     static auto PhotonObjectInteract_Awake_NEW(void* p) -> void;
+    static auto PhotonObjectInteract_OnDestroy_NEW(void* p) -> void;
     PhotonObjectInteract();
 
 private:
+    inline static std::mutex mutex;
+    inline static std::vector<void*> iteams;
 };

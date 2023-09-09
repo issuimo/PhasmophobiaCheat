@@ -354,6 +354,30 @@ namespace unity {
             auto operator[](size_t i) -> T& { return this->vector[i]; }
         };
 
+        template<typename T>
+        class List {
+        public:
+            size_t GetCount() {
+                return reinterpret_cast<size_t(*)(void*)>(methodAddress_["List`1.get_Count"])(this);
+            }
+
+            void Add(T& t) {
+                return reinterpret_cast<size_t(*)(void*)>(methodAddress_["List`1.Add"])(this);
+            }
+
+            T& GetItem(size_t index) {
+                return reinterpret_cast<T&(*)(void*, size_t)>(methodAddress_["List`1.get_Item"])(this, index);
+            }
+
+            void SetItem(size_t index, T& t) {
+                return reinterpret_cast<void(*)(void*, size_t, T&)>(methodAddress_["List`1.set_Item"])(this, index, t);
+            }
+
+            bool Remove(T& t) {
+                return reinterpret_cast<bool(*)(void*, T&)>(methodAddress_["List`1.Remove"])(this);
+            }
+        };
+
         struct IL2cpp {
             struct Object {
             public:
@@ -2420,6 +2444,11 @@ namespace unity {
             methodAddress_["Object.DestroyImmediate"] = Il2cpp::Method::GetAddress("Object", "DestroyImmediate", 1, "UnityEngine");
             methodAddress_["Component.get_transform"] = Il2cpp::Method::GetAddress("Component", "get_transform", 0, "UnityEngine");
             methodAddress_["Component.get_tag"] = Il2cpp::Method::GetAddress("Component", "get_tag", 0, "UnityEngine");
+            methodAddress_["List`1.get_Count"] = Il2cpp::Method::GetAddress("List`1", "get_Count", 0, "System.Collections.Generic");
+            methodAddress_["List`1.Add"] = Il2cpp::Method::GetAddress("List`1", "Add", 1, "System.Collections.Generic");
+            methodAddress_["List`1.get_Item"] = Il2cpp::Method::GetAddress("List`1", "get_Item", 1, "System.Collections.Generic");
+            methodAddress_["List`1.set_Item"] = Il2cpp::Method::GetAddress("List`1", "set_Item", 2, "System.Collections.Generic");
+            methodAddress_["List`1.Remove"] = Il2cpp::Method::GetAddress("List`1", "Remove", 1, "System.Collections.Generic");
         }
         else {
             methodAddress_["Camera.WorldToScreenPoint"] = Mono::Method::GetAddress("Camera", "WorldToScreenPoint", 2);
@@ -2438,6 +2467,11 @@ namespace unity {
             methodAddress_["Object.DestroyImmediate"] = Mono::Method::GetAddress("Object", "DestroyImmediate", 1, "UnityEngine");
             methodAddress_["Component.get_transform"] = Mono::Method::GetAddress("Component", "get_transform", 0, "UnityEngine");
             methodAddress_["Component.get_tag"] = Mono::Method::GetAddress("Component", "get_tag", 0, "UnityEngine");
+            methodAddress_["List`1.get_Count"] = Mono::Method::GetAddress("List`1", "get_Count", 0, "System.Collections.Generic");
+            methodAddress_["List`1.Add"] = Mono::Method::GetAddress("List`1", "Add", 1, "System.Collections.Generic");
+            methodAddress_["List`1.get_Item"] = Mono::Method::GetAddress("List`1", "get_Item", 1, "System.Collections.Generic");
+            methodAddress_["List`1.set_Item"] = Mono::Method::GetAddress("List`1", "set_Item", 2, "System.Collections.Generic");
+            methodAddress_["List`1.Remove"] = Mono::Method::GetAddress("List`1", "Remove", 1, "System.Collections.Generic");
         }
         for (auto& [name, address] : methodAddress_) {
             if (address == 0) {
