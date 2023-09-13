@@ -67,9 +67,8 @@ auto APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserv
                 // 初始化功能列表
                 initSpace::Feature::Init();
 
-                std::vector<std::future<void>> futuresDraws;
                 // 安装D3D11HOOK
-                DxHook::Hk11::Build([hModule, &futuresDraws] {
+                DxHook::Hk11::Build([hModule] {
                     if (!initSpace::GuiInfo::imGuiInit) {
                         IMGUI_CHECKVERSION();
 
@@ -305,21 +304,9 @@ auto APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserv
                     // 多线程并发
                     for (const auto& feature : initSpace::Feature::features | std::views::values) {
                         for (const auto func : feature) {
-                            futuresDraws.emplace_back(std::async(std::launch::async, [&func] {
-                                func->DrawStatus();
-                            }));
+                            func->DrawStatus();
                         }
                     }
-
-                    // 检查是否所有任务都已完成
-                    for (auto& future : futuresDraws) {
-                    wait: if (future.wait_for(std::chrono::seconds(0)) != std::future_status::ready) {
-                        Sleep(1);
-                        goto wait;
-                    }
-                    }
-
-                    futuresDraws.clear();
 
                     if (initSpace::GuiInfo::tipsShow) {
                         if (ImGui::Begin("Tips")) {
