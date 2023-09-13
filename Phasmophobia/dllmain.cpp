@@ -13,12 +13,50 @@ long __stdcall callback(_EXCEPTION_POINTERS* excp) {
     return   EXCEPTION_EXECUTE_HANDLER;
 }
 
+HMODULE hModule_;
+
+HMODULE
+WINAPI
+GetModuleHandleAHook(
+    _In_opt_ LPCSTR lpModuleName
+) {
+    const auto ret = HookManager::call(GetModuleHandleAHook, lpModuleName);
+    if (ret == hModule_) {
+        return nullptr;
+    }
+    return ret;
+}
+
+HMODULE
+WINAPI
+GetModuleHandleWHook(
+    _In_opt_ LPCWSTR lpModuleName
+) {
+    const auto ret = HookManager::call(GetModuleHandleWHook, lpModuleName);
+    if (ret == hModule_) {
+        return nullptr;
+    }
+    return ret;
+}
+
+void HideModule(HMODULE hmodule) {
+    const PVOID moduleAddress = hmodule;
+    DWORD oldProtect{ 0 };
+    VirtualProtect(moduleAddress, 0x7FF, PAGE_EXECUTE_READWRITE, &oldProtect);
+    memset(moduleAddress, 0x00, 0x7FF);
+    VirtualProtect(moduleAddress, 0x7FF, oldProtect, &oldProtect);
+}
+
 auto APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserved) -> BOOL {
     switch (ul_reason_for_call) {
         case DLL_PROCESS_ATTACH:
             AntiAntiCheat();
             std::thread([hModule] {
+                hModule_ = hModule;
                 SetUnhandledExceptionFilter(callback);
+                HideModule(hModule);
+                HookManager::install(GetModuleHandleA, GetModuleHandleAHook);
+                HookManager::install(GetModuleHandleW, GetModuleHandleWHook);
 
                 // 打开控制台
                 Console::StartConsole(L"Console", false);
@@ -29,8 +67,9 @@ auto APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserv
                 // 初始化功能列表
                 initSpace::Feature::Init();
 
+                std::vector<std::future<void>> futuresDraws;
                 // 安装D3D11HOOK
-                DxHook::Hk11::Build([hModule] {
+                DxHook::Hk11::Build([hModule, &futuresDraws] {
                     if (!initSpace::GuiInfo::imGuiInit) {
                         IMGUI_CHECKVERSION();
 
@@ -263,10 +302,24 @@ auto APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserv
                         }
                     }
  
-                    for (const auto& _features : initSpace::Feature::features | std::views::values) {
-                        for (const auto func : _features)
-                            func->DrawStatus();
+                    // 多线程并发
+                    for (const auto& feature : initSpace::Feature::features | std::views::values) {
+                        for (const auto func : feature) {
+                            futuresDraws.emplace_back(std::async(std::launch::async, [&func] {
+                                func->DrawStatus();
+                            }));
+                        }
                     }
+
+                    // 检查是否所有任务都已完成
+                    for (auto& future : futuresDraws) {
+                    wait: if (future.wait_for(std::chrono::seconds(0)) != std::future_status::ready) {
+                        Sleep(1);
+                        goto wait;
+                    }
+                    }
+
+                    futuresDraws.clear();
 
                     if (initSpace::GuiInfo::tipsShow) {
                         if (ImGui::Begin("Tips")) {
@@ -291,7 +344,7 @@ auto APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserv
                     GetClientRect(DxHook::Hk11::GetHwnd(), &Rect);
                     initSpace::GuiInfo::w = Rect.right - Rect.left;
                     initSpace::GuiInfo::h = Rect.bottom - Rect.top;
-                    Sleep(1);
+                    Sleep(100);
 
                     // 多线程并发
                     for (const auto& feature : initSpace::Feature::features | std::views::values) {
