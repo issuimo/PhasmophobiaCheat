@@ -84,7 +84,7 @@ namespace Console {
 	static HWND StartConsole(const wchar_t* title, bool close) {
 		HWND hWnd_ = nullptr;
 		AllocConsole();
-		SetConsoleTitle(title);
+		SetConsoleTitleW(title);
 		while (nullptr == hWnd_) hWnd_ = ::GetConsoleWindow();
 		SetWindowPos(hWnd_, nullptr, 0, 0, 1145, 710, SWP_NOMOVE | SWP_NOZORDER);
 		const HMENU menu_ = ::GetSystemMenu(hWnd_, FALSE);
