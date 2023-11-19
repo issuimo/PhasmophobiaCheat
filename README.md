@@ -8,7 +8,9 @@
 
 > 核心库 \
 > [UnityHack](https://github.com/issuimo/UnityHack/settings) \
-> 本辅助通过该库获取游戏函数签名及地址来实现操作
+> 本辅助通过该库获取游戏函数签名及地址来实现操作 \
+> [kiero-detours](https://github.com/issuimo/kiero-detours) \
+> 挂钩d3d11实现界面渲染
 
 ## 拥有功能
 - #### 玩家
