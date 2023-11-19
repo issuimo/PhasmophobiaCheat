@@ -99,6 +99,9 @@
     <ClCompile Include="features\IteamList.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="library\kiero\kiero.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="features\DoorList.h">
@@ -243,6 +246,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="features\IteamList.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="library\kiero\kiero.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

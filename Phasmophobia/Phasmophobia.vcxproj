@@ -92,6 +92,7 @@
     <ClCompile Include="library\imgui\implot.cpp" />
     <ClCompile Include="library\imgui\implot_demo.cpp" />
     <ClCompile Include="library\imgui\implot_items.cpp" />
+    <ClCompile Include="library\kiero\kiero.cpp" />
     <ClCompile Include="library\VEHHook.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -155,6 +156,7 @@
     <ClInclude Include="library\imgui\imstb_textedit.h" />
     <ClInclude Include="library\imgui\imstb_truetype.h" />
     <ClInclude Include="library\json.hpp" />
+    <ClInclude Include="library\kiero\kiero.h" />
     <ClInclude Include="library\magic_enum\magic_enum.hpp" />
     <ClInclude Include="library\magic_enum\magic_enum_all.hpp" />
     <ClInclude Include="library\magic_enum\magic_enum_containers.hpp" />

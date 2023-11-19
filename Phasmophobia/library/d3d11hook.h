@@ -1,10 +1,15 @@
 ﻿#pragma once
+
+#ifndef _DX11HOOK_
+#define _DX11HOOK_
+
 #include "detours/HookManager.h"
 #include <d3d11.h>
 #include <functional>
+#include "kiero/kiero.h"
 
 #pragma comment(lib, "d3d11.lib")
- 
+
 namespace DxHook {
 	class Hk11 {
 		using IDXGISwapChainPresent = HRESULT(*)(IDXGISwapChain*, UINT, UINT);
@@ -13,16 +18,18 @@ namespace DxHook {
             if (!fn)
                 return false;
 
-            if (const IDXGISwapChainPresent pre = findDirect11Present()) {
-                present = fn;
-                return HookManager::install(pre, MyPresent);
+            kiero::Init(kiero::RenderType::D3D11);
+            if (kiero::Bind(8, MyPresent) == kiero::Status::Success) {
+                present_ = fn;
+                return true;
             }
 
+            LOG_ERROR("Hook d3d11失败!");
             return false;
 		}
 
 		static auto SetWndProc(char(*wndProc)(HWND, UINT, WPARAM, LPARAM)) -> void {
-            WndProc = wndProc;
+            wndProc_ = wndProc;
             oldWndProc = reinterpret_cast<WNDPROC>(GetWindowLongPtr(hWnd_, GWLP_WNDPROC));
             SetWindowLongPtr(hWnd_, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(NewWndProc));
 		}
@@ -36,73 +43,21 @@ namespace DxHook {
 		inline static auto GetTargetView() -> ID3D11RenderTargetView* const * { return &g_TargetView; }
 
 	private:
-		inline static bool Init{false};
+		inline static bool init_{false};
 
 		inline static HWND hWnd_{};
 		inline static WNDPROC oldWndProc{};
 
-		inline static std::function<void()> present;
-		inline static char(*WndProc)(HWND, UINT, WPARAM, LPARAM);
+		inline static std::function<void()> present_;
+		inline static char(*wndProc_)(HWND, UINT, WPARAM, LPARAM);
 
 		inline static ID3D11Device* g_Device{};
 		inline static IDXGISwapChain* g_SwapChain{};
 		inline static ID3D11DeviceContext* g_Context{};
 		inline static ID3D11RenderTargetView* g_TargetView{};
 
-		static auto findDirect11Present() -> IDXGISwapChainPresent {
-            WNDCLASSEX wc{ 0 };
-            wc.cbSize = sizeof(wc);
-            wc.lpfnWndProc = DefWindowProc;
-            wc.lpszClassName = TEXT("Class");
-
-            if (!RegisterClassEx(&wc))
-                return nullptr;
-
-			const HWND hWnd = CreateWindow(wc.lpszClassName, TEXT(""), WS_DISABLED, 0, 0, 0, 0, NULL, NULL, NULL, nullptr);
-            IDXGISwapChain* pSwapChain;
-
-            D3D_FEATURE_LEVEL    featureLevel;
-            DXGI_SWAP_CHAIN_DESC swapChainDesc;
-            ZeroMemory(&swapChainDesc, sizeof(swapChainDesc));
-            swapChainDesc.BufferCount = 1;
-            swapChainDesc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
-            swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
-            swapChainDesc.OutputWindow = hWnd;
-            swapChainDesc.SampleDesc.Count = 1;
-            swapChainDesc.Windowed = ((GetWindowLong(hWnd, GWL_STYLE) & WS_POPUP) != 0) ? FALSE : TRUE;
-            swapChainDesc.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
-            swapChainDesc.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
-            swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
-
-            ID3D11DeviceContext* pContext = nullptr;
-            ID3D11Device* pDevice = nullptr;
-
-            if (FAILED(
-                D3D11CreateDeviceAndSwapChain(nullptr, D3D_DRIVER_TYPE_WARP, nullptr, 0, nullptr, 1, D3D11_SDK_VERSION, &
-                    swapChainDesc, &pSwapChain, &pDevice, &featureLevel, &pContext)) && FAILED(
-                        D3D11CreateDeviceAndSwapChain(nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr, 0, nullptr, 0, D3D11_SDK_VERSION,
-                            &swapChainDesc, &pSwapChain, &pDevice, &featureLevel, &pContext))) {
-                DestroyWindow(swapChainDesc.OutputWindow);
-                UnregisterClass(wc.lpszClassName, GetModuleHandle(nullptr));
-
-                return nullptr;
-            }
-            const DWORD_PTR* pSwapChainVtable = reinterpret_cast<DWORD_PTR*>(pSwapChain);
-            pSwapChainVtable = reinterpret_cast<DWORD_PTR*>(pSwapChainVtable[0]);
-
-			const auto swapChainPresent = reinterpret_cast<IDXGISwapChainPresent>(pSwapChainVtable[8]);
-
-            pDevice->Release();
-            pContext->Release();
-            pSwapChain->Release();
-            DestroyWindow(swapChainDesc.OutputWindow);
-            UnregisterClass(wc.lpszClassName, GetModuleHandle(nullptr));
-
-            return swapChainPresent;
-		}
-
 		static auto MyPresent(IDXGISwapChain* a, UINT b, UINT c) -> HRESULT {
-            if (!Init) {
+            if (!init_) {
                 g_SwapChain       = a;
 				const auto result = a->GetDevice(__uuidof(g_Device), reinterpret_cast<void**>(&g_Device));
                 if (SUCCEEDED(result)) {
@@ -114,17 +69,17 @@ namespace DxHook {
                     a->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<LPVOID*>(&pBackBuffer));
                     g_Device->CreateRenderTargetView(pBackBuffer, nullptr, &g_TargetView);
                     pBackBuffer->Release();
-                    Init = true;
+                    init_ = true;
                 }
             }
 
-            present();
+            present_();
 
             return HookManager::call(MyPresent, a, b, c);
 		}
 
 		static auto CALLBACK NewWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) -> LRESULT {
-			const auto ret = WndProc(hWnd, uMsg, wParam, lParam);
+			const auto ret = wndProc_(hWnd, uMsg, wParam, lParam);
             if (ret == 1)
                 return CallWindowProc(oldWndProc, hWnd, uMsg, wParam, lParam);
             if (ret == 0)
@@ -136,3 +91,5 @@ namespace DxHook {
 		}
 	};
 }
+
+#endif

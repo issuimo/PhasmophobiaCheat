@@ -90,9 +90,8 @@ public:
 
 	static auto detachAll() noexcept -> void {
 		std::lock_guard map(lock);
-		for (const auto& key : holderMap | std::views::keys) {
+		for (const auto& [key, func] : holderMap)
 			disable(key);
-		}
 		holderMap.clear();
 	}
 
