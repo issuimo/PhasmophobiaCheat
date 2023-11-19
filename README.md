@@ -7,7 +7,7 @@
 > 辅助通过UnityHack库能够自动更新数据地址
 
 > 核心库 \
-> [UnityHack](https://github.com/issuimo/UnityHack/settings) \
+> [UnityHack](https://github.com/issuimo/UnityHack) \
 > 本辅助通过该库获取游戏函数签名及地址来实现操作 \
 > [kiero-detours](https://github.com/issuimo/kiero-detours) \
 > 挂钩d3d11实现界面渲染
