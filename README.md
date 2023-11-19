@@ -12,6 +12,9 @@
 > [kiero-detours](https://github.com/issuimo/kiero-detours) \
 > 挂钩d3d11实现界面渲染
 
+## 游戏截图
+![9825960465E1950F75F6F92F66393224](https://github.com/issuimo/PhasmophobiaCheat/assets/102911714/db2fa8e6-e0a0-40f8-83f7-050f9f195638)
+
 ## 拥有功能
 - #### 玩家
 - [X] 玩家列表
