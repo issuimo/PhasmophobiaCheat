@@ -1,14 +1,19 @@
 > [!WARNING]\
 > 请勿将辅助用于破坏他人游戏体验，请勿用于商业用途
 
-> [!IMPORTANT]\
-> 遇到bug请拉取Issues \
-> 辅助不能确保任何人都能够完美运行 \
-> C# 项目需要.NET 8.0
-
 > [!NOTE]\
 > 交流群: 893682569 \
-> 程序根据Dump文件内dll由ILSpy协助开发，并不是传统CE大法及方法
+> 遇到bug或有技术上疑问请拉取Issues \
+> 辅助通过UnityHack库能够自动更新数据地址
+
+> 核心库 \
+> [UnityHack](https://github.com/issuimo/UnityHack) \
+> 本辅助通过该库获取游戏函数签名及地址来实现操作 \
+> [kiero-detours](https://github.com/issuimo/kiero-detours) \
+> 挂钩d3d11实现界面渲染
+
+## 游戏截图
+![9825960465E1950F75F6F92F66393224](https://github.com/issuimo/PhasmophobiaCheat/assets/102911714/db2fa8e6-e0a0-40f8-83f7-050f9f195638)
 
 ## 拥有功能
 - #### 玩家
