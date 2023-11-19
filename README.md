@@ -3,11 +3,12 @@
 
 > [!NOTE]\
 > 交流群: 893682569 \
-> 程序根据Dump文件内dll由DnSpy协助开发，并不是传统CE大法及方法 \
 > 遇到bug请拉取Issues \
-> 辅助不能确保任何人都能够完美运行 \
-> C# 项目需要.NET 8.0 \
-> 辅助通过UnityHack库能够自动更新数据地址, 因此即使是旧版本也能正常使用
+> 辅助通过UnityHack库能够自动更新数据地址
+
+> 核心库 \
+> [UnityHack](https://github.com/issuimo/UnityHack/settings) \
+> 本辅助通过该库获取游戏函数签名及地址来实现操作
 
 ## 拥有功能
 - #### 玩家
