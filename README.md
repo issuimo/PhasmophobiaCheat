@@ -1,3 +1,6 @@
+> 多语言版本即将推出 \
+> The multilingual version is coming soon.
+
 > [!WARNING]\
 > 请勿将辅助用于破坏他人游戏体验，请勿用于商业用途 \
 > Please do not use the assistance to disrupt others' gaming experience and refrain from using it for commercial purposes.\
