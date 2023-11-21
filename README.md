@@ -1,6 +1,3 @@
-> 下载 \
-> [Download](https://github.com/issuimo/PhasmophobiaCheat/releases)
-
 > [!WARNING]\
 > 请勿将辅助用于破坏他人游戏体验，请勿用于商业用途 \
 > 程序路径不能含有中文字符
@@ -15,6 +12,12 @@
 > 本辅助通过该库获取游戏函数签名及地址来实现操作 \
 > [kiero-detours](https://github.com/issuimo/kiero-detours) \
 > 挂钩d3d11实现界面渲染
+
+> 1.下载 (Download) \
+> [Download](https://github.com/issuimo/PhasmophobiaCheat/releases) \
+> 2.移动文件 (Move file) \
+> Phasmophobia.dll && KS_Diagnostics_Process.dll -> Release/net8.0-windows10.0.20348.0/
+![Snipaste_2023-11-21_23-26-39](https://github.com/issuimo/PhasmophobiaCheat/assets/102911714/580b3750-ee6e-4eeb-b95b-b74acf2f56a4)
 
 ## 游戏截图
 ![9825960465E1950F75F6F92F66393224](https://github.com/issuimo/PhasmophobiaCheat/assets/102911714/db2fa8e6-e0a0-40f8-83f7-050f9f195638)
