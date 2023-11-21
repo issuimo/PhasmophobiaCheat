@@ -13,7 +13,7 @@
 #include "Console.hpp"
 
 // 请使用OneApi Base包内Intel C++ 编译器打开MKL选项后编
-#include <mkl.h>
+// #include <mkl.h>
 
 #ifdef _WIN64
 #define CALLING_CONVENTION __fastcall
@@ -84,6 +84,7 @@ namespace unity {
                 return std::sqrt(dx * dx + dy * dy + dz * dz);
             }
 
+            /*
             auto Distance(const std::vector<Vector3>& events) const -> std::vector<float> {
                 const size_t     numEvents = events.size();
                 constexpr int numDimensions = 3;
@@ -116,6 +117,7 @@ namespace unity {
 
                 return distances;
             }
+            */
         };
 
         struct Vector2 {
@@ -134,6 +136,7 @@ namespace unity {
                 return std::sqrt(dx * dx + dy * dy);
             }
 
+            /*
             auto Distance(const std::vector<Vector2>& events) const -> std::vector<float> {
                 const size_t     numEvents = events.size();
                 constexpr int numDimensions = 2;
@@ -165,6 +168,7 @@ namespace unity {
 
                 return distances;
             }
+            */
         };
 
         struct Vector4 {
