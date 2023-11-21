@@ -1,3 +1,6 @@
+> 下载 \
+> [Download](https://github.com/issuimo/PhasmophobiaCheat/releases)
+
 > [!WARNING]\
 > 请勿将辅助用于破坏他人游戏体验，请勿用于商业用途 \
 > 程序路径不能含有中文字符
