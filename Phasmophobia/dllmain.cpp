@@ -8,18 +8,9 @@
 extern auto ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) -> LRESULT;
 
 
-long __stdcall callback(_EXCEPTION_POINTERS* excp) {
-    MessageBoxA(nullptr, std::format("code: {} {}", excp->ExceptionRecord->ExceptionCode).c_str(), "错误", 0);
-    return   EXCEPTION_EXECUTE_HANDLER;
-}
-
 HMODULE hModule_;
 
-HMODULE
-WINAPI
-GetModuleHandleAHook(
-    _In_opt_ LPCSTR lpModuleName
-) {
+HMODULE WINAPI GetModuleHandleAHook(_In_opt_ LPCSTR lpModuleName) {
     const auto ret = HookManager::call(GetModuleHandleAHook, lpModuleName);
     if (ret == hModule_) {
         return nullptr;
@@ -27,11 +18,7 @@ GetModuleHandleAHook(
     return ret;
 }
 
-HMODULE
-WINAPI
-GetModuleHandleWHook(
-    _In_opt_ LPCWSTR lpModuleName
-) {
+HMODULE WINAPI GetModuleHandleWHook(_In_opt_ LPCWSTR lpModuleName) {
     const auto ret = HookManager::call(GetModuleHandleWHook, lpModuleName);
     if (ret == hModule_) {
         return nullptr;
@@ -53,7 +40,6 @@ auto APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserv
             AntiAntiCheat();
             std::thread([hModule] {
                 hModule_ = hModule;
-                SetUnhandledExceptionFilter(callback);
                 HideModule(hModule);
                 HookManager::install(GetModuleHandleA, GetModuleHandleAHook);
                 HookManager::install(GetModuleHandleW, GetModuleHandleWHook);
