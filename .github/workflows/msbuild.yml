@@ -51,8 +51,7 @@ jobs:
         rm -rf ./build/*.pdb
         rm -rf ./build/*.exp
         rm -rf ./build/*.lib
-        
-# move ./build/*.dll ./build/release/net8.0-windows10.0.20348.0/
+        move ./build/release/net8.0-windows10.0.20348.0/*.* ./build/
     - name: Upload Cheat latest artifact
       uses: actions/upload-artifact@v3.1.0
       with:
@@ -60,18 +59,3 @@ jobs:
         path: ./Build/*
         if-no-files-found: error
 
-    - name: Zip the Build
-      run: zip -r ./Release.zip ./build/
-      
-    - name: Create Release and Upload Release Asset
-      uses: softprops/action-gh-release@v1
-      if: startsWith(github.ref, 'refs/tags/')
-      with:
-        tag_name: ${{ github.ref }}
-        name: Release ${{ github.ref }}
-        body: TODO New Release.
-        draft: false
-        prerelease: false
-        files: |
-          ./Release.zip
-          LICENSE 
