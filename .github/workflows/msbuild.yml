@@ -51,8 +51,8 @@ jobs:
         rm -rf ./build/*.pdb
         rm -rf ./build/*.exp
         rm -rf ./build/*.lib
-        # move ./build/*.dll ./build/release/net8.0-windows10.0.20348.0/
-      
+        
+# move ./build/*.dll ./build/release/net8.0-windows10.0.20348.0/
     - name: Upload Cheat latest artifact
       uses: actions/upload-artifact@v3.1.0
       with:
