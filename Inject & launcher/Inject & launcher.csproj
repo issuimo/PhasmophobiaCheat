@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
+	<TargetFramework>net8.0-windows10.0.20348.0</TargetFramework>
     <RootNamespace>Inject___launcher</RootNamespace>
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
@@ -9,6 +10,7 @@
     <PlatformTarget>x64</PlatformTarget>
     <BaseOutputPath>..\Build</BaseOutputPath>
     <BaseIntermediateOutputPath>..\Build\Temp\obj</BaseIntermediateOutputPath>
+	<PackageIcon>syringe_96px.png</PackageIcon>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
