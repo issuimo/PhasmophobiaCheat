@@ -10,6 +10,7 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
+    
 
 env:
   # Path to the solution file relative to the root of the project.
@@ -29,6 +30,9 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    
+    - name: GH Release
+      uses: softprops/action-gh-release@v0.1.15
 
     - name: Add MSBuild to PATH
       uses: microsoft/setup-msbuild@v1.0.2
@@ -48,6 +52,9 @@ jobs:
       run: |
         rm -rf ./build/Temp
         rm -rf ./build/*.pdb
+        rm -rf ./build/*.exp
+        rm -rf ./build/*.lib
+        move ./build/*.dll ./build/Release/net8.0-windows10.0.20348.0/
       
     - name: Upload Cheat latest artifact
       uses: actions/upload-artifact@v3.1.0
@@ -55,3 +62,19 @@ jobs:
         name: release
         path: ./Build/*
         if-no-files-found: error
+
+    - name: Zip the Build
+      run: zip -r ./Release.zip ./build/
+      
+    - name: Create Release and Upload Release Asset
+      uses: softprops/action-gh-release@v1
+      if: startsWith(github.ref, 'refs/tags/')
+      with:
+        tag_name: ${{ github.ref }}
+        name: Release ${{ github.ref }}
+        body: TODO New Release.
+        draft: false
+        prerelease: false
+        files: |
+          ./Release.zip
+          LICENSE 
