@@ -17,7 +17,7 @@
 > 核心库 (Core libraries)
 > - [UnityHack](https://github.com/issuimo/UnityHack) \
 > 本辅助通过该库获取游戏函数签名及地址来实现操作 \
-> This library is used to obtain game function signatures and addresses for performing operations within the game.\
+> This library is used to obtain game function signatures and addresses for performing operations within the game.
 > - [kiero-detours](https://github.com/issuimo/kiero-detours) \
 > 挂钩d3d11实现界面渲染\
 > This library is used to hook into the Direct3D 11 graphics API in order to implement custom rendering for user interfaces.
