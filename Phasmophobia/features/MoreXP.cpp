@@ -3,27 +3,27 @@
 auto MoreXP::LevelValues_IsPerfectGame_NEW(unity::Il2cpp::Class* class_) -> bool {
     if (on)
         return true;
-    return HookManager::call(LevelValues_IsPerfectGame_NEW, class_);
+    return HookManager::Call(LevelValues_IsPerfectGame_NEW, class_);
 }
 
 auto MoreXP::LevelValues_GetInestigationBonusReward_NEW(unity::Il2cpp::Class* class_) -> int {
-    return HookManager::call(LevelValues_GetInestigationBonusReward_NEW, class_) + on ? value : 0;
+    return HookManager::Call(LevelValues_GetInestigationBonusReward_NEW, class_) + on ? value : 0;
 }
 
 auto MoreXP::LevelValues_CompletedMultiplierChallenge_NEW(unity::Il2cpp::Class* class_) -> bool {
     if (on)
         return true;
-    return HookManager::call(LevelValues_IsPerfectGame_NEW, class_);
+    return HookManager::Call(LevelValues_IsPerfectGame_NEW, class_);
 }
 
 MoreXP::MoreXP() : Feature{} {
-    HookManager::install(reinterpret_cast<bool(*)(unity::Il2cpp::Class*)>(
+    HookManager::Install(reinterpret_cast<bool(*)(unity::Il2cpp::Class*)>(
         unity::Il2cpp::Method::GetAddress("LevelValues", "IsPerfectGame", 0)),
         LevelValues_IsPerfectGame_NEW);
-    HookManager::install(reinterpret_cast<int(*)(unity::Il2cpp::Class*)>(
+    HookManager::Install(reinterpret_cast<int(*)(unity::Il2cpp::Class*)>(
         unity::Il2cpp::Method::GetAddress("LevelValues", "GetInestigationBonusReward", 0)),
         LevelValues_GetInestigationBonusReward_NEW);
-    HookManager::install(reinterpret_cast<bool(*)(unity::Il2cpp::Class*)>(
+    HookManager::Install(reinterpret_cast<bool(*)(unity::Il2cpp::Class*)>(
         unity::Il2cpp::Method::GetAddress("LevelValues", "CompletedMultiplierChallenge", 0)),
         LevelValues_CompletedMultiplierChallenge_NEW);
 }

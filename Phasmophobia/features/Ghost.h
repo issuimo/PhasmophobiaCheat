@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include "../Init.h"
 
-class Ghost final : public initSpace::Feature {
+class Ghost final : public init_space::Feature {
 public:
     static auto GetInstance() -> Ghost&;
     auto        GetInfo() const -> const GuiInfo & override;

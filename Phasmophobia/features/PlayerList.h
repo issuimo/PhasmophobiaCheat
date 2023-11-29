@@ -3,7 +3,7 @@
 
 #include "../gameAPI/PlayerAPI.h"
 
-class PlayerList final : public initSpace::Feature {
+class PlayerList final : public init_space::Feature {
 public:
     static auto GetInstance() -> PlayerList&;
     auto        GetInfo() const -> const GuiInfo& override;

@@ -3,7 +3,7 @@
 
 #include "../gameAPI/DoorAPI.h"
 
-class DoorList final : public initSpace::Feature {
+class DoorList final : public init_space::Feature {
 public:
     static auto GetInstance() -> DoorList&;
     auto        GetInfo() const -> const GuiInfo & override;

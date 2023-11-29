@@ -3,7 +3,7 @@
 
 #include "../gameAPI/GhostAPI.h"
 
-class GhostList final : public initSpace::Feature {
+class GhostList final : public init_space::Feature {
 public:
     static auto GetInstance() -> GhostList&;
     auto        GetInfo() const -> const GuiInfo & override;

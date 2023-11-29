@@ -1,7 +1,10 @@
 ﻿#pragma once
-#include <unordered_map>
-#include <mutex>
+#ifndef HOOK_MANAGER
+#define HOOK_MANAGER
 #include <Windows.h>
+#include <mutex>
+#include <ranges>
+#include <unordered_map>
 #include "detours.h"
 
 #ifdef _WIN64
@@ -10,106 +13,94 @@
 #pragma comment(lib, "[x86]detours.lib")
 #endif
 
-
-
-class HookManager
-{
+class HookManager {
 public:
-	template <typename Fn>
-	static auto install(Fn func, Fn handler) -> bool {
-		if (reinterpret_cast<void*>(handler) != nullptr && reinterpret_cast<void*>(func) != nullptr) {
-			if (enable(func, handler)) {
+	template<typename Fn>
+	static auto Install(Fn func, Fn handler) -> bool {
+		if (reinterpret_cast<void*>(handler) != nullptr && reinterpret_cast<void*>(func) != nullptr)
+			if (Enable(func, handler)) {
 				std::lock_guard map(lock);
 				holderMap[reinterpret_cast<void*>(handler)] = reinterpret_cast<void*>(func);
 				return true;
 			}
-		}
 		return false;
 	}
 
-	template <typename Fn>
-	inline static auto getOrigin(Fn handler) noexcept -> Fn {
+	template<typename Fn>
+	static auto GetOrigin(Fn handler) noexcept -> Fn {
 		std::lock_guard map(lock);
-		if (!holderMap.contains(reinterpret_cast<void*>(handler))) {
-			return nullptr;
-		}
+		if (!holderMap.contains(reinterpret_cast<void*>(handler))) return nullptr;
 		return reinterpret_cast<Fn>(holderMap[reinterpret_cast<void*>(handler)]);
 	}
 
-	template <typename Fn>
-	static auto detach(Fn handler) noexcept -> void {
+	template<typename Fn>
+	static auto Detach(Fn handler) noexcept -> void {
 		std::lock_guard map(lock);
-		disable(handler);
+		Disable(handler);
 		holderMap.erase(reinterpret_cast<void*>(handler));
 	}
 
-	template <typename RType, typename... Params>
-	inline static auto call(RType (*handler)(Params...), Params... params) -> RType {
-		auto origin = getOrigin(handler);
-		if (origin != nullptr)
-			return origin(params...);
+	template<typename RType, typename... Params>
+	static auto Call(RType(*handler)(Params...), Params... params) -> RType {
+		auto origin = GetOrigin(handler);
+		if (origin != nullptr) return origin(params...);
 
 		return RType();
 	}
 
-	template <typename RType, typename... Params>
-	inline static auto ccall(RType (__cdecl*handler)(Params...), Params... params) -> RType {
+	template<typename RType, typename... Params>
+	static auto Ccall(RType(__cdecl* handler)(Params...), Params... params) -> RType {
 		auto origin = getOrigin(handler);
-		if (origin != nullptr)
-			return origin(params...);
+		if (origin != nullptr) return origin(params...);
 
 		return RType();
 	}
 
-	template <typename RType, typename... Params>
-	inline static auto scall(RType (__stdcall*handler)(Params...), Params... params) -> RType {
+	template<typename RType, typename... Params>
+	static auto Scall(RType(__stdcall* handler)(Params...), Params... params) -> RType {
 		auto origin = getOrigin(handler);
-		if (origin != nullptr)
-			return origin(params...);
+		if (origin != nullptr) return origin(params...);
 
 		return RType();
 	}
 
-	template <typename RType, typename... Params>
-	inline static auto fcall(RType (__fastcall*handler)(Params...), Params... params) -> RType {
+	template<typename RType, typename... Params>
+	static auto Fcall(RType(__fastcall* handler)(Params...), Params... params) -> RType {
 		auto origin = getOrigin(handler);
-		if (origin != nullptr)
-			return origin(params...);
+		if (origin != nullptr) return origin(params...);
 
 		return RType();
 	}
 
-	template <typename RType, typename... Params>
-	inline static auto vcall(RType (__vectorcall*handler)(Params...), Params... params) -> RType {
+	template<typename RType, typename... Params>
+	static auto Vcall(RType(__vectorcall* handler)(Params...), Params... params) -> RType {
 		auto origin = getOrigin(handler);
-		if (origin != nullptr)
-			return origin(params...);
+		if (origin != nullptr) return origin(params...);
 
 		return RType();
 	}
 
-	static auto detachAll() noexcept -> void {
+	static auto DetachAll() -> void {
 		std::lock_guard map(lock);
-		for (const auto& [key, func] : holderMap)
-			disable(key);
+		for (const auto key : holderMap | std::views::keys) Disable(key);
 		holderMap.clear();
 	}
 
 private:
-	inline static std::mutex lock{};
+	inline static std::mutex                       lock{};
 	inline static std::unordered_map<void*, void*> holderMap{};
 
-	template <typename Fn>
-	static auto disable(Fn handler) -> void {
-		Fn origin = getOrigin(handler);
+	template<typename Fn>
+	static auto Disable(Fn handler) -> void {
+		Fn origin = GetOrigin(handler);
 		DetourTransactionBegin();
 		DetourUpdateThread(GetCurrentThread());
 		DetourDetach(&reinterpret_cast<PVOID&>(origin), handler);
 		DetourTransactionCommit();
 	}
 
-	template <typename Fn>
-	static auto enable(Fn& func, Fn handler) -> bool {
+	template<typename Fn>
+	static auto Enable(Fn& func, Fn handler) -> bool {
 		DetourTransactionBegin();
 		DetourUpdateThread(GetCurrentThread());
 		const bool ret = !DetourAttach(&reinterpret_cast<PVOID&>(func), handler);
@@ -117,4 +108,4 @@ private:
 		return ret;
 	}
 };
-
+#endif

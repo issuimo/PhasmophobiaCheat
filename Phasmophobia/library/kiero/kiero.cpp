@@ -590,7 +590,7 @@ auto kiero::Init(RenderType::Enum _renderType) -> Status::Enum {
 
 auto kiero::Shutdown() -> void {
 	if (g_renderType != RenderType::None) {
-		HookManager::detach(hoolFuncAddress_);
+		HookManager::Detach(hoolFuncAddress_);
 		free(g_methodsTable);
 		g_methodsTable = nullptr;
 		g_renderType   = RenderType::None;
@@ -604,7 +604,7 @@ auto kiero::Bind(uint16_t _index, void* _function) -> Status::Enum {
 
 	if (g_renderType != RenderType::None) {
 		void* target = reinterpret_cast<void*>(g_methodsTable[_index]);
-		if (HookManager::install(target, _function) != true)
+		if (HookManager::Install(target, _function) != true)
 			return Status::UnknownError;
 
 		return Status::Success;
@@ -615,7 +615,7 @@ auto kiero::Bind(uint16_t _index, void* _function) -> Status::Enum {
 
 auto kiero::Unbind(uint16_t _index) -> void {
 	if (g_renderType != RenderType::None)
-		HookManager::detach(reinterpret_cast<void*>(g_methodsTable[_index]));
+		HookManager::Detach(reinterpret_cast<void*>(g_methodsTable[_index]));
 }
 
 auto kiero::GetRenderType() -> RenderType::Enum { return g_renderType; }

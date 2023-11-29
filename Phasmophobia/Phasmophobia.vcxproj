@@ -19,10 +19,13 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>ClangCL</PlatformToolset>
     <CLRSupport>false</CLRSupport>
     <CharacterSet>Unicode</CharacterSet>
     <UseInteloneMKL>Parallel</UseInteloneMKL>
+    <BasePlatformToolset>v143</BasePlatformToolset>
+    <EnableASAN>false</EnableASAN>
+    <EnableUnitySupport>false</EnableUnitySupport>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -59,6 +62,21 @@
       <BuildStlModules>true</BuildStlModules>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <ExpandAttributedSource>true</ExpandAttributedSource>
+      <AssemblerOutput>All</AssemblerOutput>
+      <EnableParallelCodeGeneration>true</EnableParallelCodeGeneration>
+      <EnableEnhancedInstructionSet>AdvancedVectorExtensions2</EnableEnhancedInstructionSet>
+      <FloatingPointModel>Precise</FloatingPointModel>
+      <UseUnicodeForAssemblerListing>true</UseUnicodeForAssemblerListing>
+      <CompileAs>Default</CompileAs>
+      <StringPooling>true</StringPooling>
+      <ControlFlowGuard>false</ControlFlowGuard>
+      <FloatingPointExceptions>false</FloatingPointExceptions>
+      <GuardEHContMetadata>false</GuardEHContMetadata>
+      <DebugInformationFormat>None</DebugInformationFormat>
+      <SupportJustMyCode>false</SupportJustMyCode>
+      <DiagnosticsFormat>Caret</DiagnosticsFormat>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
     </ClCompile>
     <Link>
       <AdditionalDependencies>$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
@@ -82,18 +100,14 @@
     <ClCompile Include="library\imgui\imgui.cpp" />
     <ClCompile Include="library\imgui\imgui_demo.cpp" />
     <ClCompile Include="library\imgui\imgui_draw.cpp" />
-    <ClCompile Include="library\imgui\imgui_impl_dx10.cpp" />
     <ClCompile Include="library\imgui\imgui_impl_dx11.cpp" />
-    <ClCompile Include="library\imgui\imgui_impl_dx9.cpp" />
     <ClCompile Include="library\imgui\imgui_impl_win32.cpp" />
-    <ClCompile Include="library\imgui\imgui_stdlib.cpp" />
     <ClCompile Include="library\imgui\imgui_tables.cpp" />
     <ClCompile Include="library\imgui\imgui_widgets.cpp" />
     <ClCompile Include="library\imgui\implot.cpp" />
     <ClCompile Include="library\imgui\implot_demo.cpp" />
     <ClCompile Include="library\imgui\implot_items.cpp" />
     <ClCompile Include="library\kiero\kiero.cpp" />
-    <ClCompile Include="library\VEHHook.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Assembly-CSharp">
@@ -140,16 +154,12 @@
     <ClInclude Include="library\D3D11Hook.h" />
     <ClInclude Include="library\detours\detours.h" />
     <ClInclude Include="library\detours\HookManager.h" />
-    <ClInclude Include="library\Font.hpp" />
     <ClInclude Include="library\imgui\Font.h" />
     <ClInclude Include="library\imgui\imconfig.h" />
     <ClInclude Include="library\imgui\imgui.h" />
-    <ClInclude Include="library\imgui\imgui_impl_dx10.h" />
     <ClInclude Include="library\imgui\imgui_impl_dx11.h" />
-    <ClInclude Include="library\imgui\imgui_impl_dx9.h" />
     <ClInclude Include="library\imgui\imgui_impl_win32.h" />
     <ClInclude Include="library\imgui\imgui_internal.h" />
-    <ClInclude Include="library\imgui\imgui_stdlib.h" />
     <ClInclude Include="library\imgui\implot.h" />
     <ClInclude Include="library\imgui\implot_internal.h" />
     <ClInclude Include="library\imgui\imstb_rectpack.h" />
@@ -167,7 +177,6 @@
     <ClInclude Include="library\magic_enum\magic_enum_switch.hpp" />
     <ClInclude Include="library\magic_enum\magic_enum_utility.hpp" />
     <ClInclude Include="library\UnityHack.h" />
-    <ClInclude Include="library\VEHHook.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="library\detours\[x64]detours.lib" />

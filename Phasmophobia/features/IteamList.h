@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include "../Init.h"
 
-class PhotonObjectInteract final : public initSpace::Feature {
+class PhotonObjectInteract final : public init_space::Feature {
 public:
     static auto GetInstance() -> PhotonObjectInteract&;
     auto        GetInfo() const -> const GuiInfo & override;

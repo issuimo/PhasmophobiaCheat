@@ -5,7 +5,7 @@
 auto PhotonObjectInteract::PhotonObjectInteract_Awake_NEW(void* p) -> void {
     std::lock_guard lock(mutex);
     iteams.push_back(p);
-    HookManager::call(PhotonObjectInteract_Awake_NEW, p);
+    HookManager::Call(PhotonObjectInteract_Awake_NEW, p);
 }
 
 auto PhotonObjectInteract::PhotonObjectInteract_OnDestroy_NEW(void* p) -> void {
@@ -13,12 +13,12 @@ auto PhotonObjectInteract::PhotonObjectInteract_OnDestroy_NEW(void* p) -> void {
     const auto      it = std::ranges::find(iteams, p);
     if (it != iteams.end())
         iteams.erase(it);
-    return HookManager::call(PhotonObjectInteract_OnDestroy_NEW, p);
+    return HookManager::Call(PhotonObjectInteract_OnDestroy_NEW, p);
 }
 
 PhotonObjectInteract::PhotonObjectInteract() : Feature{} {
-     HookManager::install(reinterpret_cast<void(*)(void*)>(unity::Il2cpp::Method::GetAddress("PhotonObjectInteract", "Awake", 0)), PhotonObjectInteract_Awake_NEW);
-     HookManager::install(reinterpret_cast<void(*)(void*)>(unity::Il2cpp::Method::GetAddress("PhotonObjectInteract", "OnDestroy", 0)), PhotonObjectInteract_OnDestroy_NEW);
+     HookManager::Install(reinterpret_cast<void(*)(void*)>(unity::Il2cpp::Method::GetAddress("PhotonObjectInteract", "Awake", 0)), PhotonObjectInteract_Awake_NEW);
+     HookManager::Install(reinterpret_cast<void(*)(void*)>(unity::Il2cpp::Method::GetAddress("PhotonObjectInteract", "OnDestroy", 0)), PhotonObjectInteract_OnDestroy_NEW);
 }
 
 auto PhotonObjectInteract::GetInstance() -> PhotonObjectInteract& {

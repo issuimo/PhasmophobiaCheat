@@ -7,11 +7,11 @@
 auto RoomList::LevelRoom_Awake_NEW(LevelAPI* levelApi) -> void {
     std::lock_guard lock(mutex);
     rooms.push_back(levelApi);
-    return HookManager::call(LevelRoom_Awake_NEW, levelApi);
+    return HookManager::Call(LevelRoom_Awake_NEW, levelApi);
 }
 
 RoomList::RoomList() : Feature{} {
-    HookManager::install(reinterpret_cast<void(*)(LevelAPI*)>(
+    HookManager::Install(reinterpret_cast<void(*)(LevelAPI*)>(
         unity::Il2cpp::Method::GetAddress("LevelRoom", "Awake", 0)),
         LevelRoom_Awake_NEW);
 }

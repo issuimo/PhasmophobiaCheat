@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include "../Init.h"
 
-class NoDead final : public initSpace::Feature {
+class NoDead final : public init_space::Feature {
 public:
     static auto GetInstance() -> NoDead&;
     auto        GetInfo() const -> const GuiInfo& override;

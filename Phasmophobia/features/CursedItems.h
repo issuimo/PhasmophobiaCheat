@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include "../Init.h"
 
-class CursedItems final : public initSpace::Feature {
+class CursedItems final : public init_space::Feature {
 public:
     static auto GetInstance() -> CursedItems&;
     auto        GetInfo() const -> const GuiInfo & override;

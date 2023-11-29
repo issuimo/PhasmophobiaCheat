@@ -3,7 +3,7 @@
 
 #include "../gameAPI/CursedItemsControllerAPI.h"
 
-class ESP final : public initSpace::Feature {
+class ESP final : public init_space::Feature {
 public:
     static auto GetInstance() -> ESP&;
     auto        GetInfo() const -> const GuiInfo & override;

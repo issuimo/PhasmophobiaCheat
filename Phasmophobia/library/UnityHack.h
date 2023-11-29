@@ -4,6 +4,8 @@
 // ReSharper disable IdentifierTypo
 // ReSharper disable CppDeclarationHidesLocal
 #pragma once
+#ifndef UNITY_HACK
+#define UNITY_HACK
 #include <Windows.h>
 #include <string>
 #include <unordered_map>
@@ -2484,3 +2486,4 @@ namespace unity {
         }
     }
 }
+#endif

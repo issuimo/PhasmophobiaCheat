@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include "../Init.h"
 
-class HighSpeed final : public initSpace::Feature {
+class HighSpeed final : public init_space::Feature {
 public:
     static auto GetInstance() -> HighSpeed&;
     auto        GetInfo() const -> const GuiInfo & override;

@@ -3,11 +3,11 @@
 auto DoorList::Door_Awake_NEW(DoorAPI* doorApi) -> void {
     std::lock_guard lock(mutex);
     doors.push_back(doorApi);
-    return HookManager::call(Door_Awake_NEW, doorApi);
+    return HookManager::Call(Door_Awake_NEW, doorApi);
 }
 
 DoorList::DoorList() : Feature{} {
-    HookManager::install(reinterpret_cast<void(*)(DoorAPI*)>(unity::Il2cpp::Method::GetAddress("Door", "Awake", 0)), Door_Awake_NEW);
+    HookManager::Install(reinterpret_cast<void(*)(DoorAPI*)>(unity::Il2cpp::Method::GetAddress("Door", "Awake", 0)), Door_Awake_NEW);
     DoorAPI::LockDoor = reinterpret_cast<void(*)(DoorAPI*, bool)>(unity::Il2cpp::Method::GetAddress("Door", "LockDoor", 1));
     DoorAPI::UnlockDoor = reinterpret_cast<void(*)(DoorAPI*)>(unity::Il2cpp::Method::GetAddress("Door", "UnlockDoor", 0));
     DoorAPI::OpenDoor = reinterpret_cast<void(*)(DoorAPI*, float, bool, bool)>(unity::Il2cpp::Method::GetAddress("Door", "OpenDoor", 3));

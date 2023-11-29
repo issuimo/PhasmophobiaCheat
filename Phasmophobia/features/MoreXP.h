@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include "../Init.h"
 
-class MoreXP final : public initSpace::Feature {
+class MoreXP final : public init_space::Feature {
 public:
     static auto GetInstance() -> MoreXP&;
     auto        GetInfo() const -> const GuiInfo & override;

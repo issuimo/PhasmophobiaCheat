@@ -1,4 +1,6 @@
 ﻿#pragma once
+#ifndef INIT_SPACE
+#define INIT_SPACE
 #include "library/json.hpp"
 #include "library/detours/HookManager.h"
 #include "library/imgui/imgui.h"
@@ -16,9 +18,10 @@
 #include <vector>
 #include <map>
 
-namespace initSpace {
-    class GuiInfo {
+namespace init_space {
+    class Info {
     public:
+        inline static HMODULE hModule;
         inline static bool mainShow;
         inline static bool imGuiInit;
         inline static bool tipsShow;
@@ -53,4 +56,5 @@ namespace initSpace {
     };
 }
 
-extern void AntiAntiCheat();
+extern auto AntiAntiCheat() -> void;
+#endif

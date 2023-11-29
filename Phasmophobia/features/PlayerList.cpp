@@ -8,7 +8,7 @@
 auto PlayerList::Player_Awake_NEW(PlayerAPI* player) -> void {
     std::lock_guard lock(mutex);
     players.push_back(player);
-    return HookManager::call(Player_Awake_NEW, player);
+    return HookManager::Call(Player_Awake_NEW, player);
 }
 
 auto PlayerList::Player_OnDestroy_NEW(PlayerAPI* player) -> void {
@@ -20,14 +20,14 @@ auto PlayerList::Player_OnDestroy_NEW(PlayerAPI* player) -> void {
     DoorList::ClearVector();
     ESP::ClearAllAddress();
     RoomList::ClearRooms();
-    return HookManager::call(Player_OnDestroy_NEW, player);
+    return HookManager::Call(Player_OnDestroy_NEW, player);
 }
 
 PlayerList::PlayerList() : Feature{} {
-    HookManager::install(reinterpret_cast<void(*)(PlayerAPI*)>(
+    HookManager::Install(reinterpret_cast<void(*)(PlayerAPI*)>(
         unity::Il2cpp::Method::GetAddress("Player", "Awake", 0)),
         Player_Awake_NEW);
-    HookManager::install(reinterpret_cast<void(*)(PlayerAPI*)>(
+    HookManager::Install(reinterpret_cast<void(*)(PlayerAPI*)>(
         unity::Il2cpp::Method::GetAddress("Player", "OnDestroy", 0)),
         Player_OnDestroy_NEW);
     RevivePlayer = reinterpret_cast<void(*)(void*)>(
@@ -91,9 +91,9 @@ auto PlayerList::Render() -> void {
                     try {
                         if (ImGui::SmallButton("kill") && !actor->GetDead()) {
                             NoDead::SetNoDead(false);
-                            HookManager::call(NoDead::Player_StartKillingPlayer_NEW, reinterpret_cast<void*>(actor));
-                            HookManager::call(NoDead::Player_KillPlayer_NEW, reinterpret_cast<void*>(actor), true);
-                            HookManager::call(NoDead::Player_DeadRoomEffects_NEW, reinterpret_cast<void*>(actor));
+                            HookManager::Call(NoDead::Player_StartKillingPlayer_NEW, reinterpret_cast<void*>(actor));
+                            HookManager::Call(NoDead::Player_KillPlayer_NEW, reinterpret_cast<void*>(actor), true);
+                            HookManager::Call(NoDead::Player_DeadRoomEffects_NEW, reinterpret_cast<void*>(actor));
                             NoDead::SetNoDead(false);
                         }
                         ImGui::SameLine();

@@ -5,41 +5,41 @@ auto Ghost::Ghost_Hunting_NEW(void* p, bool arg, int i, void* p1) -> void {
     if (noHunt) {
         return;
     }
-    return HookManager::call(Ghost_Hunting_NEW, p, arg, i, p1);
+    return HookManager::Call(Ghost_Hunting_NEW, p, arg, i, p1);
 }
 
 auto Ghost::Ghost_ChangeFavouriteRoomTo_NEW(void* p, void* arg) -> void {
     if (noNewRoom) {
         return;
     }
-    return HookManager::call(Ghost_ChangeFavouriteRoomTo_NEW, p, arg);
+    return HookManager::Call(Ghost_ChangeFavouriteRoomTo_NEW, p, arg);
 }
 
 auto Ghost::Ghost_HuntingCloseDoor_NEW(void* p) -> void {
     if (noCloseDoor) {
         return;
     }
-    return HookManager::call(Ghost_HuntingCloseDoor_NEW, p);
+    return HookManager::Call(Ghost_HuntingCloseDoor_NEW, p);
 }
 
 auto Ghost::Ghost_HuntingCloseDoorNetworked_NEW(void* p, void* p1) -> void {
     if (noCloseDoor) {
         return;
     }
-    return HookManager::call(Ghost_HuntingCloseDoorNetworked_NEW, p, p1);
+    return HookManager::Call(Ghost_HuntingCloseDoorNetworked_NEW, p, p1);
 }
 
 Ghost::Ghost() : Feature{} {
-    HookManager::install(reinterpret_cast<void(*)(void*, bool, int, void*)>(
+    HookManager::Install(reinterpret_cast<void(*)(void*, bool, int, void*)>(
         unity::Il2cpp::Method::GetAddress("GhostAI", "Hunting", 3)),
         Ghost_Hunting_NEW);
-    HookManager::install(reinterpret_cast<void(*)(void*, void*)>(
+    HookManager::Install(reinterpret_cast<void(*)(void*, void*)>(
         unity::Il2cpp::Method::GetAddress("GhostController", "ChangeFavouriteRoomTo", 1)),
         Ghost_ChangeFavouriteRoomTo_NEW);
-    HookManager::install(reinterpret_cast<void(*)(void*)>(
+    HookManager::Install(reinterpret_cast<void(*)(void*)>(
         unity::Il2cpp::Method::GetAddress("Door", "HuntingCloseDoor", 0)),
         Ghost_HuntingCloseDoor_NEW);
-    HookManager::install(reinterpret_cast<void(*)(void*, void* )>(
+    HookManager::Install(reinterpret_cast<void(*)(void*, void* )>(
         unity::Il2cpp::Method::GetAddress("Door", "HuntingCloseDoorNetworked", 1)),
         Ghost_HuntingCloseDoorNetworked_NEW);
 }

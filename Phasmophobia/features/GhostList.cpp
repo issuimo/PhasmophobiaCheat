@@ -5,11 +5,11 @@
 auto GhostList::Ghost_Awake_NEW(GhostAPI* class_) -> void {
     std::lock_guard lock(mutex);
     ghosts.push_back(class_);
-    return HookManager::call(Ghost_Awake_NEW, class_);
+    return HookManager::Call(Ghost_Awake_NEW, class_);
 }
 
 GhostList::GhostList() : Feature{} {
-    HookManager::install(reinterpret_cast<void(*)(GhostAPI*)>(unity::Il2cpp::Method::GetAddress("GhostAI", "Awake", 0)),Ghost_Awake_NEW);
+    HookManager::Install(reinterpret_cast<void(*)(GhostAPI*)>(unity::Il2cpp::Method::GetAddress("GhostAI", "Awake", 0)),Ghost_Awake_NEW);
     GhostAPI::Interact_Address = reinterpret_cast<void(*)(void*)>(unity::Il2cpp::Method::GetAddress("GhostAI", "StartHuntingTimer", 0));
 }
 

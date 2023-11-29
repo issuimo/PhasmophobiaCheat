@@ -3,32 +3,32 @@
 auto NoDead::Player_StartKillingPlayer_NEW(void* p) -> void {
     if (noDead)
         return;
-    return HookManager::call(Player_StartKillingPlayer_NEW, p);
+    return HookManager::Call(Player_StartKillingPlayer_NEW, p);
 }
 
 auto NoDead::Player_KillPlayer_NEW(void* p, bool v) -> void {
     if (noDead)
         return;
-    return HookManager::call(Player_KillPlayer_NEW, p, v);
+    return HookManager::Call(Player_KillPlayer_NEW, p, v);
 }
 
 auto NoDead::Player_Dead_NEW(void* p, bool arg, void* po) -> void {
     if (noDead)
         return;
-    return HookManager::call(Player_Dead_NEW, p, arg, po);
+    return HookManager::Call(Player_Dead_NEW, p, arg, po);
 }
 
 auto NoDead::Player_DeadRoomEffects_NEW(void* p) -> void {
     if (noDead)
         return;
-    return HookManager::call(Player_DeadRoomEffects_NEW, p);
+    return HookManager::Call(Player_DeadRoomEffects_NEW, p);
 }
 
 NoDead::NoDead() : Feature{} {
-    HookManager::install(reinterpret_cast<void(*)(void*)>(unity::Il2cpp::Method::GetAddress("Player", "StartKillingPlayer", 0)),Player_StartKillingPlayer_NEW);
-    HookManager::install(reinterpret_cast<void(*)(void*, bool)>(unity::Il2cpp::Method::GetAddress("Player", "KillPlayer", 1)),Player_KillPlayer_NEW);
-    HookManager::install(reinterpret_cast<void(*)(void*, bool, void*)>(unity::Il2cpp::Method::GetAddress("Player", "Dead", 2)),Player_Dead_NEW);
-    HookManager::install(reinterpret_cast<void(*)(void*)>(unity::Il2cpp::Method::GetAddress("Player", "DeadRoomEffects", 0)),Player_DeadRoomEffects_NEW);
+    HookManager::Install(reinterpret_cast<void(*)(void*)>(unity::Il2cpp::Method::GetAddress("Player", "StartKillingPlayer", 0)),Player_StartKillingPlayer_NEW);
+    HookManager::Install(reinterpret_cast<void(*)(void*, bool)>(unity::Il2cpp::Method::GetAddress("Player", "KillPlayer", 1)),Player_KillPlayer_NEW);
+    HookManager::Install(reinterpret_cast<void(*)(void*, bool, void*)>(unity::Il2cpp::Method::GetAddress("Player", "Dead", 2)),Player_Dead_NEW);
+    HookManager::Install(reinterpret_cast<void(*)(void*)>(unity::Il2cpp::Method::GetAddress("Player", "DeadRoomEffects", 0)),Player_DeadRoomEffects_NEW);
 }
 
 auto NoDead::GetInstance() -> NoDead& {

@@ -3,7 +3,7 @@
 
 #include "../gameAPI/LevelAPI.h"
 
-class RoomList final : public initSpace::Feature {
+class RoomList final : public init_space::Feature {
 public:
     static auto GetInstance() -> RoomList&;
     auto        GetInfo() const -> const GuiInfo & override;

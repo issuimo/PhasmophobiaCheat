@@ -4,27 +4,27 @@ auto CursedItems::MusicBox_BreakMusicBox_NEW(void* p, bool arg) -> void {
     if (musicBox) {
         return;
     }
-    HookManager::call(MusicBox_BreakMusicBox_NEW, p, arg);
+    HookManager::Call(MusicBox_BreakMusicBox_NEW, p, arg);
 }
 
 auto CursedItems::MusicBox_TryBreakMusicBox_NEW(void* p, bool arg) -> void {
     if (musicBox) {
         return;
     }
-    HookManager::call(MusicBox_BreakMusicBox_NEW, p, arg);
+    HookManager::Call(MusicBox_BreakMusicBox_NEW, p, arg);
 }
 
 auto CursedItems::HauntedMirror_BreakItem_NEW(void* p) -> void {
     if (hauntedMirror) {
         return;
     }
-    HookManager::call(HauntedMirror_BreakItem_NEW, p);
+    HookManager::Call(HauntedMirror_BreakItem_NEW, p);
 }
 
 CursedItems::CursedItems() : Feature{} {
-    HookManager::install(reinterpret_cast<void(*)(void*, bool)>(unity::Il2cpp::Method::GetAddress("MusicBox", "BreakMusicBox", 1)), MusicBox_BreakMusicBox_NEW);
-    HookManager::install(reinterpret_cast<void(*)(void*, bool)>(unity::Il2cpp::Method::GetAddress("MusicBox", "TryBreakMusicBox", 1)), MusicBox_TryBreakMusicBox_NEW);
-    HookManager::install(reinterpret_cast<void(*)(void*)>(unity::Il2cpp::Method::GetAddress("HauntedMirror", "BreakItem", 0)), HauntedMirror_BreakItem_NEW);
+    HookManager::Install(reinterpret_cast<void(*)(void*, bool)>(unity::Il2cpp::Method::GetAddress("MusicBox", "BreakMusicBox", 1)), MusicBox_BreakMusicBox_NEW);
+    HookManager::Install(reinterpret_cast<void(*)(void*, bool)>(unity::Il2cpp::Method::GetAddress("MusicBox", "TryBreakMusicBox", 1)), MusicBox_TryBreakMusicBox_NEW);
+    HookManager::Install(reinterpret_cast<void(*)(void*)>(unity::Il2cpp::Method::GetAddress("HauntedMirror", "BreakItem", 0)), HauntedMirror_BreakItem_NEW);
 }
 
 auto CursedItems::GetInstance() -> CursedItems& {
