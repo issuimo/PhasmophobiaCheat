@@ -50,7 +50,7 @@ public:
 
 	template<typename RType, typename... Params>
 	static auto Ccall(RType(__cdecl* handler)(Params...), Params... params) -> RType {
-		auto origin = getOrigin(handler);
+		auto origin = GetOrigin(handler);
 		if (origin != nullptr) return origin(params...);
 
 		return RType();
@@ -58,7 +58,7 @@ public:
 
 	template<typename RType, typename... Params>
 	static auto Scall(RType(__stdcall* handler)(Params...), Params... params) -> RType {
-		auto origin = getOrigin(handler);
+		auto origin = GetOrigin(handler);
 		if (origin != nullptr) return origin(params...);
 
 		return RType();
@@ -66,7 +66,7 @@ public:
 
 	template<typename RType, typename... Params>
 	static auto Fcall(RType(__fastcall* handler)(Params...), Params... params) -> RType {
-		auto origin = getOrigin(handler);
+		auto origin = GetOrigin(handler);
 		if (origin != nullptr) return origin(params...);
 
 		return RType();
@@ -74,7 +74,7 @@ public:
 
 	template<typename RType, typename... Params>
 	static auto Vcall(RType(__vectorcall* handler)(Params...), Params... params) -> RType {
-		auto origin = getOrigin(handler);
+		auto origin = GetOrigin(handler);
 		if (origin != nullptr) return origin(params...);
 
 		return RType();

@@ -10,9 +10,9 @@
 #include <windows.h>
 
 #ifdef _WIN64
-#define UNITY_CALLING_CONVENTION __fastcall*
+#define UNITY_CALLING_CONVENTION __fastcall
 #elif _WIN32
-#define UNITY_CALLING_CONVENTION __cdecl*
+#define UNITY_CALLING_CONVENTION __cdecl
 #endif
 
 class UnityResolve final {
@@ -162,7 +162,7 @@ public:
 		template<typename Return, typename... Args>
 		auto Invoke(Args... args) -> Return {
 			Compile();
-			if (function) return static_cast<Return(UNITY_CALLING_CONVENTION)(Args...)>(function)(args...);
+			if (function) return static_cast<Return(UNITY_CALLING_CONVENTION*)(Args...)>(function)(args...);
 			throw std::logic_error("nullptr");
 		}
 
@@ -191,7 +191,7 @@ public:
 		}
 
 		template<typename Return, typename... Args>
-		using MethodPointer = Return(*)(Args...);
+		using MethodPointer = Return(UNITY_CALLING_CONVENTION*)(Args...);
 
 		template<typename Return, typename... Args>
 		auto Cast() -> MethodPointer<Return, Args...> {
@@ -497,7 +497,7 @@ public:
 		// 检查函数是否已经获取地址, 没有则自动获取
 		if (!address_.contains(funcName) || address_[funcName] == nullptr) address_[funcName] = static_cast<void*>(GetProcAddress(hmodule_, funcName.c_str()));
 
-		if (address_[funcName] != nullptr) return reinterpret_cast<Return(UNITY_CALLING_CONVENTION)(Args...)>(address_[funcName])(args...);
+		if (address_[funcName] != nullptr) return reinterpret_cast<Return(UNITY_CALLING_CONVENTION*)(Args...)>(address_[funcName])(args...);
 		throw std::logic_error("Not find function");
 	}
 
@@ -537,6 +537,8 @@ public:
 		struct List;
 		template<typename TKey, typename TValue>
 		struct Dictionary;
+		struct Behaviour;
+		struct MonoBehaviour;
 
 		struct Vector3 {
 			float x, y, z;
@@ -1269,6 +1271,14 @@ public:
 				}
 				throw std::logic_error("nullptr");
 			}
+		};
+
+		struct Behaviour : Component {
+			
+		};
+
+		struct MonoBehaviour : Behaviour {
+			void* m_CancellationTokenSource;
 		};
 
 		struct Physics {

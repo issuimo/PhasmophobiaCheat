@@ -19,7 +19,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>ClangCL</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CLRSupport>false</CLRSupport>
     <CharacterSet>Unicode</CharacterSet>
     <UseInteloneMKL>Parallel</UseInteloneMKL>
@@ -62,12 +62,12 @@
       <BuildStlModules>true</BuildStlModules>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <ExpandAttributedSource>true</ExpandAttributedSource>
-      <AssemblerOutput>All</AssemblerOutput>
+      <ExpandAttributedSource>false</ExpandAttributedSource>
+      <AssemblerOutput>NoListing</AssemblerOutput>
       <EnableParallelCodeGeneration>true</EnableParallelCodeGeneration>
       <EnableEnhancedInstructionSet>AdvancedVectorExtensions2</EnableEnhancedInstructionSet>
       <FloatingPointModel>Precise</FloatingPointModel>
-      <UseUnicodeForAssemblerListing>true</UseUnicodeForAssemblerListing>
+      <UseUnicodeForAssemblerListing>false</UseUnicodeForAssemblerListing>
       <CompileAs>Default</CompileAs>
       <StringPooling>true</StringPooling>
       <ControlFlowGuard>false</ControlFlowGuard>
@@ -80,21 +80,12 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp" />
-    <ClCompile Include="features\CursedItems.cpp" />
-    <ClCompile Include="features\DoorList.cpp" />
-    <ClCompile Include="features\ESP.cpp" />
-    <ClCompile Include="features\Ghost.cpp" />
-    <ClCompile Include="features\GhostList.cpp" />
-    <ClCompile Include="features\HighSpeed.cpp" />
-    <ClCompile Include="features\IteamList.cpp" />
-    <ClCompile Include="features\MoreXP.cpp" />
-    <ClCompile Include="features\NoDead.cpp" />
-    <ClCompile Include="features\PlayerList.cpp" />
-    <ClCompile Include="features\RoomList.cpp" />
+    <ClCompile Include="features\Players\List\List.cpp" />
     <ClCompile Include="Init.cpp" />
     <ClCompile Include="library\imgui\Font.cpp" />
     <ClCompile Include="library\imgui\imgui.cpp" />
@@ -133,22 +124,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="features\CursedItems.h" />
-    <ClInclude Include="features\DoorList.h" />
-    <ClInclude Include="features\ESP.h" />
-    <ClInclude Include="features\Ghost.h" />
-    <ClInclude Include="features\GhostList.h" />
-    <ClInclude Include="features\HighSpeed.h" />
-    <ClInclude Include="features\IteamList.h" />
-    <ClInclude Include="features\MoreXP.h" />
-    <ClInclude Include="features\NoDead.h" />
-    <ClInclude Include="features\PlayerList.h" />
-    <ClInclude Include="features\RoomList.h" />
-    <ClInclude Include="gameAPI\CursedItemsControllerAPI.h" />
-    <ClInclude Include="gameAPI\DoorAPI.h" />
-    <ClInclude Include="gameAPI\GhostAPI.h" />
-    <ClInclude Include="gameAPI\LevelAPI.h" />
-    <ClInclude Include="gameAPI\PlayerAPI.h" />
+    <ClInclude Include="features\Players\List\List.hpp" />
+    <ClInclude Include="features\Players\Player.hpp" />
     <ClInclude Include="Init.h" />
     <ClInclude Include="library\Console.hpp" />
     <ClInclude Include="library\D3D11Hook.h" />
@@ -176,7 +153,7 @@
     <ClInclude Include="library\magic_enum\magic_enum_iostream.hpp" />
     <ClInclude Include="library\magic_enum\magic_enum_switch.hpp" />
     <ClInclude Include="library\magic_enum\magic_enum_utility.hpp" />
-    <ClInclude Include="library\UnityHack.h" />
+    <ClInclude Include="library\UnityResolve.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="library\detours\[x64]detours.lib" />

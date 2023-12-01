@@ -15,30 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="features\DoorList.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="features\ESP.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="features\Ghost.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="features\GhostList.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="features\HighSpeed.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="features\MoreXP.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="features\NoDead.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="features\PlayerList.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="library\imgui\Font.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -78,66 +54,18 @@
     <ClCompile Include="Init.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="features\RoomList.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="features\CursedItems.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="features\IteamList.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="library\kiero\kiero.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="features\Players\List\List.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="features\DoorList.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="features\ESP.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="features\Ghost.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="features\GhostList.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="features\HighSpeed.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="features\MoreXP.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="features\NoDead.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="features\PlayerList.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="gameAPI\CursedItemsControllerAPI.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="gameAPI\DoorAPI.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="gameAPI\GhostAPI.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="gameAPI\LevelAPI.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="gameAPI\PlayerAPI.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="library\D3D11Hook.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="library\json.hpp">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="library\UnityHack.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="library\magic_enum\magic_enum.hpp">
@@ -209,19 +137,19 @@
     <ClInclude Include="Init.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="features\RoomList.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="library\Console.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="features\CursedItems.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="features\IteamList.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="library\kiero\kiero.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="library\UnityResolve.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="features\Players\List\List.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="features\Players\Player.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
