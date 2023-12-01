@@ -1,5 +1,6 @@
 > 多语言版本即将推出 \
-> The multilingual version is coming soon.
+> The multilingual version is coming soon. \
+> [0.5.0 new](https://github.com/issuimo/PhasmophobiaCheat/tree/0.5.0-new)
 
 > [!WARNING]\
 > 请勿将辅助用于破坏他人游戏体验，请勿用于商业用途 \
