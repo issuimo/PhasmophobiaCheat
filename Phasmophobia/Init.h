@@ -41,6 +41,7 @@ namespace init_space {
         inline static bool tipsShow;
         inline static LONG h;
         inline static LONG w;
+        inline static bool show;
     };
 
     class Feature {

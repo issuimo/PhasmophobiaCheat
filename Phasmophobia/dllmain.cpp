@@ -194,7 +194,7 @@ auto APIENTRY DllMain(HMODULE hModule, const DWORD ul_reason_for_call, LPVOID lp
 
 					// 主界面
 					if (!init_space::Info::tipsShow)
-						if (ImGui::Begin(reinterpret_cast<const char*>(u8"Phasmophobia Cheat By 遂沫"))) {
+						if (ImGui::Begin(reinterpret_cast<const char*>(u8"Phasmophobia Cheat By 遂沫"), &init_space::Info::show, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings)) {
 							if (ImGui::Button(U8(u8"保存 (Save)"))) {
 								if (std::ofstream o(".\\cfg.json"); o) {
 									nlohmann::json js;
@@ -229,7 +229,7 @@ auto APIENTRY DllMain(HMODULE hModule, const DWORD ul_reason_for_call, LPVOID lp
 							ImGui::End();
 						}
 
-					ImGui::SetNextWindowSize(ImVec2(0, 0));
+					ImGui::SetNextWindowSize(ImVec2(1, 1));
 					ImGui::SetNextWindowPos(ImVec2(-1000, -1000));
 					if (ImGui::Begin("Draw (don`t selected)")) {
 						ImGui::GetBackgroundDrawList()->AddCircle(ImVec2(static_cast<float>(init_space::Info::w) / 2.0f, static_cast<float>(init_space::Info::h) / 2.0f), 3, 0xFF0000FF, 4, 2);
