@@ -183,7 +183,7 @@ auto APIENTRY DllMain(HMODULE hModule, const DWORD ul_reason_for_call, LPVOID lp
 						styles.WindowTitleAlign           = ImVec2(0.0, 0.5);
 
 						init_space::Info::imGuiInit = true;
-						init_space::Info::mainShow  = true;
+						init_space::Info::mainShow  = false;
 						init_space::Info::tipsShow  = true;
 					}
 
@@ -226,11 +226,16 @@ auto APIENTRY DllMain(HMODULE hModule, const DWORD ul_reason_for_call, LPVOID lp
 								ImGui::EndTabBar();
 							}
 
-							ImGui::GetBackgroundDrawList()->AddCircle(ImVec2(static_cast<float>(init_space::Info::w) / 2.0f, static_cast<float>(init_space::Info::h) / 2.0f), 3, 0xFF0000FF, 4, 2);
-							for (const auto& feature : init_space::Feature::features | std::views::values) for (const auto func : feature) if (func->GetInfo().needDraw) func->Draw();
-
 							ImGui::End();
 						}
+
+					ImGui::SetNextWindowSize(ImVec2(0, 0));
+					ImGui::SetNextWindowPos(ImVec2(-1000, -1000));
+					if (ImGui::Begin("Draw (don`t selected)")) {
+						ImGui::GetBackgroundDrawList()->AddCircle(ImVec2(static_cast<float>(init_space::Info::w) / 2.0f, static_cast<float>(init_space::Info::h) / 2.0f), 3, 0xFF0000FF, 4, 2);
+						for (const auto& feature : init_space::Feature::features | std::views::values) for (const auto func : feature) if (func->GetInfo().needDraw) func->Draw();
+						ImGui::End();
+					}
 
 					if (init_space::Info::tipsShow)
 						if (ImGui::Begin("Tips")) {

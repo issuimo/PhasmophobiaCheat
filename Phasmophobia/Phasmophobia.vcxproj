@@ -85,7 +85,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp" />
-    <ClCompile Include="features\Players\List\List.cpp" />
+    <ClCompile Include="features\Ghost\Ghost.cpp" />
+    <ClCompile Include="features\Ghost\List\GhostList.cpp" />
+    <ClCompile Include="features\Players\List\PlayerList.cpp" />
+    <ClCompile Include="features\Players\Player.cpp" />
+    <ClCompile Include="features\Rooms\List\RoomList.cpp" />
+    <ClCompile Include="features\Rooms\Room.cpp" />
     <ClCompile Include="Init.cpp" />
     <ClCompile Include="library\imgui\Font.cpp" />
     <ClCompile Include="library\imgui\imgui.cpp" />
@@ -124,8 +129,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="features\Players\List\List.hpp" />
+    <ClInclude Include="features\Ghost\Ghost.hpp" />
+    <ClInclude Include="features\Ghost\List\GhostList.hpp" />
+    <ClInclude Include="features\Players\List\PlayerList.hpp" />
     <ClInclude Include="features\Players\Player.hpp" />
+    <ClInclude Include="features\Rooms\List\RoomList.hpp" />
+    <ClInclude Include="features\Rooms\Room.hpp" />
     <ClInclude Include="Init.h" />
     <ClInclude Include="library\Console.hpp" />
     <ClInclude Include="library\D3D11Hook.h" />

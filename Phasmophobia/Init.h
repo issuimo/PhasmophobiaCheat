@@ -6,6 +6,7 @@
 #include "library/imgui/imgui.h"
 #include "library/UnityResolve.hpp"
 #include "library/imgui/implot.h"
+#include "library/magic_enum/magic_enum_all.hpp"
 
 #include <windows.h>
 #include <future>
@@ -16,6 +17,7 @@
 #include <fstream>
 #include <mutex>
 #include <vector>
+#include <cstdint>
 #include <map>
 
 #define U8(X) reinterpret_cast<const char*>(X)
@@ -68,10 +70,5 @@ namespace init_space {
         ~Feature() = default;
         Feature()  = default;
     };
-}
-
-template<typename... Args>
-inline static bool CheckNull(Args... args) {
-    return ((nullptr != args), ...);
 }
 #endif

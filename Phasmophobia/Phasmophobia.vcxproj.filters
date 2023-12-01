@@ -57,7 +57,22 @@
     <ClCompile Include="library\kiero\kiero.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="features\Players\List\List.cpp">
+    <ClCompile Include="features\Players\List\PlayerList.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="features\Rooms\List\RoomList.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="features\Players\Player.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="features\Rooms\Room.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="features\Ghost\Ghost.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="features\Ghost\List\GhostList.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -146,10 +161,22 @@
     <ClInclude Include="library\UnityResolve.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="features\Players\List\List.hpp">
+    <ClInclude Include="features\Players\List\PlayerList.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="features\Players\Player.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="features\Rooms\Room.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="features\Rooms\List\RoomList.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="features\Ghost\Ghost.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="features\Ghost\List\GhostList.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
