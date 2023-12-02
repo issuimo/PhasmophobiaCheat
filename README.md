@@ -1,5 +1,7 @@
-> 多语言版本即将推出 \
-> The multilingual version is coming soon.
+> 多语言版本推出 \
+> The multilingual version is coming. \
+> 新的分支对旧的代码进行了重新编写, 修复已知bug带来更好的稳定性, 可能会增加新的功能这依赖于UnityResolve.hpp库的能力 \
+> The new branch has rewritten the old code, fixing known bugs and bringing better stability. It may also introduce new features that rely on the capabilities of the UnityResolve.hpp library.
 
 > [!WARNING]\
 > 请勿将辅助用于破坏他人游戏体验，请勿用于商业用途 \
