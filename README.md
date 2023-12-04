@@ -17,7 +17,7 @@
 > The UnityHack library provides assistance in automatically updating data addresses.
 
 > 核心库 (Core libraries)
-> - [UnityResolve](https://github.com/issuimo/UnityResolve) \
+> - [UnityResolve.hpp](https://github.com/issuimo/UnityResolve.hpp) \
 > 本辅助通过该库获取游戏函数签名及地址来实现操作 \
 > This library is used to obtain game function signatures and addresses for performing operations within the game.
 > - [kiero-detours](https://github.com/issuimo/kiero-detours) \
