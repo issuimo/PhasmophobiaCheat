@@ -4,7 +4,7 @@
 #include "../../Init.h"
 
 #pragma pack(8)
-class Room : II::MonoBehaviour {
+class Room : public II::MonoBehaviour {
 public:
 	char space1[0x48];
 	II::String* name;

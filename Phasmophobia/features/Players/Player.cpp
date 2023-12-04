@@ -4,10 +4,13 @@
 
 auto Player::InitOnce() -> void {
 	if (const auto pClass = I::Get("Assembly-CSharp.dll")->Get("Player")) {
-		mAwake = pClass->Get<IM>("Awake")->Cast<void, Player*>();
-		mOnDestroy = pClass->Get<IM>("OnDestroy")->Cast<void, Player*>();
-
-		mTeleport = pClass->Get<IM>("Teleport");
+		mAwake              = pClass->Get<IM>("Awake")->Cast<void, Player*>();
+		mOnDestroy          = pClass->Get<IM>("OnDestroy")->Cast<void, Player*>();
+		mKillPlayer         = pClass->Get<IM>("KillPlayer")->Cast<void, Player*, bool>();
+		mStartKillingPlayer = pClass->Get<IM>("StartKillingPlayer")->Cast<void, Player*>();
+		mDead               = pClass->Get<IM>("Dead")->Cast<void, Player*, bool, void*>();
+		mDeadRoomEffects    = pClass->Get<IM>("DeadRoomEffects")->Cast<void, Player*>();
+		mTeleport           = pClass->Get<IM>("Teleport");
 	}
 
 	if (mAwake && mOnDestroy) {

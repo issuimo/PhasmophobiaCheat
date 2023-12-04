@@ -4,6 +4,7 @@
 #include "library/json.hpp"
 #include "library/detours/HookManager.h"
 #include "library/imgui/imgui.h"
+#include "library/imgui/imgui_internal.h"
 #include "library/UnityResolve.hpp"
 #include "library/imgui/implot.h"
 #include "library/magic_enum/magic_enum_all.hpp"

@@ -6,7 +6,7 @@
 #include "../Rooms/Room.hpp"
 
 #pragma pack(8)
-class Ghost : II::MonoBehaviour {
+class Ghost : public II::MonoBehaviour {
 public:
     char space1[0x8];
     enum class GhostState : std::int64_t {

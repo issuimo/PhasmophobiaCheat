@@ -5,7 +5,7 @@
 #include "../Rooms/Room.hpp"
 
 #pragma pack(8)
-class Player : II::MonoBehaviour {
+class Player : public II::MonoBehaviour {
 public:
 	struct : MonoBehaviour {
 		char space1[0x50];
@@ -34,6 +34,11 @@ public:
 	inline static std::mutex           playersMutex;
 
 	inline static IM* mTeleport{};
+
+	inline static IM::MethodPointer<void, Player*> mStartKillingPlayer{};
+	inline static IM::MethodPointer<void, Player*, bool> mKillPlayer{};
+	inline static IM::MethodPointer<void, Player*, bool, void*> mDead{};
+	inline static IM::MethodPointer<void, Player*> mDeadRoomEffects{};
 private:
 	inline static IM::MethodPointer<void, Player*> mAwake{};
 	inline static auto UNITY_CALLING_CONVENTION  HAwake(Player* _this) -> void;

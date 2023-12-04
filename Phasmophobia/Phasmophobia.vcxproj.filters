@@ -75,6 +75,12 @@
     <ClCompile Include="features\Ghost\List\GhostList.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="features\Players\NoDead\NoDead.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="features\Ghost\Esp\GhostEsp.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="library\D3D11Hook.h">
@@ -177,6 +183,24 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="features\Ghost\List\GhostList.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="library\HotKey.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="features\Players\NoDead\NoDead.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="features\Ghost\Esp\GhostEsp.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="library\ThreadPool.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="library\ImGuiEX.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="library\DrawMath.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

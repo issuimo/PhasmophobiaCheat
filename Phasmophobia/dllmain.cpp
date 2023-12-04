@@ -1,6 +1,7 @@
 ﻿#include "Init.h"
 #include "library/Console.hpp"
 #include "library/D3D11Hook.h"
+#include "library/HotKey.hpp"
 #include "library/imgui/Font.h"
 #include "library/imgui/imgui_impl_dx11.h"
 #include "library/imgui/imgui_impl_win32.h"
@@ -52,6 +53,8 @@ auto APIENTRY DllMain(HMODULE hModule, const DWORD ul_reason_for_call, LPVOID lp
 							ImGui::GetIO().MousePos.x = static_cast<float>(mPos.x);
 							ImGui::GetIO().MousePos.y = static_cast<float>(mPos.y);
 							ImGui_ImplWin32_WndProcHandler(hWnd, msg, wParam, lParam);
+
+							HotKey::PotMsg(msg);
 
 							// 按键处理
 							switch (msg) {

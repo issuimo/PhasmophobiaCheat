@@ -1,8 +1,10 @@
 ﻿#include "Init.h"
 
 #include "features/Ghost/Ghost.hpp"
+#include "features/Ghost/Esp/GhostEsp.hpp"
 #include "features/Ghost/List/GhostList.hpp"
 #include "features/Players/List/PlayerList.hpp"
+#include "features/Players/NoDead/NoDead.hpp"
 #include "features/Rooms/List/RoomList.hpp"
 
 namespace init_space {
@@ -15,6 +17,8 @@ namespace init_space {
 
 		ADD(RoomList);
 		ADD(GhostList);
+		ADD(GhostEsp);
 		ADD(PlayerList);
+		ADD(PlayerNoDead);
 	}
 }
