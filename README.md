@@ -31,7 +31,8 @@
 ![Snipaste_2023-11-21_23-26-39](https://github.com/issuimo/PhasmophobiaCheat/assets/102911714/580b3750-ee6e-4eeb-b95b-b74acf2f56a4)
 
 ## 游戏截图 (Screenshots)
-![9825960465E1950F75F6F92F66393224](https://github.com/issuimo/PhasmophobiaCheat/assets/102911714/db2fa8e6-e0a0-40f8-83f7-050f9f195638)
+![A0583A3498C5D0B2EDB639976225D39C](https://github.com/issuimo/PhasmophobiaCheat/assets/102911714/10fb3d10-ce9e-4b16-b93b-1e70b0841626)
+
 
 ## 功能 (Function)
 - #### 玩家 (Player)
