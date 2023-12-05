@@ -194,13 +194,10 @@
     <ClInclude Include="features\Ghost\Esp\GhostEsp.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="library\ThreadPool.h">
+    <ClInclude Include="ImGuiEX.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="library\ImGuiEX.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="library\DrawMath.h">
+    <ClInclude Include="DrawMath.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

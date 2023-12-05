@@ -10,6 +10,8 @@
 #include <windows.h>
 #include <unordered_map>
 
+#include "UnityResolve.hpp"
+
 #ifdef _WIN64
 #define UNITY_CALLING_CONVENTION __fastcall
 #elif _WIN32
@@ -1570,7 +1572,7 @@ public:
 			}
 		};
 
-		struct Mesh {
+		struct Mesh : UnityObject {
 			auto GetBounds() -> Bounds {
 				static Method* method;
 				if (!method) method = Get("UnityEngine.CoreModule.dll")->Get("Mesh")->Get<Method>("get_bounds_Injected");
@@ -1583,7 +1585,7 @@ public:
 			}
 		};
 
-		struct Renderer {
+		struct Renderer : Component {
 			auto GetBounds() -> Bounds {
 				static Method* method;
 				if (!method) method = Get("UnityEngine.CoreModule.dll")->Get("Renderer")->Get<Method>("get_bounds_Injected");

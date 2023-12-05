@@ -28,6 +28,7 @@ auto GhostList::Render() -> void {
         std::lock_guard lock(Player::playersMutex);
 		if (!Player::players.empty())
 			if (Ghost::ghost)
+				try {
 				if (Ghost::ghost->ghostInfo)
 					if (Ghost::ghost->ghostInfo->room)
 						if (Ghost::ghost->ghostInfo->room->name && Ghost::ghost->ghostInfo->proof && Player::players[0]->journalController && Player::players[0]->journalController->textMeshProUgui) {
@@ -43,6 +44,7 @@ auto GhostList::Render() -> void {
 							if (ImGui::TableSetColumnIndex(7)) for (const auto proof : Ghost::ghost->ghostInfo->proof->ToArray()->ToVector()) ImGui::Text(std::format("{} ", magic_enum::enum_name<Ghost::Proof>(proof)).c_str());
 							ImGui::PopID();
 						}
+				} catch (...) {}
 
 		ImGui::EndTable();
     }

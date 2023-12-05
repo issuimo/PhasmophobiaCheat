@@ -21,15 +21,19 @@ auto PlayerList::Render() -> void {
         ImGui::TableHeadersRow();
 
         std::lock_guard lock(Player::playersMutex);
-        for (const auto& player : Player::players)
+        for (const auto& player : Player::players) {
+			ImGui::TableNextRow();
+			ImGui::PushID(player);
 			if (player->photonView && player->photonView->ptr && player->photonView->ptr->name && player->levelRoom && player->levelRoom->name) {
-				ImGui::TableNextRow();
-				ImGui::PushID(player);
-				if (ImGui::TableSetColumnIndex(0)) ImGui::Text(std::format("{}", player->photonView->ptr->name->ToString()).c_str());
-				if (ImGui::TableSetColumnIndex(1)) ImGui::Text(std::format("{}", player->dead).c_str());
-				if (ImGui::TableSetColumnIndex(2)) ImGui::Text(std::format("{}", player->levelRoom->name->ToString()).c_str());
-				ImGui::PopID();
+				try {
+					if (ImGui::TableSetColumnIndex(0)) ImGui::Text(std::format("{}", player->photonView->ptr->name->ToString()).c_str());
+					if (ImGui::TableSetColumnIndex(1)) ImGui::Text(std::format("{}", player->dead).c_str());
+					if (ImGui::TableSetColumnIndex(2)) ImGui::Text(std::format("{}", player->levelRoom->name->ToString()).c_str());
+				}
+				catch (...) {}
 			}
+			ImGui::PopID();
+		}
 
 		ImGui::EndTable();
     }

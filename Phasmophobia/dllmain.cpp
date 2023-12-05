@@ -261,6 +261,7 @@ auto APIENTRY DllMain(HMODULE hModule, const DWORD ul_reason_for_call, LPVOID lp
 					GetClientRect(dx_hook::Hk11::GetHwnd(), &Rect);
 					init_space::Info::w = Rect.right - Rect.left;
 					init_space::Info::h = Rect.bottom - Rect.top;
+					drawMath::UpdateResolutionScale();
 					Sleep(100);
 
 					// 多线程并发

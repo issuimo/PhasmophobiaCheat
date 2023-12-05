@@ -144,9 +144,9 @@
     <ClInclude Include="library\D3D11Hook.h" />
     <ClInclude Include="library\detours\detours.h" />
     <ClInclude Include="library\detours\HookManager.h" />
-    <ClInclude Include="library\DrawMath.h" />
+    <ClInclude Include="DrawMath.h" />
     <ClInclude Include="library\HotKey.hpp" />
-    <ClInclude Include="library\ImGuiEX.h" />
+    <ClInclude Include="ImGuiEX.h" />
     <ClInclude Include="library\imgui\Font.h" />
     <ClInclude Include="library\imgui\imconfig.h" />
     <ClInclude Include="library\imgui\imgui.h" />
@@ -169,7 +169,6 @@
     <ClInclude Include="library\magic_enum\magic_enum_iostream.hpp" />
     <ClInclude Include="library\magic_enum\magic_enum_switch.hpp" />
     <ClInclude Include="library\magic_enum\magic_enum_utility.hpp" />
-    <ClInclude Include="library\ThreadPool.h" />
     <ClInclude Include="library\UnityResolve.hpp" />
   </ItemGroup>
   <ItemGroup>

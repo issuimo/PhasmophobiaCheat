@@ -19,7 +19,9 @@ auto RoomList::Render() -> void {
 		for (const auto& room : Room::rooms) {
 			ImGui::TableNextRow();
 			ImGui::PushID(room);
-			if (room->name) if (ImGui::TableSetColumnIndex(0)) ImGui::Text(std::format("{}", room->name->ToString()).c_str());
+			try {
+				if (room->name) if (ImGui::TableSetColumnIndex(0)) ImGui::Text(std::format("{}", room->name->ToString()).c_str());
+			} catch (...) {}
 			ImGui::PopID();
 		}
 
