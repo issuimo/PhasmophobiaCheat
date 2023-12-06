@@ -61,6 +61,6 @@
 - #### 房间 (Rooms)
 - [X] 房间列表 (Room List)
 - #### 透视 (ESP)
-- [ ] 鬼魂透视 (Ghost)
+- [x] 鬼魂透视 (Ghost)
 
 ### - More...
