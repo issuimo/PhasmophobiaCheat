@@ -4,8 +4,10 @@
 #include "library/json.hpp"
 #include "library/detours/HookManager.h"
 #include "library/imgui/imgui.h"
-#include "library/UnityHack.h"
+#include "library/imgui/imgui_internal.h"
+#include "library/UnityResolve.hpp"
 #include "library/imgui/implot.h"
+#include "library/magic_enum/magic_enum_all.hpp"
 
 #include <windows.h>
 #include <future>
@@ -16,7 +18,18 @@
 #include <fstream>
 #include <mutex>
 #include <vector>
+#include <cstdint>
 #include <map>
+
+#define U8(X) reinterpret_cast<const char*>(X)
+using I = UnityResolve;
+using IM = UnityResolve::Method;
+using IC = UnityResolve::Class;
+using IT = UnityResolve::Type;
+using IF = UnityResolve::Field;
+using IA = UnityResolve::Assembly;
+using II = UnityResolve::UnityType;
+using H = HookManager;
 
 namespace init_space {
     class Info {
@@ -27,6 +40,7 @@ namespace init_space {
         inline static bool tipsShow;
         inline static LONG h;
         inline static LONG w;
+        inline static bool show;
     };
 
     class Feature {
@@ -38,23 +52,27 @@ namespace init_space {
             std::string tableName;
             std::string groupName;
             bool        needGroup;
+            bool        needUpdate;
+            bool        needDraw;
         };
 
         virtual auto GetInfo() const -> const GuiInfo& = 0;
-        virtual auto DrawStatus() -> void { };
+        virtual auto Draw() -> void { };
         virtual auto Render() -> void {};
         virtual auto Update() -> void {};
         virtual auto Save(nlohmann::json& json) -> void {};
         virtual auto Load(nlohmann::json& json) -> void {};
 
-        inline static std::unordered_map<std::string, std::list<Feature*>> features;
-        static auto                                                        Init() -> void;
+        inline static std::unordered_map<std::string, std::vector<Feature*>> features;
+        static auto Init() -> void;
 
     protected:
         ~Feature() = default;
         Feature()  = default;
     };
+
 }
 
-extern auto AntiAntiCheat() -> void;
+#include "ImGuiEX.h"
+#include "DrawMath.h"
 #endif

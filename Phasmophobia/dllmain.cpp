@@ -1,6 +1,7 @@
 ﻿#include "Init.h"
 #include "library/Console.hpp"
 #include "library/D3D11Hook.h"
+#include "library/HotKey.hpp"
 #include "library/imgui/Font.h"
 #include "library/imgui/imgui_impl_dx11.h"
 #include "library/imgui/imgui_impl_win32.h"
@@ -15,10 +16,10 @@ auto APIENTRY DllMain(HMODULE hModule, const DWORD ul_reason_for_call, LPVOID lp
 			std::thread([hModule] {
 
 				// 打开控制台
-				Console::StartConsole(L"Console", false);
+				console::StartConsole(L"Console", false);
 
 				// 初始化Mono
-				unity::Il2cpp::SetModule(GetModuleHandleA("GameAssembly.dll"));
+				UnityResolve::Init(GetModuleHandleA("GameAssembly.dll"), UnityResolve::Mode::Il2Cpp);
 
 				// 初始化功能列表
 				init_space::Feature::Init();
@@ -53,6 +54,8 @@ auto APIENTRY DllMain(HMODULE hModule, const DWORD ul_reason_for_call, LPVOID lp
 							ImGui::GetIO().MousePos.y = static_cast<float>(mPos.y);
 							ImGui_ImplWin32_WndProcHandler(hWnd, msg, wParam, lParam);
 
+							HotKey::PotMsg(msg);
+
 							// 按键处理
 							switch (msg) {
 								case WM_KEYDOWN:
@@ -85,7 +88,7 @@ auto APIENTRY DllMain(HMODULE hModule, const DWORD ul_reason_for_call, LPVOID lp
 						auto& styles = ImGui::GetStyle();
 
 						// Colors
-						auto colors                            = styles.Colors;
+						auto colors                     = styles.Colors;
 						colors[ImGuiCol_Border]                = HexToRGBA("0C846ED5");
 						colors[ImGuiCol_BorderShadow]          = HexToRGBA("00000000");
 						colors[ImGuiCol_Button]                = HexToRGBA("0D9F9D9F");
@@ -183,7 +186,7 @@ auto APIENTRY DllMain(HMODULE hModule, const DWORD ul_reason_for_call, LPVOID lp
 						styles.WindowTitleAlign           = ImVec2(0.0, 0.5);
 
 						init_space::Info::imGuiInit = true;
-						init_space::Info::mainShow  = true;
+						init_space::Info::mainShow  = false;
 						init_space::Info::tipsShow  = true;
 					}
 
@@ -193,10 +196,9 @@ auto APIENTRY DllMain(HMODULE hModule, const DWORD ul_reason_for_call, LPVOID lp
 					ImGui::NewFrame();
 
 					// 主界面
-					if (init_space::Info::mainShow && !init_space::Info::tipsShow)
-						if (ImGui::Begin(reinterpret_cast<const char*>(u8"Phasmophobia Cheat By 遂沫"))) {
-
-							if (ImGui::Button(reinterpret_cast<const char*>(u8"保存"))) {
+					if (!init_space::Info::tipsShow)
+						if (ImGui::Begin(reinterpret_cast<const char*>(u8"Phasmophobia Cheat By 遂沫"), &init_space::Info::show, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings)) {
+							if (ImGui::Button(U8(u8"保存 (Save)"))) {
 								if (std::ofstream o(".\\cfg.json"); o) {
 									nlohmann::json js;
 									for (const auto& _features : init_space::Feature::features | std::views::values)
@@ -206,7 +208,7 @@ auto APIENTRY DllMain(HMODULE hModule, const DWORD ul_reason_for_call, LPVOID lp
 								}
 							}
 							ImGui::SameLine();
-							if (ImGui::Button(reinterpret_cast<const char*>(u8"读取")))
+							if (ImGui::Button(reinterpret_cast<const char*>(u8"读取 (Load)")))
 								if (std::ifstream i(".\\cfg.json"); i) {
 									auto js = nlohmann::json::parse(i);
 									for (const auto& _features : init_space::Feature::features | std::views::values)
@@ -214,6 +216,8 @@ auto APIENTRY DllMain(HMODULE hModule, const DWORD ul_reason_for_call, LPVOID lp
 											try { func->Load(js); } catch (...) {}
 									i.close();
 								}
+							ImGui::SameLine();
+							ImGui::Checkbox(U8(u8"阻止 WndProc | Break WndProc"), &init_space::Info::mainShow);
 
 							if (ImGui::BeginTabBar("memList")) {
 								for (const auto& [name, _features] : init_space::Feature::features)
@@ -225,19 +229,24 @@ auto APIENTRY DllMain(HMODULE hModule, const DWORD ul_reason_for_call, LPVOID lp
 								ImGui::EndTabBar();
 							}
 
-							ImGui::GetBackgroundDrawList()->AddCircle(ImVec2(init_space::Info::w / 2, init_space::Info::h / 2), 3, 0xFF0000FF, 4, 2);
-							for (const auto& feature : init_space::Feature::features | std::views::values) for (const auto func : feature) func->DrawStatus();
-
 							ImGui::End();
 						}
+
+					ImGui::SetNextWindowSize(ImVec2(1, 1));
+					ImGui::SetNextWindowPos(ImVec2(-1000, -1000));
+					if (ImGui::Begin("Draw (don`t selected)")) {
+						ImGui::GetBackgroundDrawList()->AddCircle(ImVec2(static_cast<float>(init_space::Info::w) / 2.0f, static_cast<float>(init_space::Info::h) / 2.0f), 3, 0xFF0000FF, 4, 2);
+						for (const auto& feature : init_space::Feature::features | std::views::values) for (const auto func : feature) if (func->GetInfo().needDraw) func->Draw();
+						ImGui::End();
+					}
 
 					if (init_space::Info::tipsShow)
 						if (ImGui::Begin("Tips")) {
-							ImGui::Text(reinterpret_cast<const char*>(u8"按下Delete (Del) 键显示隐藏菜单界面"));
+							ImGui::Text(reinterpret_cast<const char*>(u8"请勿用于破坏他人游戏体验"));
 							if (ImGui::Button("OK")) init_space::Info::tipsShow = false;
 							ImGui::End();
 						}
-
+					
 					// 结束并渲染
 					ImGui::EndFrame();
 					ImGui::Render();
@@ -245,28 +254,17 @@ auto APIENTRY DllMain(HMODULE hModule, const DWORD ul_reason_for_call, LPVOID lp
 					ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 				});
 
-				// 线程异步更新
-				std::vector<std::future<void>> futuresUpdate;
 				while (true) {
 					tagRECT Rect;
 					GetClientRect(dx_hook::Hk11::GetHwnd(), &Rect);
 					init_space::Info::w = Rect.right - Rect.left;
 					init_space::Info::h = Rect.bottom - Rect.top;
+					drawMath::UpdateResolutionScale();
 					Sleep(100);
 
-					// 多线程并发
 					for (const auto& feature : init_space::Feature::features | std::views::values)
 						for (const auto func : feature)
-							futuresUpdate.push_back(std::async(std::launch::async, [&func] { func->Update(); }));
-
-					// 检查是否所有任务都已完成
-					for (auto& future : futuresUpdate)
-					wait: if (future.wait_for(std::chrono::seconds(0)) != std::future_status::ready) {
-							Sleep(1);
-							goto wait;
-						}
-
-					futuresUpdate.clear();
+							if (func->GetInfo().needUpdate) func->Update();
 				}
 			}).detach();
 			break;
