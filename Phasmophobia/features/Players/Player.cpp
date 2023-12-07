@@ -29,7 +29,7 @@ auto UNITY_CALLING_CONVENTION Player::HOnDestroy(Player* _this) -> void {
 	std::lock_guard lock(playersMutex);
 	if (const auto it = std::ranges::find(players, _this); it != players.end()) players.erase(it);
 	if (players.empty()) {
-		Ghost::ghost = nullptr;
+		GhostAI::ghost = nullptr;
 		Room::rooms.clear();
 	}
 	H::Fcall(HAwake, _this);

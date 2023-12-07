@@ -24,14 +24,13 @@ auto PlayerList::Render() -> void {
         for (const auto& player : Player::players) {
 			ImGui::TableNextRow();
 			ImGui::PushID(player);
-			if (player->photonView && player->photonView->ptr && player->photonView->ptr->name && player->levelRoom && player->levelRoom->name) {
-				try {
-					if (ImGui::TableSetColumnIndex(0)) ImGui::Text(std::format("{}", player->photonView->ptr->name->ToString()).c_str());
-					if (ImGui::TableSetColumnIndex(1)) ImGui::Text(std::format("{}", player->dead).c_str());
-					if (ImGui::TableSetColumnIndex(2)) ImGui::Text(std::format("{}", player->levelRoom->name->ToString()).c_str());
+			try {
+				if (player->photonView && player->photonView->ptr && player->photonView->ptr->name && player->levelRoom && player->levelRoom->name) {
+						if (ImGui::TableSetColumnIndex(0)) ImGui::Text(std::format("{}", player->photonView->ptr->name->ToString()).c_str());
+						if (ImGui::TableSetColumnIndex(1)) ImGui::Text(std::format("{}", player->dead).c_str());
+						if (ImGui::TableSetColumnIndex(2)) ImGui::Text(std::format("{}", player->levelRoom->name->ToString()).c_str());
 				}
-				catch (...) {}
-			}
+			} catch (...) {}
 			ImGui::PopID();
 		}
 

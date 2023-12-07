@@ -86,6 +86,7 @@
   <ItemGroup>
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="features\Ghost\Esp\GhostEsp.cpp" />
+    <ClCompile Include="features\Ghost\Features\GhostFeatures.cpp" />
     <ClCompile Include="features\Ghost\Ghost.cpp" />
     <ClCompile Include="features\Ghost\List\GhostList.cpp" />
     <ClCompile Include="features\Players\List\PlayerList.cpp" />
@@ -132,6 +133,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="features\Ghost\Esp\GhostEsp.hpp" />
+    <ClInclude Include="features\Ghost\Features\GhostFeatures.hpp" />
     <ClInclude Include="features\Ghost\Ghost.hpp" />
     <ClInclude Include="features\Ghost\List\GhostList.hpp" />
     <ClInclude Include="features\Players\List\PlayerList.hpp" />

@@ -81,6 +81,9 @@
     <ClCompile Include="features\Ghost\Esp\GhostEsp.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="features\Ghost\Features\GhostFeatures.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="library\D3D11Hook.h">
@@ -198,6 +201,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="DrawMath.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="features\Ghost\Features\GhostFeatures.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

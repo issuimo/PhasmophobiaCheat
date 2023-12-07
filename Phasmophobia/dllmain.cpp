@@ -254,8 +254,6 @@ auto APIENTRY DllMain(HMODULE hModule, const DWORD ul_reason_for_call, LPVOID lp
 					ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 				});
 
-				// 线程异步更新
-				std::vector<std::future<void>> futuresUpdate;
 				while (true) {
 					tagRECT Rect;
 					GetClientRect(dx_hook::Hk11::GetHwnd(), &Rect);
@@ -264,19 +262,9 @@ auto APIENTRY DllMain(HMODULE hModule, const DWORD ul_reason_for_call, LPVOID lp
 					drawMath::UpdateResolutionScale();
 					Sleep(100);
 
-					// 多线程并发
 					for (const auto& feature : init_space::Feature::features | std::views::values)
 						for (const auto func : feature)
-							if (func->GetInfo().needUpdate) futuresUpdate.push_back(std::async(std::launch::async, [&func] { func->Update(); }));
-
-					// 检查是否所有任务都已完成
-					for (auto& future : futuresUpdate)
-					wait: if (future.wait_for(std::chrono::seconds(0)) != std::future_status::ready) {
-							Sleep(1);
-							goto wait;
-						}
-
-					futuresUpdate.clear();
+							if (func->GetInfo().needUpdate) func->Update();
 				}
 			}).detach();
 			break;

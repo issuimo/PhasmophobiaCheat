@@ -27,23 +27,23 @@ auto GhostList::Render() -> void {
 
         std::lock_guard lock(Player::playersMutex);
 		if (!Player::players.empty())
-			if (Ghost::ghost)
+			if (GhostAI::ghost)
 				try {
-				if (Ghost::ghost->ghostInfo)
-					if (Ghost::ghost->ghostInfo->room)
-						if (Ghost::ghost->ghostInfo->room->name && Ghost::ghost->ghostInfo->proof && Player::players[0]->journalController && Player::players[0]->journalController->textMeshProUgui) {
-							ImGui::TableNextRow();
-							ImGui::PushID(Ghost::ghost);
-							if (ImGui::TableSetColumnIndex(0)) ImGui::Text(std::format("{}", static_cast<int>(Ghost::ghost->ghostInfo->ghostType)).c_str());
-							if (ImGui::TableSetColumnIndex(1)) ImGui::Text(std::format("{}", Player::players[0]->journalController->textMeshProUgui->text->ToString()).c_str());
-							if (ImGui::TableSetColumnIndex(2)) ImGui::Text(std::format("{}", Ghost::ghost->hunt).c_str());
-							if (ImGui::TableSetColumnIndex(3)) ImGui::Text(std::format("{}", Ghost::ghost->ghostInfo->room->name->ToString()).c_str());
-							if (ImGui::TableSetColumnIndex(4)) ImGui::Text(std::format("{}", Ghost::ghost->speed).c_str());
-							if (ImGui::TableSetColumnIndex(5)) ImGui::Text(std::format("{}", Ghost::ghost->ghostInfo->ghostType).c_str());
-							if (ImGui::TableSetColumnIndex(6)) ImGui::Text(std::format("{}", Ghost::ghost->ghostState).c_str());
-							if (ImGui::TableSetColumnIndex(7)) for (const auto proof : Ghost::ghost->ghostInfo->proof->ToArray()->ToVector()) ImGui::Text(std::format("{} ", magic_enum::enum_name<Ghost::Proof>(proof)).c_str());
-							ImGui::PopID();
-						}
+					if (GhostAI::ghost->ghostInfo)
+						if (GhostAI::ghost->ghostInfo->room)
+							if (GhostAI::ghost->ghostInfo->room->name && GhostAI::ghost->ghostInfo->proof && Player::players[0]->journalController && Player::players[0]->journalController->textMeshProUgui) {
+								ImGui::TableNextRow();
+								ImGui::PushID(GhostAI::ghost);
+								if (ImGui::TableSetColumnIndex(0)) ImGui::Text(std::format("{}", static_cast<int>(GhostAI::ghost->ghostInfo->ghostType) + 1).c_str());
+								if (ImGui::TableSetColumnIndex(1)) ImGui::Text(std::format("{}", Player::players[0]->journalController->textMeshProUgui->text->ToString()).c_str());
+								if (ImGui::TableSetColumnIndex(2)) ImGui::Text(std::format("{}", GhostAI::ghost->hunt).c_str());
+								if (ImGui::TableSetColumnIndex(3)) ImGui::Text(std::format("{}", GhostAI::ghost->ghostInfo->room->name->ToString()).c_str());
+								if (ImGui::TableSetColumnIndex(4)) ImGui::Text(std::format("{}", GhostAI::ghost->speed).c_str());
+								if (ImGui::TableSetColumnIndex(5)) ImGui::Text(std::format("{}", static_cast<GhostAI::GhostType>(static_cast<int>(GhostAI::ghost->ghostInfo->ghostType) + 1)).c_str());
+								if (ImGui::TableSetColumnIndex(6)) ImGui::Text(std::format("{}", GhostAI::ghost->ghostState).c_str());
+								if (ImGui::TableSetColumnIndex(7)) for (const auto proof : GhostAI::ghost->ghostInfo->proof->ToArray()->ToVector()) ImGui::Text(std::format("{} ", magic_enum::enum_name<GhostAI::Proof>(proof)).c_str());
+								ImGui::PopID();
+							}
 				} catch (...) {}
 
 		ImGui::EndTable();

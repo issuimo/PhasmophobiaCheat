@@ -2,6 +2,7 @@
 
 #include "features/Ghost/Ghost.hpp"
 #include "features/Ghost/Esp/GhostEsp.hpp"
+#include "features/Ghost/Features/GhostFeatures.hpp"
 #include "features/Ghost/List/GhostList.hpp"
 #include "features/Players/List/PlayerList.hpp"
 #include "features/Players/NoDead/NoDead.hpp"
@@ -13,11 +14,12 @@ namespace init_space {
 	auto Feature::Init() -> void {
 		Player::InitOnce();
 		Room::InitOnce();
-		Ghost::InitOnce();
+		GhostAI::InitOnce();
 
 		ADD(RoomList);
 		ADD(GhostList);
 		ADD(GhostEsp);
+		ADD(GhostFeatures);
 		ADD(PlayerList);
 		ADD(PlayerNoDead);
 	}
