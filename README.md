@@ -16,7 +16,7 @@
 > 辅助通过UnityHack库能够自动更新数据地址 \
 > The UnityHack library provides assistance in automatically updating data addresses.
 
-> 核心库 (Core libraries)
+> #### 核心库 (Core libraries)
 > - [UnityResolve.hpp](https://github.com/issuimo/UnityResolve.hpp) \
 > 本辅助通过该库获取游戏函数签名及地址来实现操作 \
 > This library is used to obtain game function signatures and addresses for performing operations within the game.
@@ -24,10 +24,10 @@
 > 挂钩d3d11实现界面渲染\
 > This library is used to hook into the Direct3D 11 graphics API in order to implement custom rendering for user interfaces.
 
-> 1.下载 (Download) \
-> [Download](https://github.com/issuimo/PhasmophobiaCheat/releases) \
-> 2.移动文件 (Move file) \
-> Phasmophobia.dll && KS_Diagnostics_Process.dll -> Release/net8.0-windows10.0.20348.0/
+> ### 1.下载 (Download)
+> # [Download](https://github.com/issuimo/PhasmophobiaCheat/releases)
+> ### 2.移动文件 (Move file)
+> #### Phasmophobia.dll && KS_Diagnostics_Process.dll -> Release/net8.0-windows10.0.20348.0/
 ![Snipaste_2023-11-21_23-26-39](https://github.com/issuimo/PhasmophobiaCheat/assets/102911714/580b3750-ee6e-4eeb-b95b-b74acf2f56a4)
 
 ## 游戏截图 (Screenshots)
