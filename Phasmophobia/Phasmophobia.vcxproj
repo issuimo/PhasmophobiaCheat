@@ -90,7 +90,7 @@
     <ClCompile Include="features\Ghost\Ghost.cpp" />
     <ClCompile Include="features\Ghost\List\GhostList.cpp" />
     <ClCompile Include="features\Players\List\PlayerList.cpp" />
-    <ClCompile Include="features\Players\NoDead\NoDead.cpp" />
+    <ClCompile Include="features\Players\PlayerBehavior\PlayerBehavior.cpp" />
     <ClCompile Include="features\Players\Player.cpp" />
     <ClCompile Include="features\Rooms\List\RoomList.cpp" />
     <ClCompile Include="features\Rooms\Room.cpp" />
@@ -137,7 +137,7 @@
     <ClInclude Include="features\Ghost\Ghost.hpp" />
     <ClInclude Include="features\Ghost\List\GhostList.hpp" />
     <ClInclude Include="features\Players\List\PlayerList.hpp" />
-    <ClInclude Include="features\Players\NoDead\NoDead.hpp" />
+    <ClInclude Include="features\Players\PlayerBehavior\PlayerBehavior.hpp" />
     <ClInclude Include="features\Players\Player.hpp" />
     <ClInclude Include="features\Rooms\List\RoomList.hpp" />
     <ClInclude Include="features\Rooms\Room.hpp" />

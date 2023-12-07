@@ -5,7 +5,7 @@
 #include "features/Ghost/Features/GhostFeatures.hpp"
 #include "features/Ghost/List/GhostList.hpp"
 #include "features/Players/List/PlayerList.hpp"
-#include "features/Players/NoDead/NoDead.hpp"
+#include "features/Players/PlayerBehavior/PlayerBehavior.hpp"
 #include "features/Rooms/List/RoomList.hpp"
 
 namespace init_space {
@@ -21,6 +21,6 @@ namespace init_space {
 		ADD(GhostEsp);
 		ADD(GhostFeatures);
 		ADD(PlayerList);
-		ADD(PlayerNoDead);
+		ADD(PlayerBehavior);
 	}
 }

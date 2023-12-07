@@ -75,7 +75,7 @@
     <ClCompile Include="features\Ghost\List\GhostList.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="features\Players\NoDead\NoDead.cpp">
+    <ClCompile Include="features\Players\PlayerBehavior\PlayerBehavior.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="features\Ghost\Esp\GhostEsp.cpp">
@@ -191,7 +191,7 @@
     <ClInclude Include="library\HotKey.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="features\Players\NoDead\NoDead.hpp">
+    <ClInclude Include="features\Players\PlayerBehavior\PlayerBehavior.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="features\Ghost\Esp\GhostEsp.hpp">

@@ -1,13 +1,13 @@
 ﻿#pragma once
-#ifndef PLAYERS_NODEAD
-#define PLAYERS_NODEAD
+#ifndef PLAYER_BEHAVIOR
+#define PLAYER_BEHAVIOR
 #include "../../../Init.h"
 #include "../Player.hpp"
 
-class PlayerNoDead : init_space::Feature {
+class PlayerBehavior : init_space::Feature {
 public:
-	PlayerNoDead();
-	~PlayerNoDead() = default;
+	PlayerBehavior();
+	~PlayerBehavior() = default;
 	[[nodiscard]] auto GetInfo() const -> const GuiInfo & override;
 	auto               Draw() -> void override;
 	auto               Render() -> void override;
@@ -15,7 +15,7 @@ public:
 	auto               Save(nlohmann::json& json) -> void override;
 	auto               Load(nlohmann::json& json) -> void override;
 
-	static auto GetInstance() -> PlayerNoDead*;
+	static auto GetInstance() -> PlayerBehavior*;
 private:
 	inline static bool noDead;
 
