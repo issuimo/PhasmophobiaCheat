@@ -1,5 +1,5 @@
-> #### 更新完善中...
-> #### Under construction...
+> #### 累了, 先歇一个月
+> #### I'm tired, I'll take a month off first.
 
 > 多语言版本推出 \
 > The multilingual version is coming. \
