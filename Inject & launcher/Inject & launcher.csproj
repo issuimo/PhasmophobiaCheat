@@ -24,13 +24,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="..\..\..\syringe_96px.png">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-    </None>
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 

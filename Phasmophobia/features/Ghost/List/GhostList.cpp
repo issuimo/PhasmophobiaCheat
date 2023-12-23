@@ -25,12 +25,12 @@ auto GhostList::Render() -> void {
         ImGui::TableSetupColumn(reinterpret_cast<const char*>(u8"证据 (proof)"), ImGuiTableColumnFlags_None);
         ImGui::TableHeadersRow();
 
-        std::lock_guard lock(Player::playersMutex);
-		if (!Player::players.empty())
-			if (GhostAI::ghost)
+		if (GhostAI::ghost) {
+			std::lock_guard lock(Player::playersMutex);
+			if (!Player::players.empty()) {
 				try {
-					if (GhostAI::ghost->ghostInfo)
-						if (GhostAI::ghost->ghostInfo->room)
+					if (GhostAI::ghost->ghostInfo) {
+						if (GhostAI::ghost->ghostInfo->room) {
 							if (GhostAI::ghost->ghostInfo->room->name && GhostAI::ghost->ghostInfo->proof && Player::players[0]->journalController && Player::players[0]->journalController->textMeshProUgui) {
 								ImGui::TableNextRow();
 								ImGui::PushID(GhostAI::ghost);
@@ -44,7 +44,11 @@ auto GhostList::Render() -> void {
 								if (ImGui::TableSetColumnIndex(7)) for (const auto proof : GhostAI::ghost->ghostInfo->proof->ToArray()->ToVector()) ImGui::Text(std::format("{} ", magic_enum::enum_name<GhostAI::Proof>(proof)).c_str());
 								ImGui::PopID();
 							}
+						}
+					}
 				} catch (...) {}
+			}
+		}
 
 		ImGui::EndTable();
     }

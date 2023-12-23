@@ -75,13 +75,25 @@
     <ClCompile Include="features\Ghost\List\GhostList.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="features\Players\PlayerBehavior\PlayerBehavior.cpp">
+    <ClCompile Include="features\Players\Behavior\PlayerBehavior.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="features\Ghost\Esp\GhostEsp.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="features\Ghost\Features\GhostFeatures.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="features\Ghost\Behavior\GhostBehavior.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="features\Players\Features\PlayerFeatures.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="features\Ghost\Properties\GhostProperties.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="features\Players\Properties\PlayerProperties.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -191,7 +203,7 @@
     <ClInclude Include="library\HotKey.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="features\Players\PlayerBehavior\PlayerBehavior.hpp">
+    <ClInclude Include="features\Players\Behavior\PlayerBehavior.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="features\Ghost\Esp\GhostEsp.hpp">
@@ -204,6 +216,18 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="features\Ghost\Features\GhostFeatures.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="features\Ghost\Behavior\GhostBehavior.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="features\Players\Features\PlayerFeatures.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="features\Ghost\Properties\GhostProperties.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="features\Players\Properties\PlayerProperties.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

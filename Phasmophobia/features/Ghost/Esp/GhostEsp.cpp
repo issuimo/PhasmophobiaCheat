@@ -3,7 +3,7 @@
 
 auto GhostEsp::GetInfo() const -> const GuiInfo& { return *new GuiInfo{ reinterpret_cast<const char*>(u8"鬼魂 (Ghost)"), reinterpret_cast<const char*>(u8"透视 (Esp)"), true, false, true }; }
 auto GhostEsp::Draw() -> void {
-	if (enable && GhostAI::ghost)
+	if (enable && GhostAI::ghost) {
 		try {
 			auto i = 0;
 			for (const auto pCollider : GhostAI::ghost->GetGameObject()->GetComponentsInChildren<II::Renderer*>(I::Get("UnityEngine.CoreModule.dll")->Get("Renderer"))) {
@@ -15,6 +15,7 @@ auto GhostEsp::Draw() -> void {
 				DrawTextWithOutline(ImGui::GetBackgroundDrawList(), { point.x, point.y }, std::format("[{}] {}.{}", GhostAI::ghost->ghostState, static_cast<int>(GhostAI::ghost->ghostInfo->ghostType) + 1, static_cast<GhostAI::GhostType>(static_cast<int>(GhostAI::ghost->ghostInfo->ghostType) + 1)).c_str(), ImColor(255, 0, 0), 1.0f, ImGuiEx::OutlineSide::All, ImColor(0, 0, 0));
 			}
 		} catch (...) {}
+	}
 }
 
 auto GhostEsp::Render() -> void {

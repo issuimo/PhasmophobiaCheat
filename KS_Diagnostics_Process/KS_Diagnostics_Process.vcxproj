@@ -31,7 +31,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>..\Build\</OutDir>
+    <OutDir>..\Build\Release\net8.0-windows10.0.20348.0\</OutDir>
     <IntDir>..\Build\Temp\AAC\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

@@ -1,20 +1,17 @@
 ﻿#include "PlayerBehavior.hpp"
 
 auto UNITY_CALLING_CONVENTION PlayerBehavior::HDead(Player* player, const bool arg, void* p) -> void {
-	if (noDead)
-		return;
+	if (noDead) return;
 	H::Fcall(HDead, player, arg, p);
 }
 
 auto UNITY_CALLING_CONVENTION PlayerBehavior::HKillPlayer(Player* player, const bool arg) -> void {
-	if (noDead)
-		return;
+	if (noDead) return;
 	H::Fcall(HKillPlayer, player, arg);
 }
 
 auto UNITY_CALLING_CONVENTION PlayerBehavior::HStartKillingPlayer(Player* player) -> void {
-	if (noDead)
-		return;
+	if (noDead) return;
 	H::Fcall(HStartKillingPlayer, player);
 }
 

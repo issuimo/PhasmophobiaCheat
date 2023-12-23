@@ -27,6 +27,8 @@ auto APIENTRY DllMain(HMODULE hModule, const DWORD ul_reason_for_call, LPVOID lp
 				// 安装D3D11HOOK
 				dx_hook::Hk11::Build([hModule] {
 					if (!init_space::Info::imGuiInit) {
+						UnityResolve::ThreadAttach();
+
 						IMGUI_CHECKVERSION();
 
 						// 创建ImGui上下文 
@@ -196,7 +198,7 @@ auto APIENTRY DllMain(HMODULE hModule, const DWORD ul_reason_for_call, LPVOID lp
 					ImGui::NewFrame();
 
 					// 主界面
-					if (!init_space::Info::tipsShow)
+					if (!init_space::Info::tipsShow) {
 						if (ImGui::Begin(reinterpret_cast<const char*>(u8"Phasmophobia Cheat By 遂沫"), &init_space::Info::show, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings)) {
 							if (ImGui::Button(U8(u8"保存 (Save)"))) {
 								if (std::ofstream o(".\\cfg.json"); o) {
@@ -208,29 +210,33 @@ auto APIENTRY DllMain(HMODULE hModule, const DWORD ul_reason_for_call, LPVOID lp
 								}
 							}
 							ImGui::SameLine();
-							if (ImGui::Button(reinterpret_cast<const char*>(u8"读取 (Load)")))
+							if (ImGui::Button(reinterpret_cast<const char*>(u8"读取 (Load)"))) {
 								if (std::ifstream i(".\\cfg.json"); i) {
 									auto js = nlohmann::json::parse(i);
-									for (const auto& _features : init_space::Feature::features | std::views::values)
+									for (const auto& _features : init_space::Feature::features | std::views::values) {
 										for (const auto func : _features)
 											try { func->Load(js); } catch (...) {}
+									}
 									i.close();
 								}
+							}
 							ImGui::SameLine();
 							ImGui::Checkbox(U8(u8"阻止 WndProc | Break WndProc"), &init_space::Info::mainShow);
 
 							if (ImGui::BeginTabBar("memList")) {
-								for (const auto& [name, _features] : init_space::Feature::features)
+								for (const auto& [name, _features] : init_space::Feature::features) {
 									if (ImGui::BeginTabItem(name.c_str())) {
 										for (const auto func : _features)
 											if (func->GetInfo().needGroup) { if (ImGui::CollapsingHeader(func->GetInfo().groupName.c_str())) func->Render(); } else func->Render();
 										ImGui::EndTabItem();
 									}
+								}
 								ImGui::EndTabBar();
 							}
 
 							ImGui::End();
 						}
+					}
 
 					ImGui::SetNextWindowSize(ImVec2(1, 1));
 					ImGui::SetNextWindowPos(ImVec2(-1000, -1000));
@@ -240,13 +246,15 @@ auto APIENTRY DllMain(HMODULE hModule, const DWORD ul_reason_for_call, LPVOID lp
 						ImGui::End();
 					}
 
-					if (init_space::Info::tipsShow)
+					if (init_space::Info::tipsShow) {
 						if (ImGui::Begin("Tips")) {
-							ImGui::Text(reinterpret_cast<const char*>(u8"请勿用于破坏他人游戏体验"));
+							ImGui::Text(reinterpret_cast<const char*>(u8"请勿用于破坏他人游戏体验 | Please do not use the assistance to disrupt others' gaming experience"));
+							ImGui::Text(reinterpret_cast<const char*>(u8"请勿用于商业用途 | refrain from using it for commercial purposes."));
 							if (ImGui::Button("OK")) init_space::Info::tipsShow = false;
 							ImGui::End();
 						}
-					
+					}
+
 					// 结束并渲染
 					ImGui::EndFrame();
 					ImGui::Render();
@@ -262,9 +270,10 @@ auto APIENTRY DllMain(HMODULE hModule, const DWORD ul_reason_for_call, LPVOID lp
 					drawMath::UpdateResolutionScale();
 					Sleep(100);
 
-					for (const auto& feature : init_space::Feature::features | std::views::values)
+					for (const auto& feature : init_space::Feature::features | std::views::values) {
 						for (const auto func : feature)
 							if (func->GetInfo().needUpdate) func->Update();
+					}
 				}
 			}).detach();
 			break;

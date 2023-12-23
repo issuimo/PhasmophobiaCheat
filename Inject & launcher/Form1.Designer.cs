@@ -39,68 +39,68 @@
             this.button1.BackColor = Color.Turquoise;
             this.button1.FlatAppearance.BorderColor = Color.Turquoise;
             this.button1.FlatStyle = FlatStyle.Flat;
-            this.button1.Font = new Font("SDK_SC_Web", 10.4999981F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.button1.Location = new Point(112, 333);
+            this.button1.Font = new Font("微软雅黑", 10.5F, FontStyle.Regular, GraphicsUnit.Point, 134);
+            this.button1.Location = new Point(12, 333);
             this.button1.Name = "button1";
-            this.button1.Size = new Size(80, 39);
+            this.button1.Size = new Size(118, 39);
             this.button1.TabIndex = 0;
-            this.button1.Text = "启动";
+            this.button1.Text = "启动 (Activate)";
             this.button1.UseVisualStyleBackColor = false;
             this.button1.Click += button1_Click;
             // 
             // textBox1
             // 
-            this.textBox1.Font = new Font("SDK_SC_Web", 8.999999F);
+            this.textBox1.Font = new Font("Microsoft Sans Serif", 8.999999F);
             this.textBox1.Location = new Point(12, 32);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new Size(210, 22);
+            this.textBox1.Size = new Size(265, 21);
             this.textBox1.TabIndex = 1;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new Font("SDK_SC_Web", 11.9999981F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.label1.Location = new Point(12, 9);
+            this.label1.Font = new Font("微软雅黑", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            this.label1.Location = new Point(12, 8);
             this.label1.Name = "label1";
-            this.label1.Size = new Size(41, 20);
+            this.label1.Size = new Size(142, 21);
             this.label1.TabIndex = 2;
-            this.label1.Text = "路径";
+            this.label1.Text = "路径 (Game path)";
             // 
             // button2
             // 
             this.button2.BackColor = Color.Turquoise;
             this.button2.FlatAppearance.BorderColor = Color.Turquoise;
             this.button2.FlatStyle = FlatStyle.Flat;
-            this.button2.Font = new Font("SDK_SC_Web", 8.999999F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.button2.Location = new Point(228, 31);
+            this.button2.Font = new Font("微软雅黑", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            this.button2.Location = new Point(174, 2);
             this.button2.Name = "button2";
-            this.button2.Size = new Size(50, 24);
+            this.button2.Size = new Size(103, 28);
             this.button2.TabIndex = 3;
-            this.button2.Text = "选择";
+            this.button2.Text = "选择 (Select)";
             this.button2.UseVisualStyleBackColor = false;
             this.button2.Click += button2_Click;
             // 
             // checkBox1
             // 
             this.checkBox1.AutoSize = true;
-            this.checkBox1.Font = new Font("SDK_SC_Web", 10.4999981F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            this.checkBox1.Font = new Font("微软雅黑", 10.5F, FontStyle.Regular, GraphicsUnit.Point, 0);
             this.checkBox1.Location = new Point(12, 60);
             this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new Size(111, 21);
+            this.checkBox1.Size = new Size(172, 24);
             this.checkBox1.TabIndex = 5;
-            this.checkBox1.Text = "剔除进程检测";
+            this.checkBox1.Text = "无检测 (No detection)";
             this.checkBox1.UseVisualStyleBackColor = true;
             // 
             // linkLabel1
             // 
             this.linkLabel1.AutoSize = true;
-            this.linkLabel1.Font = new Font("SDK_SC_Web", 10.4999981F);
-            this.linkLabel1.Location = new Point(12, 352);
+            this.linkLabel1.Font = new Font("Microsoft Sans Serif", 10.4999981F);
+            this.linkLabel1.Location = new Point(227, 65);
             this.linkLabel1.Name = "linkLabel1";
-            this.linkLabel1.Size = new Size(89, 17);
+            this.linkLabel1.Size = new Size(50, 17);
             this.linkLabel1.TabIndex = 6;
             this.linkLabel1.TabStop = true;
-            this.linkLabel1.Text = "Github 开源";
+            this.linkLabel1.Text = "Github";
             this.linkLabel1.LinkClicked += linkLabel1_LinkClicked;
             // 
             // listBox1
@@ -118,12 +118,12 @@
             this.button3.BackColor = Color.Turquoise;
             this.button3.FlatAppearance.BorderColor = Color.Turquoise;
             this.button3.FlatStyle = FlatStyle.Flat;
-            this.button3.Font = new Font("SDK_SC_Web", 10.4999981F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.button3.Location = new Point(198, 333);
+            this.button3.Font = new Font("微软雅黑", 10.5F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            this.button3.Location = new Point(167, 333);
             this.button3.Name = "button3";
-            this.button3.Size = new Size(80, 39);
+            this.button3.Size = new Size(111, 39);
             this.button3.TabIndex = 8;
-            this.button3.Text = "注入";
+            this.button3.Text = "注入 (Inject) ";
             this.button3.UseVisualStyleBackColor = false;
             this.button3.Click += button3_Click;
             // 

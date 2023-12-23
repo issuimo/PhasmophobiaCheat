@@ -37,7 +37,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>..\Build\</OutDir>
+    <OutDir>..\Build\Release\net8.0-windows10.0.20348.0\</OutDir>
     <IntDir>..\Build\Temp\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -54,9 +54,9 @@
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <OmitFramePointers>true</OmitFramePointers>
       <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
-      <WholeProgramOptimization>true</WholeProgramOptimization>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
       <BufferSecurityCheck>false</BufferSecurityCheck>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <ExceptionHandling>Async</ExceptionHandling>
       <EnableModules>true</EnableModules>
       <BuildStlModules>true</BuildStlModules>
@@ -73,25 +73,29 @@
       <ControlFlowGuard>false</ControlFlowGuard>
       <FloatingPointExceptions>false</FloatingPointExceptions>
       <GuardEHContMetadata>false</GuardEHContMetadata>
-      <DebugInformationFormat>None</DebugInformationFormat>
-      <SupportJustMyCode>false</SupportJustMyCode>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <SupportJustMyCode>true</SupportJustMyCode>
       <DiagnosticsFormat>Caret</DiagnosticsFormat>
       <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
     </ClCompile>
     <Link>
       <AdditionalDependencies>$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
-      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp" />
+    <ClCompile Include="features\Ghost\Behavior\GhostBehavior.cpp" />
     <ClCompile Include="features\Ghost\Esp\GhostEsp.cpp" />
     <ClCompile Include="features\Ghost\Features\GhostFeatures.cpp" />
     <ClCompile Include="features\Ghost\Ghost.cpp" />
     <ClCompile Include="features\Ghost\List\GhostList.cpp" />
+    <ClCompile Include="features\Ghost\Properties\GhostProperties.cpp" />
+    <ClCompile Include="features\Players\Features\PlayerFeatures.cpp" />
     <ClCompile Include="features\Players\List\PlayerList.cpp" />
-    <ClCompile Include="features\Players\PlayerBehavior\PlayerBehavior.cpp" />
+    <ClCompile Include="features\Players\Behavior\PlayerBehavior.cpp" />
     <ClCompile Include="features\Players\Player.cpp" />
+    <ClCompile Include="features\Players\Properties\PlayerProperties.cpp" />
     <ClCompile Include="features\Rooms\List\RoomList.cpp" />
     <ClCompile Include="features\Rooms\Room.cpp" />
     <ClCompile Include="Init.cpp" />
@@ -132,13 +136,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="features\Ghost\Behavior\GhostBehavior.h" />
     <ClInclude Include="features\Ghost\Esp\GhostEsp.hpp" />
     <ClInclude Include="features\Ghost\Features\GhostFeatures.hpp" />
     <ClInclude Include="features\Ghost\Ghost.hpp" />
     <ClInclude Include="features\Ghost\List\GhostList.hpp" />
+    <ClInclude Include="features\Ghost\Properties\GhostProperties.h" />
+    <ClInclude Include="features\Players\Features\PlayerFeatures.h" />
     <ClInclude Include="features\Players\List\PlayerList.hpp" />
-    <ClInclude Include="features\Players\PlayerBehavior\PlayerBehavior.hpp" />
+    <ClInclude Include="features\Players\Behavior\PlayerBehavior.hpp" />
     <ClInclude Include="features\Players\Player.hpp" />
+    <ClInclude Include="features\Players\Properties\PlayerProperties.h" />
     <ClInclude Include="features\Rooms\List\RoomList.hpp" />
     <ClInclude Include="features\Rooms\Room.hpp" />
     <ClInclude Include="Init.h" />
