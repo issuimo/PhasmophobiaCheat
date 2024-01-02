@@ -24,10 +24,8 @@
 > 挂钩d3d11实现界面渲染\
 > This library is used to hook into the Direct3D 11 graphics API in order to implement custom rendering for user interfaces.
 
-> ### 1.下载 (Download)
+> ### 下载 (Download)
 > # [Download](https://github.com/issuimo/PhasmophobiaCheat/releases)
-> ### 2.移动文件 (Move file)
-> #### Phasmophobia.dll && KS_Diagnostics_Process.dll -> Release/net8.0-windows10.0.20348.0/
 ![Snipaste_2023-11-21_23-26-39](https://github.com/issuimo/PhasmophobiaCheat/assets/102911714/580b3750-ee6e-4eeb-b95b-b74acf2f56a4)
 
 ## 游戏截图 (Screenshots)
