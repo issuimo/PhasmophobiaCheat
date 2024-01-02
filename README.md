@@ -1,6 +1,3 @@
-> #### 累了, 先歇一个月
-> #### I'm tired, I'll take a month off first.
-
 > 多语言版本推出 \
 > The multilingual version is coming. \
 > 修复已知bug带来更好的稳定性, 可能会增加新的功能这依赖于UnityResolve.hpp库的能力 \
@@ -56,7 +53,7 @@
 - [ ] 鬼不猎杀 (Not Hunt)
 - [ ] 鬼不换房 (Not Change Rooms)
 - [ ] 猎杀不关门 (Hunting Without Closing Doors)
-- [ ] 修改鬼魂移速 (Modify Ghost Movement Speed)
+- [X] 修改鬼魂移速 (Modify Ghost Movement Speed)
 - #### 结算 (Settlement)
 - [ ] 增加奖励 (More Reward)
 - #### 门 (Doors)
