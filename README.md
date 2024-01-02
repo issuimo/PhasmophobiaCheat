@@ -53,7 +53,7 @@
 - [ ] 鬼不猎杀 (Not Hunt)
 - [ ] 鬼不换房 (Not Change Rooms)
 - [ ] 猎杀不关门 (Hunting Without Closing Doors)
-- [ ] 修改鬼魂移速 (Modify Ghost Movement Speed)
+- [X] 修改鬼魂移速 (Modify Ghost Movement Speed)
 - #### 结算 (Settlement)
 - [ ] 增加奖励 (More Reward)
 - #### 门 (Doors)
