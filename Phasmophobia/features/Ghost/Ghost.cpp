@@ -1,5 +1,7 @@
 ﻿#include "Ghost.hpp"
 
+#include "../../library/Console.hpp"
+
 auto GhostAI::InitOnce() -> void {
 	if (const auto pClass = I::Get("Assembly-CSharp.dll")->Get("GhostAI")) {
 		mAwake = pClass->Get<IM>("Awake")->Cast<void, GhostAI*>();
@@ -33,5 +35,6 @@ auto GhostAI::InitOnce() -> void {
 
 auto GhostAI::HAwake(GhostAI* _this) -> void {
 	ghost = _this;
+	LOG_DEBUG(std::format("GhostAI Address: {}\n", static_cast<void*>(_this)));
 	H::Fcall(HAwake, _this);
 }

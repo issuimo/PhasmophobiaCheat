@@ -3,10 +3,10 @@
 #include <cstdio>
 #include <print>
 #include <string>
-#define LOG_DEBUG(text) Console::OutConsole(Console::Debug,text,__FILE__,__LINE__)
-#define LOG_INFO(text) Console::OutConsole(Console::Info,text,__FILE__,__LINE__)
-#define LOG_WARNING(text) Console::OutConsole(Console::Warning,text,__FILE__,__LINE__)
-#define LOG_ERROR(text) Console::OutConsole(Console::Error,text,__FILE__,__LINE__)
+#define LOG_DEBUG(text) console::OutConsole(console::Debug,text,__FILE__,__LINE__)
+#define LOG_INFO(text) console::OutConsole(console::Info,text,__FILE__,__LINE__)
+#define LOG_WARNING(text) console::OutConsole(console::Warning,text,__FILE__,__LINE__)
+#define LOG_ERROR(text) console::OutConsole(console::Error,text,__FILE__,__LINE__)
 
 namespace console {
 	enum OutType : short int {

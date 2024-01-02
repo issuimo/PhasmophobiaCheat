@@ -18,8 +18,8 @@ public:
 
 	static auto GetInstance() -> GhostProperties*;
 private:
-	bool gSpeedEnable;
-	float gSpeed;
+	bool gSpeedEnable{};
+	float gSpeed{};
 };
 
 #endif

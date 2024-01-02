@@ -96,7 +96,7 @@ public:
     }*ghostInfo;
     char space3[0x18];
     GhostActivity* ghostActivity;
-    char space4[0x58];
+    char space4[0x60];
     float speed;
     char space5[0x8];
     bool hunt;

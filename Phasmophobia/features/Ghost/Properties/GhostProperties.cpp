@@ -1,6 +1,6 @@
 ﻿#include "GhostProperties.h"
 auto GhostProperties::GetInfo() const -> const GuiInfo& {
-	return *new GuiInfo{ reinterpret_cast<const char*>(u8"鬼魂 (Ghost)"), reinterpret_cast<const char*>(u8"属性 (Properties)"), true, false, true };
+	return *new GuiInfo{ reinterpret_cast<const char*>(u8"鬼魂 (Ghost)"), reinterpret_cast<const char*>(u8"属性 (Properties)"), true, true, true };
 }
 auto GhostProperties::Draw() -> void { Feature::Draw(); }
 auto GhostProperties::Render() -> void { 
@@ -10,7 +10,7 @@ auto GhostProperties::Render() -> void {
 	} else ImGui::Text(U8(u8"只有鬼存在时可用 (Only available when Jinn is present.)"));
 }
 auto GhostProperties::Update() -> void {
-	GhostAI::ghost->speed = gSpeed;
+	if (gSpeedEnable) GhostAI::ghost->speed = gSpeed;
 }
 auto GhostProperties::Save(nlohmann::json& json) -> void { Feature::Save(json); }
 auto GhostProperties::Load(nlohmann::json& json) -> void { Feature::Load(json); }
