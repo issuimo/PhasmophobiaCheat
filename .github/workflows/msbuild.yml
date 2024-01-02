@@ -47,15 +47,14 @@ jobs:
     - name: Removing unused files
       shell: cmd
       run: |
-        rm -rf ./build/Temp
-        rm -rf ./build/*.pdb
-        rm -rf ./build/*.exp
-        rm -rf ./build/*.lib
+        rm -rf ./build/release/net8.0-windows10.0.20348.0/*.pdb
+        rm -rf ./build/release/net8.0-windows10.0.20348.0/*.exp
+        rm -rf ./build/release/net8.0-windows10.0.20348.0/*.lib
         
     - name: Upload Cheat latest artifact
       uses: actions/upload-artifact@v3.1.0
       with:
         name: release
-        path: ./Build/*
+        path: ./Build/release/net8.0-windows10.0.20348.0/*
         if-no-files-found: error
 
