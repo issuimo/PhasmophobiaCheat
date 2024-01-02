@@ -38,7 +38,7 @@
 - #### 玩家 (Player)
 - [X] 玩家列表 (Player List)
   - [X] 玩家名称 (Name)
-  - [ ] 杀死玩家 (Kill)
+  - [X] 杀死玩家 (Kill)
   - [X] 玩家房间 (Room)
 - [X] 玩家无敌 (Player Invincibility)
 - [ ] 修改速度 (Modify Speed)
@@ -50,7 +50,7 @@
   - [X] 鬼魂类型 (Type)
   - [X] 鬼魂移速 (Speed)
   - [X] 猎杀状态 (Hunting State)
-- [ ] 鬼不猎杀 (Not Hunt)
+- [X] 鬼不猎杀 (Not Hunt)
 - [ ] 鬼不换房 (Not Change Rooms)
 - [ ] 猎杀不关门 (Hunting Without Closing Doors)
 - [X] 修改鬼魂移速 (Modify Ghost Movement Speed)
@@ -61,6 +61,6 @@
 - #### 房间 (Rooms)
 - [X] 房间列表 (Room List)
 - #### 透视 (ESP)
-- [x] 鬼魂透视 (Ghost)
+- [x] 鬼魂透视 (3D) (Ghost)
 
 ### - More...
