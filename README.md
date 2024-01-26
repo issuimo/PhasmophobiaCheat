@@ -1,8 +1,3 @@
-> 多语言版本推出 \
-> The multilingual version is coming. \
-> 修复已知bug带来更好的稳定性, 可能会增加新的功能这依赖于UnityResolve.hpp库的能力 \
-> fixing known bugs and bringing better stability. It may also introduce new features that rely on the capabilities of the UnityResolve.hpp library.
-
 > [!WARNING]\
 > 请勿将辅助用于破坏他人游戏体验，请勿用于商业用途 \
 > Please do not use the assistance to disrupt others' gaming experience and refrain from using it for commercial purposes.\
@@ -13,8 +8,6 @@
 > Q群: 893682569 \
 > 遇到bug或有技术上疑问请拉取Issues \
 > If you encounter any bugs or have technical questions, please create an issue in the repository.\
-> 辅助通过UnityHack库能够自动更新数据地址 \
-> The UnityHack library provides assistance in automatically updating data addresses.
 
 > #### 核心库 (Core libraries)
 > - [UnityResolve.hpp](https://github.com/issuimo/UnityResolve.hpp) \
