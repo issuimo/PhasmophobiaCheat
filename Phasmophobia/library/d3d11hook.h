@@ -54,7 +54,7 @@ namespace dx_hook {
 		inline static ID3D11DeviceContext*    gContext{};
 		inline static ID3D11RenderTargetView* gTargetView{};
 
-		static auto MyPresent(IDXGISwapChain* a, const UINT b, const UINT c) -> HRESULT {
+		static auto WINAPI MyPresent(IDXGISwapChain* a, const UINT b, const UINT c) -> HRESULT {
 			if (!init) {
 				gSwapChain        = a;
 				if (const auto result = a->GetDevice(__uuidof(gDevice), reinterpret_cast<void**>(&gDevice)); SUCCEEDED(result)) {
@@ -72,7 +72,7 @@ namespace dx_hook {
 
 			present();
 
-			return HookManager::Call(MyPresent, a, b, c);
+			return HookManager::Scall(MyPresent, a, b, c);
 		}
 
 		static auto NewWndProc(const HWND hWnd, const UINT uMsg, const WPARAM wParam, const LPARAM lParam) -> LRESULT {

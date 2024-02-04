@@ -32,6 +32,7 @@
             this.linkLabel1 = new LinkLabel();
             this.listBox1 = new ListBox();
             this.button3 = new Button();
+            this.label2 = new Label();
             SuspendLayout();
             // 
             // button1
@@ -127,11 +128,23 @@
             this.button3.UseVisualStyleBackColor = false;
             this.button3.Click += button3_Click;
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new Font("Microsoft YaHei UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 134);
+            this.label2.Location = new Point(135, 338);
+            this.label2.Name = "label2";
+            this.label2.Size = new Size(26, 25);
+            this.label2.TabIndex = 9;
+            this.label2.Text = ">";
+            this.label2.Click += label2_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 17F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(289, 381);
+            Controls.Add(this.label2);
             Controls.Add(this.button3);
             Controls.Add(this.listBox1);
             Controls.Add(this.linkLabel1);
@@ -163,5 +176,6 @@
         private LinkLabel linkLabel1;
         private ListBox listBox1;
         private Button button3;
+        private Label label2;
     }
 }

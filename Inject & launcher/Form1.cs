@@ -13,30 +13,8 @@ namespace Inject___launcher {
             }
         }
 
-        [DllImport("kernel32.dll")] //声明API函数
-        public static extern IntPtr VirtualAllocEx(IntPtr hwnd, IntPtr lpaddress, int size, int type, int tect);
-
-        [DllImport("kernel32.dll")]
-        public static extern int WriteProcessMemory(IntPtr hwnd, IntPtr baseaddress, string buffer, int nsize, int filewriten);
-
-        [DllImport("kernel32.dll")]
-        public static extern IntPtr GetProcAddress(IntPtr hwnd, string lpname);
-
-        [DllImport("kernel32.dll")]
-        public static extern IntPtr GetModuleHandleA(string name);
-
-        [DllImport("kernel32.dll")]
-        public static extern IntPtr CreateRemoteThread(IntPtr hwnd, IntPtr attrib, int size, IntPtr address, IntPtr par, int flags, IntPtr threadid);
-
-
-        [DllImport("KERNEL32.DLL ")]
-        public static extern int CloseHandle(IntPtr handle);
-
-        [DllImport("kernel32.dll")]
-        public static extern IntPtr OpenProcess(int dwDesiredAccess, bool bInheritHandle, int dwProcessId);
-
-        [DllImport("kernel32.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall)]
-        public static extern long GetLastError();
+        [DllImport("Phasmophobia.dll")] //声明API函数
+        public static extern void Inject();
 
         /// <summary>
         /// 
@@ -87,7 +65,7 @@ namespace Inject___launcher {
                                p.StandardInput.AutoFlush = true;
                                p.WaitForExit(); //等待程序执行完退出进程
                                p.Close();
-                               
+
                                this.button1.Enabled = true;
                            }).Start();
             } catch (ThreadStateException ex) {
@@ -154,68 +132,16 @@ namespace Inject___launcher {
         }
 
         private void button3_Click(object sender, EventArgs e) {
-new Thread(
-           () => {
-               this.button3.Enabled = false;
-               findProcess:
-                               var process = Process.GetProcessesByName("Phasmophobia");
-                               if (process == null || process.Length == 0) {
-                                   Thread.Sleep(5000);
-                                   goto findProcess;
-                               }
+            new Thread(
+                       () => {
+                           this.button3.Enabled = false;
+                           Form1.Inject();
+                           this.button3.Enabled = true;
+                       }).Start();
+        }
 
-                               Int32 SYNCHRONIZE = 0x00100000;
+        private void label2_Click(object sender, EventArgs e) {
 
-                               Int32 STANDARD_RIGHTS_REQUIRED = 0x000F0000;
-
-                               Int32 PROCESS_ALL_ACCESS = (STANDARD_RIGHTS_REQUIRED | SYNCHRONIZE | 0xFFF);
-
-
-                               string dllname = System.AppDomain.CurrentDomain.BaseDirectory + "Phasmophobia.dll";
-                               this.listBox1.Items.Add(Log.FormatLog("游戏ID: " + process[0].Id));
-                               nint handle = OpenProcess(PROCESS_ALL_ACCESS, false, process[0].Id);
-                               this.listBox1.Items.Add(Log.FormatLog("游戏句柄: " + handle));
-                               this.listBox1.Items.Add(Log.FormatLog("正在注入..."));
-                               IntPtr allocBaseAddress = VirtualAllocEx(handle, 0, dllname.Length, 4096, 4);
-                               if (allocBaseAddress == 0) {
-                                   MessageBox.Show("内存分配失败", "错误");
-                                   this.listBox1.Items.Add(Log.FormatLog("内存分配失败!"));
-                                   this.button3.Enabled = true;
-                                   return;
-                               }
-
-                               this.listBox1.Items.Add(Log.FormatLog("已分配内存地址: " + allocBaseAddress));
-
-                               if (WriteProcessMemory(handle, allocBaseAddress, dllname, dllname.Length, 0) == 0) {
-                                   MessageBox.Show("DLL写入失败 error:" + GetLastError(), "错误", 0);
-                                   this.listBox1.Items.Add(Log.FormatLog("DLL写入失败!"));
-                                   this.button3.Enabled = true;
-                                   return;
-                               }
-
-                               IntPtr loadaddr = GetProcAddress(GetModuleHandleA("kernel32.dll"), "LoadLibraryA");
-                               if (loadaddr == 0) {
-                                   MessageBox.Show("取得LoadLibraryA的地址失败");
-                                   this.listBox1.Items.Add(Log.FormatLog("取得LoadLibraryA的地址失败!"));
-                                   this.button3.Enabled = true;
-                                   return;
-                               }
-
-                               this.listBox1.Items.Add(Log.FormatLog("LoadLibraryA内存地址: " + loadaddr));
-
-                               IntPtr ThreadHwnd = CreateRemoteThread(handle, 0, 0, loadaddr, allocBaseAddress, 0, 0);
-                               if (ThreadHwnd == IntPtr.Zero) {
-                                   MessageBox.Show("创建远程线程失败");
-                                   this.listBox1.Items.Add(Log.FormatLog("创建远程线程失败!"));
-                                   this.button3.Enabled = true;
-                                   return;
-                               }
-
-                               this.listBox1.Items.Add(Log.FormatLog("远程线程句柄: " + ThreadHwnd));
-
-                               this.listBox1.Items.Add(Log.FormatLog("注入成功!"));
-                               this.button3.Enabled = true;
-           }).Start();
         }
     }
 }
